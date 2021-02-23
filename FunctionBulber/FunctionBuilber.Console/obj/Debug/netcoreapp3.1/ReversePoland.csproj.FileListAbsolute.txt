@@ -1,0 +1,13 @@
+C:\Users\Slava\Desktop\visual\poland\ReversePoland\bin\Debug\netcoreapp3.1\ReversePoland.exe
+C:\Users\Slava\Desktop\visual\poland\ReversePoland\bin\Debug\netcoreapp3.1\ReversePoland.deps.json
+C:\Users\Slava\Desktop\visual\poland\ReversePoland\bin\Debug\netcoreapp3.1\ReversePoland.runtimeconfig.json
+C:\Users\Slava\Desktop\visual\poland\ReversePoland\bin\Debug\netcoreapp3.1\ReversePoland.runtimeconfig.dev.json
+C:\Users\Slava\Desktop\visual\poland\ReversePoland\bin\Debug\netcoreapp3.1\ReversePoland.dll
+C:\Users\Slava\Desktop\visual\poland\ReversePoland\bin\Debug\netcoreapp3.1\ReversePoland.pdb
+C:\Users\Slava\Desktop\visual\poland\ReversePoland\obj\Debug\netcoreapp3.1\ReversePoland.csprojAssemblyReference.cache
+C:\Users\Slava\Desktop\visual\poland\ReversePoland\obj\Debug\netcoreapp3.1\ReversePoland.AssemblyInfoInputs.cache
+C:\Users\Slava\Desktop\visual\poland\ReversePoland\obj\Debug\netcoreapp3.1\ReversePoland.AssemblyInfo.cs
+C:\Users\Slava\Desktop\visual\poland\ReversePoland\obj\Debug\netcoreapp3.1\ReversePoland.csproj.CoreCompileInputs.cache
+C:\Users\Slava\Desktop\visual\poland\ReversePoland\obj\Debug\netcoreapp3.1\ReversePoland.dll
+C:\Users\Slava\Desktop\visual\poland\ReversePoland\obj\Debug\netcoreapp3.1\ReversePoland.pdb
+C:\Users\Slava\Desktop\visual\poland\ReversePoland\obj\Debug\netcoreapp3.1\ReversePoland.genruntimeconfig.cache

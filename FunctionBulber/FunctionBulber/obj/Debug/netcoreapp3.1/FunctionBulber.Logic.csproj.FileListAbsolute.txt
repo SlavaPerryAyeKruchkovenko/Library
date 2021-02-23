@@ -1,0 +1,17 @@
+C:\Users\Slava\Desktop\visual\ClassLibrary\FunctionBulber\FunctionBulber\bin\Debug\netcoreapp3.1\FunctionBulber.Logic.deps.json
+C:\Users\Slava\Desktop\visual\ClassLibrary\FunctionBulber\FunctionBulber\bin\Debug\netcoreapp3.1\FunctionBulber.Logic.dll
+C:\Users\Slava\Desktop\visual\ClassLibrary\FunctionBulber\FunctionBulber\bin\Debug\netcoreapp3.1\FunctionBulber.Logic.pdb
+C:\Users\Slava\Desktop\visual\ClassLibrary\FunctionBulber\FunctionBulber\obj\Debug\netcoreapp3.1\FunctionBulber.Logic.AssemblyInfoInputs.cache
+C:\Users\Slava\Desktop\visual\ClassLibrary\FunctionBulber\FunctionBulber\obj\Debug\netcoreapp3.1\FunctionBulber.Logic.AssemblyInfo.cs
+C:\Users\Slava\Desktop\visual\ClassLibrary\FunctionBulber\FunctionBulber\obj\Debug\netcoreapp3.1\FunctionBulber.Logic.csproj.CoreCompileInputs.cache
+C:\Users\Slava\Desktop\visual\ClassLibrary\FunctionBulber\FunctionBulber\obj\Debug\netcoreapp3.1\FunctionBulber.Logic.dll
+C:\Users\Slava\Desktop\visual\ClassLibrary\FunctionBulber\FunctionBulber\obj\Debug\netcoreapp3.1\FunctionBulber.Logic.pdb
+C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBulber\bin\Debug\netcoreapp3.1\FunctionBulber.Logic.deps.json
+C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBulber\bin\Debug\netcoreapp3.1\FunctionBulber.Logic.dll
+C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBulber\bin\Debug\netcoreapp3.1\FunctionBulber.Logic.pdb
+C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBulber\obj\Debug\netcoreapp3.1\FunctionBulber.Logic.csprojAssemblyReference.cache
+C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBulber\obj\Debug\netcoreapp3.1\FunctionBulber.Logic.AssemblyInfoInputs.cache
+C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBulber\obj\Debug\netcoreapp3.1\FunctionBulber.Logic.AssemblyInfo.cs
+C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBulber\obj\Debug\netcoreapp3.1\FunctionBulber.Logic.csproj.CoreCompileInputs.cache
+C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBulber\obj\Debug\netcoreapp3.1\FunctionBulber.Logic.dll
+C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBulber\obj\Debug\netcoreapp3.1\FunctionBulber.Logic.pdb
