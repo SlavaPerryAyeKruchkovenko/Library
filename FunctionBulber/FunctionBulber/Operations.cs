@@ -9,6 +9,7 @@ namespace FunctionBulber.Logic
 		public abstract short CountNum { get; }
 		public abstract int Priority { get; }
 		public abstract double Count(double[] nums);
+		public abstract bool Equals(Operations opp);
 	}
 	public class Add : Operations
 	{
@@ -16,6 +17,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 2;
 		public override int Priority => 1;
 		public override double Count(double[] nums) => nums[1] + nums[0];
+		public override bool Equals(Operations opp)
+		{
+			return opp is Add;
+		}
 
 	}
 	public class Sub : Operations
@@ -24,6 +29,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 2;
 		public override int Priority => 1;
 		public override double Count(double[] nums) => nums[1] - nums[0];
+		public override bool Equals(Operations opp)
+		{
+			return opp is Sub;
+		}
 	}
 	public class Mul : Operations
 	{
@@ -31,6 +40,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 2;
 		public override int Priority => 2;
 		public override double Count(double[] nums) => nums[1] * nums[0];
+		public override bool Equals(Operations opp)
+		{
+			return opp is Mul;
+		}
 	}
 	public class Div : Operations
 	{
@@ -38,6 +51,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 2;
 		public override int Priority => 2;
 		public override double Count(double[] nums) => nums[1] / nums[0];
+		public override bool Equals(Operations opp)
+		{
+			return opp is Div;
+		}
 	}
 	public class Mod : Operations
 	{
@@ -45,6 +62,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 2;
 		public override int Priority => 2;
 		public override double Count(double[] nums) => nums[1] % nums[0];
+		public override bool Equals(Operations opp)
+		{
+			return opp is Mod;
+		}
 	}
 	public class Fucktorial : Operations
 	{
@@ -60,6 +81,10 @@ namespace FunctionBulber.Logic
 			}
 			return fucktorial;
 		}
+		public override bool Equals(Operations opp)
+		{
+			return opp is Fucktorial;
+		}
 	}
 	public class Degree : Operations
 	{
@@ -67,6 +92,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 2;
 		public override int Priority => 3;
 		public override double Count(double[] nums) => Math.Pow(nums[1], nums[0]);
+		public override bool Equals(Operations opp)
+		{
+			return opp is Degree;
+		}
 	}
 	public class Sin : Operations
 	{
@@ -74,6 +103,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 1;
 		public override int Priority => 3;
 		public override double Count(double[] nums) => Math.Sin(nums[0] * Math.PI / 180);
+		public override bool Equals(Operations opp)
+		{
+			return opp is Sin;
+		}
 	}
 	public class Cos : Operations
 	{
@@ -81,6 +114,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 1;
 		public override int Priority => 3;
 		public override double Count(double[] nums) => Math.Cos(nums[0] * Math.PI / 180);
+		public override bool Equals(Operations opp)
+		{
+			return opp is Cos;
+		}
 	}
 	public class Tan : Operations
 	{
@@ -88,6 +125,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 1;
 		public override int Priority => 3;
 		public override double Count(double[] nums) => Math.Tan(nums[0] * Math.PI / 180);
+		public override bool Equals(Operations opp)
+		{
+			return opp is Tan;
+		}
 	}
 	public class Ctg : Operations
 	{
@@ -95,6 +136,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 1;
 		public override int Priority => 3;
 		public override double Count(double[] nums) => 1 / Math.Tan(nums[0] * Math.PI / 180);
+		public override bool Equals(Operations opp)
+		{
+			return opp is Ctg;
+		}
 	}
 	public class Ln : Operations
 	{
@@ -102,6 +147,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 1;
 		public override int Priority => 3;
 		public override double Count(double[] nums) => Math.Log(nums[0]);
+		public override bool Equals(Operations opp)
+		{
+			return opp is Ln;
+		}
 	}
 	public class Log : Operations
 	{
@@ -109,6 +158,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 2;
 		public override int Priority => 3;
 		public override double Count(double[] nums) => Math.Log(nums[0], nums[1]);
+		public override bool Equals(Operations opp)
+		{
+			return opp is Log;
+		}
 	}
 	public class Sqrt : Operations
 	{
@@ -116,6 +169,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 1;
 		public override int Priority => 3;
 		public override double Count(double[] nums) => Math.Sqrt(nums[0]);
+		public override bool Equals(Operations opp)
+		{
+			return opp is Sqrt;
+		}
 	}
 	public class Postfix : Operations
 	{
@@ -123,6 +180,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 1;
 		public override int Priority => 2;
 		public override double Count(double[] nums) => nums[0] * -1;
+		public override bool Equals(Operations opp)
+		{
+			return opp is Postfix;
+		}
 	}
 	public class Other : Operations
 	{
@@ -130,6 +191,10 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 0;
 		public override int Priority => 4;
 		public override double Count(double[] nums) => 0;
+		public override bool Equals(Operations opp)
+		{
+			return opp is Other;
+		}
 	}
 	public class Other2 : Operations
 	{
@@ -137,5 +202,9 @@ namespace FunctionBulber.Logic
 		public override short CountNum => 0;
 		public override int Priority => 0;
 		public override double Count(double[] nums) => 0;
+		public override bool Equals(Operations opp)
+		{
+			return opp is Other2;
+		}
 	}
 }

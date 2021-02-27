@@ -4,53 +4,59 @@ namespace FunctionBulber.Logic
 {
 	public class Calculate
 	{
-		private Error error { get; }
 		private Stack<Element> nums = new Stack<Element>();
 		private Operations operation { get; set; }
+		private Error error { get; set; }
 		public Calculate(IDrawer drawer)
 		{
-			error = new Error(drawer);
-
+			this.error = new Error(drawer, false, null);
 		}
 		public double CountRPN(double[] varabilesMeans, Stack<Element> rpn)
 		{
 			int size = rpn.Count;
+			string errorType;
 			for (int i = 0; i < size; i++)
 			{
 				Element el = new Element(null, null, 0);
+
 				if (rpn.Peek().Opperation == null && rpn.Peek().Variable == null)
 				{
 					el.Num = rpn.Pop().Num;
-					nums.Push(el);
+					this.nums.Push(el);
 				}
 				else if (rpn.Peek().Opperation == null)
-					nums.Push(ReplaceNum(rpn.Pop(), varabilesMeans));
+				{
+					this.nums.Push(ReplaceNum(rpn.Pop(), varabilesMeans));
+				}		
 				else
 				{
-					operation = rpn.Pop().Opperation;
+					this.operation = rpn.Pop().Opperation;
 					
-					if (operation.CountNum == 2)
+					if (this.operation.CountNum == 2)
 					{
-						error.HaveError = error.CheckOnCorrectFormula(nums, 2);
-						if (error.HaveError)
+						this.error = new Error(this.error._draw, Error.CheckOnCorrectFormula
+							(this.nums, 2, out errorType),errorType);
+						if (this.error.HaveError)
 							break;
-						el.Num = operation.Count(new double[] { nums.Pop().Num, nums.Pop().Num });					
+						el.Num = this.operation.Count(new double[] { nums.Pop().Num, nums.Pop().Num });					
 					}
 						
-					else if (operation.CountNum == 1)
+					else if (this.operation.CountNum == 1)
 					{
-						error.HaveError = error.CheckOnCorrectFormula(nums, 1);
-						if (error.HaveError)
+						this.error = new Error(this.error._draw, Error.CheckOnCorrectFormula
+							(this.nums, 1, out errorType), errorType);
+						if (this.error.HaveError)
 							break;
-						el.Num = operation.Count(new double[] { nums.Pop().Num });					
+						el.Num = this.operation.Count(new double[] { nums.Pop().Num });					
 					}
-					nums.Push(el);
+					this.nums.Push(el);
 				}			
 			}
-			error.HaveError = error.CheckOnCorrectAnswer(nums);
+			this.error = new Error(this.error._draw, Error.CheckOnCorrectAnswer
+				(this.nums,out errorType),errorType);
 
-			if (!error.HaveError)
-				return nums.Pop().Num;
+			if (!this.error.HaveError)
+				return this.nums.Pop().Num;
 			else
 				return default;
 		}

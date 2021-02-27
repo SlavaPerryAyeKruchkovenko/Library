@@ -4,105 +4,73 @@ namespace FunctionBulber.Logic
 {
 	public interface IDrawer
 	{
-		void Draw(string input);
+		abstract void Draw(string input);
 	}
 	public class Error
 	{
-		private bool haveRrror;
-		private string errorType;
-		private IDrawer _draw { get; set; }
-		public Error(IDrawer draw)
+		private bool _haveRrror;
+		private string _errorType;
+		public IDrawer _draw { get; }
+		public Error(IDrawer drawer, bool haveError,string errorType)
 		{
-			_draw = draw;
+			this._draw = drawer;
+			this._haveRrror = haveError;
+			this._errorType = errorType;
 		}
 		public bool HaveError
 		{
 			get
 			{
-				if (haveRrror)
+				if (this._haveRrror)
 				{
-					_draw.Draw(errorType);
+					_draw.Draw(this._errorType);
 				}
-				return haveRrror;
-			}
-			set
-			{
-				haveRrror = value;
+				return this._haveRrror;
 			}
 		}
 		public string ErrorType
 		{
 			get
 			{
-				if (haveRrror)
-					return errorType;
+				if (this._haveRrror)
+					return this._errorType;
 				else
 					return "NONE";
 			}
-			set
-			{
-				errorType = value;
-			}
 		}
-		public bool CheckOnPriority(string example)
+		public static bool CheckOnPriority(string example,out string error)
 		{
-			ErrorType = "Неправельное количество скобочек";
+			error = "Неправельное количество скобочек";
 			if (example.Contains("("))
 			{
 				if (example.CountOpperation(example.IndexOf("(")) == -1)
+				{
 					return true;
+				}	
 				else
+				{
 					return false;
+				}
+					
 			}
 			else return default;
 		}
-		public bool CheckOnCorrectAnswer(Stack<Element> el)
+		public static bool CheckOnCorrectAnswer(Stack<Element> el,out string error)
 		{
-			errorType = "Неправельное количество операций";
+			error = "Неправельное количество операций";
 			if (el.Count != 1)
 				return true;
 			else
 				return false;
 		}
-		public bool CheckOnCorrectFormula(Stack<Element> el,int num)
+		public static bool CheckOnCorrectFormula(Stack<Element> el,int num,out string error)
 		{
-			errorType = "Неправельно сбалансировання формула";
+			error = "Неправельно сбалансировання формула";
 			if (el.Count < num)
 				return true;
 			else
 				return false;
 		}
 	}
-	public static class StringExtension
-	{
-		public static string ReplaceSeparator(this string example)
-		{
-			while (example.Contains(";"))
-			{
-				int index = example.IndexOf("log") + 3;
-				example = example.Substring(0, index) + "(" + example.Substring(index);
-				index = example.CountOpperation(example.IndexOf("(", index) + 1);
-				example = example.Substring(0, index) + ")" + example.Substring(index);
-				index = example.IndexOf(";");
-				example = example.Substring(0, index) + ")(" + example.Substring(index + 1);
-			}
-			return example;
-		}
-		public static int CountOpperation(this string example, int start)
-		{
-			int open = 0, close = 0;
-			for (int i = start; i < example.Length; i++)
-			{
-				if (example[i] == '(')
-					open++;
-				else if (example[i] == ')')
-					close++;
-				if (open == close)
-				{
-					return i;
-				}
-			}
-			return -1;
-		}
-	}
+	
 }

@@ -10,46 +10,48 @@ namespace FunctionBulber.Logic
 	{
 		public Operations Opperation { get; set; }
 		public string Variable { get; set; }
-		public double Num { get; set; }
+		public double Num { get; set; }	
 		public Element(Operations opperation, string var, double num)
 		{
 			Opperation = opperation;
 			Variable = var;
 			Num = num;
 		}
-	}
-	public static class StackExtension
-	{
-		public static Stack<Element> Reverse(this Stack<Element> stack)
+		public bool Equals(Element element2)
 		{
-			Element[] lastOpperation = stack.ToArray();
-
-			stack.Clear();
-			foreach (var item in lastOpperation)
+			if (this.Num == element2.Num && this.Variable == element2.Variable)
 			{
-				stack.Push(item);
+				if (this.Opperation == null)
+				{
+					return (element2.Opperation == null);
+				}
+				else
+				{
+					return this.Opperation.Equals(element2.Opperation);
+				}		
 			}
-			return stack;
+			else return false;
 		}
 	}
+	
 	public class ReversePolandLogic
 	{
 		private Stack<Element> reversePolandNotation { get; set; }
 		private Stack<Element> signs { get; set; }
 		private IEnumerable<Type> operations { get; set; }
 		private string example { get; }
+		private Error error { get; set; }
 
-		private Error error { get; }
 		public ReversePolandLogic(string input, IDrawer draw)
 		{
 			example = input.Replace(" ", "").Trim().ToLower();
 			example = example.Replace(":", ";");
 
-			error = new Error(draw);
-			error.HaveError = error.CheckOnPriority(example);
+			error = new Error(draw, Error.CheckOnPriority
+				(example, out string errorType), errorType);
 
-			reversePolandNotation = new Stack<Element>();
-			signs = new Stack<Element>();
+			this.reversePolandNotation = new Stack<Element>();
+			this.signs = new Stack<Element>();
 
 			if (!error.HaveError)
 				example = example.ReplaceSeparator();
@@ -60,10 +62,10 @@ namespace FunctionBulber.Logic
 		}
 
 
-		private static List<string> priority = new List<string>
+		private static readonly List<string> priority = new List<string>
 		{ "+", "-", "*", "/", "%", "^", "!","sin", "cos", "tg", "ctg","sqrt",
 			"ln","log" , "(", ")" };
-		private static List<string> variables = new List<string>
+		private static readonly List<string> variables = new List<string>
 		{ "x","y","z"};
 		public Stack<Element> StacKInstalization()
 		{
@@ -98,14 +100,16 @@ namespace FunctionBulber.Logic
 				}
 				else
 				{
-					error.HaveError = true;
-					error.ErrorType = "Ошибка недопостимый символ";
+					this.error = new Error(error._draw, true, "Ошибка недопостимый символ");
 				}
-				if (error.HaveError)
+				if (this.error.HaveError)
+				{
 					break;
+				}
+					
 			}
-			return UnificationStack(reversePolandNotation, signs).Reverse();
 
+			return UnificationStack(reversePolandNotation, signs).Reverse();
 		}
 		private static double FoundNum(int startNum, string example, out int shift)
 		{
@@ -160,21 +164,27 @@ namespace FunctionBulber.Logic
 					signs.Push(opperation);
 				else
 				{
-					error.HaveError = true;
-					error.ErrorType = "Выражение не может начинаться с закрытой скобочки";
+					this.error = new Error
+						(this.error._draw, true, "Выражение не может начинаться с закрытой скобочки");
 				}
 			}
 			else if (opperation.Opperation.Name == "(" && index == example.Length - 1)
 			{
-				error.HaveError = true;
-				error.ErrorType = "Выражение не может заканчиваться открывающей скобочкой";
+				this.error = new Error
+						(this.error._draw, true, "Выражение не может заканчиваться открывающей скобочкой");
 			}
 			else if (opperation.Opperation.Name == ")")
+			{
 				MixingOpperation(opperation, 0, true);
+			}				
 			else if (opperation.Opperation.Name == "(")
+			{
 				signs.Push(opperation);
+			}	
 			else
+			{
 				MixingOpperation(opperation, opperation.Opperation.Priority, false);
+			}	
 		}
 		private void MixingOpperation(Element opperation, int index, bool needDelete)
 		{
@@ -192,11 +202,30 @@ namespace FunctionBulber.Logic
 					reversePolandNotation.Push(signs.Pop());
 				}
 				else
+				{
 					break;
+				}
+					
 			}
 			if (!needDelete)
+			{
 				signs.Push(opperation);
-
+			}	
+		}
+		public new string ToString()
+		{
+			string result=null;
+			foreach (var item in this.reversePolandNotation)
+			{
+				if (item.Opperation == null && item.Variable == null)
+					result+=item.Num;
+				else if (item.Variable == null)
+					result += item.Opperation.Name;
+				else
+					result += item.Variable;
+				result += " ";
+			}
+			return result.Trim();
 		}
 		private static Stack<Element> UnificationStack(Stack<Element> elements, Stack<Element> sign)
 		{
@@ -210,6 +239,24 @@ namespace FunctionBulber.Logic
 			}
 			return elements;
 		}
-
+		public override bool Equals(object obj)
+		{
+			Stack<Element> exStack = (Stack<Element>)obj;
+			if (this.reversePolandNotation.Count == exStack.Count)
+			{
+				foreach (var item in this.reversePolandNotation)
+				{
+					if (!item.Equals(exStack.Pop()))
+						return false;
+				}
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+				
+		}
 	}
+
 }
