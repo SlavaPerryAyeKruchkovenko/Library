@@ -14,9 +14,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Slava\\Desktop\\visual\\ClassLibrary\\Library\\MegaCheesLogic\\MegaCheesLogic\\MegaCheesLogic.csproj",
-      "projectName": "MegaCheesLogic",
-      "projectPath": "C:\\Users\\Slava\\Desktop\\visual\\ClassLibrary\\Library\\MegaCheesLogic\\MegaCheesLogic\\MegaCheesLogic.csproj",
+      "projectUniqueName": "C:\\Users\\Slava\\Desktop\\visual\\ClassLibrary\\Library\\MegaCheesLogic\\MegaCheesLogic\\MegaChessLogic.csproj",
+      "projectName": "MegaChessLogic",
+      "projectPath": "C:\\Users\\Slava\\Desktop\\visual\\ClassLibrary\\Library\\MegaCheesLogic\\MegaCheesLogic\\MegaChessLogic.csproj",
       "packagesPath": "C:\\Users\\Slava\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\Slava\\Desktop\\visual\\ClassLibrary\\Library\\MegaCheesLogic\\MegaCheesLogic\\obj\\",
       "projectStyle": "PackageReference",

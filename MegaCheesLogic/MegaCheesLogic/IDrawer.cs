@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace MegaCheesLogic
+namespace MegaChessLogic
 {
-	interface IDrawer
+	public interface IDrawer
 	{
 		void PrintBoard(Dictionary<char, Dictionary<char, Figura>> board);
 		void Clear();

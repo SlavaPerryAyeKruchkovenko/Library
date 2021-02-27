@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MegaCheesLogic
+﻿namespace MegaChessLogic
 {
-	class ChessGameLogic
+	public class ChessGameLogic
 	{
 		private int startX { get; }
 		private int startY { get; }
@@ -20,7 +16,7 @@ namespace MegaCheesLogic
 
 		public void ChessLogic(bool isNewGame)
 		{
-			drawer.CursorVisible(false);
+			drawer.CursorVisible(true);
 			if (isNewGame)
 			{
 				NewGamePlay();

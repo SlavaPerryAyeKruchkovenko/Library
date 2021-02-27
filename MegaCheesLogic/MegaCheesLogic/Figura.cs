@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace MegaCheesLogic
+namespace MegaChessLogic
 {
-	abstract class Figura
+	public abstract class Figura
 	{
 		public abstract bool IsMyFigura { get; protected set; }
 		public Figura(bool figura)

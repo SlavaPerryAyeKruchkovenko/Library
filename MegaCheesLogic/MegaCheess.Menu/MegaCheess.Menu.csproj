@@ -23,8 +23,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="MegaCheesLogic">
-      <HintPath>..\MegaCheesLogic\bin\Debug\netcoreapp3.1\MegaCheesLogic.dll</HintPath>
+    <Reference Include="MegaChessLogic">
+      <HintPath>..\MegaCheesLogic\bin\Debug\netcoreapp3.1\MegaChessLogic.dll</HintPath>
     </Reference>
   </ItemGroup>
 

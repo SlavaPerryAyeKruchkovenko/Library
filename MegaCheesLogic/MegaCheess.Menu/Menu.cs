@@ -2,7 +2,7 @@
 
 namespace MegaCheess.Menu
 {
-
+	using MegaChessLogic;
 	class Menu
 	{
 		public static void MoveArrow()
