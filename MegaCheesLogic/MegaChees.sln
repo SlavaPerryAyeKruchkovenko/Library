@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MegaCheess.Menu", "MegaChee
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChessAvalone", "ChessAvalone\ChessAvalone.csproj", "{7289EE07-E708-4A39-A84A-E3C3125B2BC3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Test", "Chess.Test\Chess.Test.csproj", "{BCD51157-CA5E-40E4-A35F-556AEE8CBC91}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{7289EE07-E708-4A39-A84A-E3C3125B2BC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7289EE07-E708-4A39-A84A-E3C3125B2BC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7289EE07-E708-4A39-A84A-E3C3125B2BC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCD51157-CA5E-40E4-A35F-556AEE8CBC91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCD51157-CA5E-40E4-A35F-556AEE8CBC91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCD51157-CA5E-40E4-A35F-556AEE8CBC91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCD51157-CA5E-40E4-A35F-556AEE8CBC91}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

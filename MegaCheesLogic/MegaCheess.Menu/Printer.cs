@@ -36,10 +36,10 @@ namespace MegaCheess.Menu
 		{
 			int step = 2;
 			PrintOpenBar();
-			for (char i = '1'; i <= '8'; i++)
+			for (char i = '8'; i >= '1'; i--)
 			{
 				Console.SetCursorPosition(MenuDataBase.CordinateX, MenuDataBase.CordinateY + step);
-				Console.Write(step / 2);
+				Console.Write(i);
 				for (char j = 'A'; j <= 'H'; j++)
 				{
 					ReserveColor();
@@ -49,7 +49,7 @@ namespace MegaCheess.Menu
 					if (board[i][j] != null)
 					{
 						Console.ForegroundColor = ConvertToFigura(board[i][j]);
-						Console.Write(board[i][j].ShorName);
+						Console.Write($" {board[i][j].ShorName} ");
 					}
 					else
 						Console.Write("   ");
@@ -63,23 +63,32 @@ namespace MegaCheess.Menu
 			ReserveColor();
 			PrintCloseBar();
 		}
-		public char ConvertToTKeyFormat(int x, int y, out char key)
+		public char ConvertToTKeyFormat(int x,int y,out char key)
 		{
-			x = (x - 10) / 4;
-			switch (x)
+			switch(y)
 			{
-				case 0: key = 'A'; break;
-				case 1: key = 'B'; break;
-				case 2: key = 'C'; break;
-				case 3: key = 'D'; break;
-				case 4: key = 'E'; break;
-				case 5: key = 'F'; break;
-				case 6: key = 'G'; break;
-				case 7: key = 'H'; break;
+				case 1: key = '1'; break;
+				case 2: key = '2'; break;
+				case 3: key = '3'; break;
+				case 4: key = '4'; break;
+				case 5: key = '5'; break;
+				case 6: key = '6'; break;
+				case 7: key = '7'; break;
+				case 8: key = '8'; break;
 				default: key = ' '; break;
 			}
-			return Convert.ToChar(((y - 8) / 2 + 1).ToString());
-
+			switch (x)
+			{
+				case 1: return 'A';
+				case 2: return 'B';
+				case 3: return 'C';
+				case 4: return 'D';
+				case 5: return 'E';
+				case 6: return 'F';
+				case 7: return 'G';
+				case 8: return 'H';
+				default: return ' ';
+			}
 		}
 		public int ConvertToLocationFormat(char i, char j, out int y)
 		{
@@ -107,6 +116,8 @@ namespace MegaCheess.Menu
 				else if (key.Key == ConsoleKey.RightArrow && newX + 4 < 40)
 					newX += 4;
 			}
+			newX = (newX-2)/4 - 1;
+			newY = 8-((newY-8)/2);
 		}
 		public static void PrintMenu()
 		{

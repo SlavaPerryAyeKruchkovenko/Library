@@ -10,11 +10,11 @@ namespace MegaChessLogic
 		{
 			IsMyFigura = figura;
 		}
-		public abstract string ShorName { get; }
-		public abstract bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int startX, int startY, int finishX, int finishY, char a, char b);
+		public abstract char ShorName { get; }
+		public abstract bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board,int dX,int dY, char a, char b);
 
 	}
-	class Pawn : Figura
+	public class Pawn : Figura
 	{
 		public override bool IsMyFigura { get; protected set; }
 		public Pawn(bool figura) : base(figura)
@@ -22,62 +22,105 @@ namespace MegaChessLogic
 			IsMyFigura = figura;
 		}
 		public bool isFirstStep = true;
-		public override string ShorName => " P ";
-		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int startX, int startY, int finishX, int finishY, char a, char b)
+		public override char ShorName => 'P';
+		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int dX,int dY, char a, char b)
 		{
 			bool canDoStep = true;
-			Pawn pawn = (Pawn)board[a][b];
-			if (pawn.isFirstStep && finishX == startX && finishY - startY >= -2 && finishY - startY < 0)
+			if (dX==0)
 			{
-				for (int j = 1; j <= Math.Abs(finishY - startY); j++)
+				if (this.isFirstStep && CheckCorrectMoveForDifferent(dY, 2))
 				{
-					if (board[(char)(a - j)][b] != null)
-						canDoStep = false;
-				}
-				if (canDoStep)
-				{
-					pawn.isFirstStep = false;
-					board[a][b] = pawn;
+					for (int j = 1; j <= Math.Abs(dY); j++)
+					{
+						if (HaveEnemyOnPosition(a, b, j, 0, board, false))
+						{
+							canDoStep = false;
+						}
+					}
+					if (canDoStep)
+					{
+						this.isFirstStep = false;
+					}
 					return canDoStep;
 				}
+				else if (CheckCorrectMoveForDifferent(dY, 1))
+				{
+					return HaveEnemyOnPosition(a, b, 1, 0, board, true);
+				}
 			}
-			else if (finishX == startX && finishY - startY == -1 && board[(char)(a - 1)][b] == null)
-				return true;
-			else if (finishY - startY == -1 && Math.Abs(finishX - startX) == 1)
-				return board[(char)(a - 1)][(char)(b + finishX - startX)].IsMyFigura != board[a][b].IsMyFigura;
+			else if (CheckCorrectMoveForDifferent(dY, 1) && Math.Abs(dX) == 1)
+				return CanDestroy(a, b, dX, board);
+					
 			return false;
 		}
+		private bool CheckCorrectMoveForDifferent(int dY,int distance)
+		{
+			if (Math.Abs(dY) <= distance)
+				if (this.IsMyFigura)
+					return dY > 0;
+				else
+					return dY < 0;
+			else
+				return false;
+		}
+		private bool HaveEnemyOnPosition(char a, char b, int step1,int step2,
+			Dictionary<char, Dictionary<char, Figura>> board, bool equal)
+		{
+			if (!equal)
+				if (this.IsMyFigura)
+					return board[(char)(a + step1)][(char)(b +step2)] != null;
+				else
+					return board[(char)(a - step1)][(char)(b + step2)] != null;
+			else
+				if (this.IsMyFigura)
+				return board[(char)(a + step1)][(char)(b + step2)] == null;
+			else
+				return board[(char)(a - step1)][(char)(b + step2)] == null;
+		}
+		private bool CanDestroy(char a, char b,int step,
+			Dictionary<char, Dictionary<char, Figura>> board)
+		{
+			if (HaveEnemyOnPosition(a, b, 1, step, board, false))
+				if (this.IsMyFigura)
+					return board[(char)(a + 1)][(char)(b + step)].IsMyFigura
+						!= board[a][b].IsMyFigura;
+				else
+					return board[(char)(a - 1)][(char)(b + step)].IsMyFigura
+						!= board[a][b].IsMyFigura;
+			else
+				return false;
+		}
 	}
-	class Rook : Figura
+	public class Rook : Figura
 	{
 		public override bool IsMyFigura { get; protected set; }
 		public Rook(bool figura) : base(figura)
 		{
 			IsMyFigura = figura;
 		}
-		public override string ShorName => " R ";
-		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int startX, int startY, int finishX, int finishY, char a, char b)
+		public override char ShorName => 'R';
+		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int dX, int dY, char a, char b)
 		{
-			if (startX == finishX && startY != finishY)
+			if (dX == 0 && dY != 0)
 			{
-				if (CheckObstacles(startY, finishY, board, a, b, true))
-					return board[(char)(a + finishY - startY)][b] == null || board[(char)(a + finishY - startY)][b].IsMyFigura != board[a][b].IsMyFigura;
+				if (CheckObstacles(dY, board, a, b, true))
+					return CanDoStep(board, a, b, dY, 0);
 			}
-			else if (startX != finishX && startY == finishY)
+			else if (dX != 0 && dY == 0) 
 			{
-				if (CheckObstacles(startX, finishX, board, a, b, false))
-					return board[a][(char)(b + finishX - startX)] == null || board[a][(char)(b + finishX - startX)].IsMyFigura != board[a][b].IsMyFigura;
+				if (CheckObstacles(dX, board, a, b, false))
+					return CanDoStep(board, a, b, 0, dX);
 			}
 			return false;
 		}
-		private static bool CheckObstacles(int startCoordinate, int finishCoordinate, Dictionary<char, Dictionary<char, Figura>> board, char a, char b, bool moveOnY)
+		private static bool CheckObstacles(int dCoordinate, Dictionary<char, Dictionary<char, Figura>> board, char a, char b, bool moveOnY)
 		{
 			bool canDoStep = true;
-			for (int i = 1; i < Math.Abs(finishCoordinate - startCoordinate); i++)
+			for (int i = 1; i < Math.Abs(dCoordinate); i++)
 			{
 				if (moveOnY)
 				{
-					if (finishCoordinate > startCoordinate)
+					if (dCoordinate>0)
 					{
 						if (board[(char)(a + i)][b] != null)
 							canDoStep = false;
@@ -88,7 +131,7 @@ namespace MegaChessLogic
 				}
 				else
 				{
-					if (finishCoordinate > startCoordinate)
+					if (dCoordinate>0)
 					{
 						if (board[a][(char)(b + i)] != null)
 							canDoStep = false;
@@ -100,111 +143,116 @@ namespace MegaChessLogic
 			}
 			return canDoStep;
 		}
+		private bool CanDoStep(Dictionary<char, Dictionary<char, Figura>> board,char a, char b, int step1,int step2)
+		{
+			return board[(char)(a + step1)][(char)(b + step2)] == null 
+				|| board[(char)(a + step1)][(char)(b + step2)].IsMyFigura 
+				!= board[a][b].IsMyFigura;
+		}
 	}
-	class Bishop : Figura
+	public class Bishop : Figura
 	{
 		public override bool IsMyFigura { get; protected set; }
 		public Bishop(bool figura) : base(figura)
 		{
 			IsMyFigura = figura;
 		}
-		public override string ShorName => " B ";
-		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int startX, int startY, int finishX, int finishY, char a, char b)
+		public override char ShorName => 'B';
+		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int dX, int dY, char a, char b)
 		{
-			if (Math.Abs(finishX - startX) == Math.Abs(finishY - startY))
-				if (CheckObstacles(board, a, b, finishX - startX, finishY - startY))
-					return board[(char)(a + finishY - startY)][(char)(b + finishX - startX)] == null || board[(char)(a + finishY - startY)][(char)(b + finishX - startX)].IsMyFigura != board[a][b].IsMyFigura;
+			if (Math.Abs(dX) == Math.Abs(dY))
+				if (CheckObstacles(board, a, b, dX, dY))
+					return board[(char)(a + dY)][(char)(b + dX)] == null || board[(char)(a + dY)][(char)(b + dX)].IsMyFigura != board[a][b].IsMyFigura;
 			return false;
 		}
-		private static bool CheckObstacles(Dictionary<char, Dictionary<char, Figura>> board, char a, char b, int lengthX, int lengthY)
+		private static bool CheckObstacles(Dictionary<char, Dictionary<char, Figura>> board,
+			char a, char b, int lengthX, int lengthY)
 		{
 			bool canDoStep = true;
 			for (int i = 1; i < Math.Abs(lengthX); i++)
 			{
-				if (lengthX > 0 && lengthY > 0)
-				{
+				if (lengthX > 0 && lengthY > 0)			
 					if (board[(char)(a + i)][(char)(b + i)] != null)
-						canDoStep = default;
-				}
-
+						canDoStep = default;		
+				
 				else if (lengthX > 0 && lengthY < 0)
-				{
 					if (board[(char)(a - i)][(char)(b + i)] != null)
 						canDoStep = default;
-				}
+
 				else if (lengthX < 0 && lengthY > 0)
-				{
 					if (board[(char)(a + i)][(char)(b - i)] != null)
 						canDoStep = default;
-				}
+
 				else if (lengthX < 0 && lengthY < 0)
-				{
 					if (board[(char)(a - i)][(char)(b - i)] != null)
 						canDoStep = default;
-				}
 			}
 
 			return canDoStep;
 		}
 
 	}
-	class King : Figura
+	public class King : Figura
 	{
 		public override bool IsMyFigura { get; protected set; }
 		public King(bool figura) : base(figura)
 		{
 			IsMyFigura = figura;
 		}
-		public override string ShorName => " K ";
-		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int startX, int startY, int finishX, int finishY, char a, char b)
+		public override char ShorName => 'K';
+		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int dX, int dY, char a, char b)
 		{
-			if (Math.Abs(finishY - startY) <= 1 && Math.Abs(finishX - startX) <= 1)
-				return board[(char)(a + finishY - startY)][(char)(b + finishX - startX)] == null ||
-					board[(char)(a + finishY - startY)][(char)(b + finishX - startX)].IsMyFigura !=
+			if (Math.Abs(dY) <= 1 && Math.Abs(dX) <= 1)
+				return board[(char)(a + dY)][(char)(b + dX)] == null ||
+					board[(char)(a + dY)][(char)(b + dX)].IsMyFigura !=
 					board[a][b].IsMyFigura;
 
 			return false;
 		}
 
 	}
-	class Queen : Figura
+	public class Queen : Figura
 	{
 		public override bool IsMyFigura { get; protected set; }
 		public Queen(bool figura) : base(figura)
 		{
 			IsMyFigura = figura;
 		}
-		public override string ShorName => " Q ";
-		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int startX, int startY, int finishX, int finishY, char a, char b)
+		public override char ShorName => 'Q';
+		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int dX, int dY, char a, char b)
 		{
-			if (startX == finishX || startY == finishY)
+			if (dX == 0 || dY == 0) 
 			{
 				Rook queen = new Rook(true);
-				return queen.IsCorrectMove(board, startX, startY, finishX, finishY, a, b);
+				return queen.IsCorrectMove(board, dX, dY, a, b);
 			}
 			else
 			{
 				Bishop queen = new Bishop(true);
-				return queen.IsCorrectMove(board, startX, startY, finishX, finishY, a, b);
+				return queen.IsCorrectMove(board, dX, dY, a, b);
 			}
 
 		}
 
 	}
-	class Knight : Figura
+	public class Knight : Figura
 	{
 		public override bool IsMyFigura { get; protected set; }
 		public Knight(bool figura) : base(figura)
 		{
 			IsMyFigura = figura;
 		}
-		public override string ShorName => " H ";
-		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int startX, int startY, int finishX, int finishY, char a, char b)
+		public override char ShorName => 'H';
+		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int dX, int dY, char a, char b)
 		{
-			int dx = Math.Abs(finishX - startX);
-			int dy = Math.Abs(finishY - startY);
+			int dx = Math.Abs(dX);
+			int dy = Math.Abs(dY);
 			if (dx + dy == 3 && dx * dy == 2)
-				return board[(char)(a + finishY - startY)][(char)(b + finishX - startX)] == null || board[(char)(a + finishY - startY)][(char)(b + finishX - startX)].IsMyFigura != board[a][b].IsMyFigura;
+				return board[(char)(a + dY)]
+					[(char)(b + dX)] == null ||
+					board[(char)(a + dY)]
+					[(char)(b + dX)].IsMyFigura
+					!= board[a][b].IsMyFigura;
 			return false;
 		}
 	}

@@ -8,7 +8,6 @@ namespace MegaCheess.Menu
 		{
 			Console.Clear();
 			Console.WriteLine("Ностройки");
-
 		}
 	}
 }

@@ -1,4 +1,6 @@
-﻿namespace MegaChessLogic
+﻿using System;
+
+namespace MegaChessLogic
 {
 	public class ChessGameLogic
 	{
@@ -10,8 +12,8 @@
 		{
 			drawer = _drawer;
 			board = new Board();
-			startX = 18;
-			startY = 20;
+			startX = _startX;
+			startY = _startY;
 		}
 
 		public void ChessLogic(bool isNewGame)
@@ -22,28 +24,29 @@
 				NewGamePlay();
 			}
 			else
+			{
 				LoadGamePlay();
+			}			
 		}
 		private void NewGamePlay()
 		{
 			while (true)
 			{
 				drawer.PrintBoard(board.board);
-				drawer.MoveCursor(startX, startY, board.board, out int x, out int y);
-				SearchFigure(ref x, ref y, out char a, out char b);
-				drawer.MoveCursor(x, y, board.board, out int newX, out int newY);
-				if (board.board[a][b].IsCorrectMove(board.board, x / 4, y / 2, newX / 4, newY / 2, a, b)
+				drawer.MoveCursor(this.startX, this.startY, board.board, out int x, out int y);
+				SearchFigure(ref x,ref y, out char a, out char b);
+				drawer.MoveCursor(this.startX, this.startY, board.board, out int newX, out int newY);
+				if (this.board.board[a][b].IsCorrectMove(board.board, newX - x, newY - y, a, b)
 					/*&& !HaveUnrealStep(a, b)*/)
 				{
-					MakeStep(a, b, (newX - x) / 4, (newY - y) / 2);
+					MakeStep(a, b, newX - x, newY - y);
 				}
 			}
 		}
-		private void SearchFigure(ref int x, ref int y, out char a, out char b)
+		private void SearchFigure(ref int x,ref int y, out char a, out char b)
 		{
-
-			a = drawer.ConvertToTKeyFormat(x, y, out b);
-			if (board.board[a][b] != null && board.board[a][b].IsMyFigura)
+			b = drawer.ConvertToTKeyFormat(x,y,out a);
+			if (this.board.board[a][b] != null && this.board.board[a][b].IsMyFigura)
 				return;
 			else
 				NewGamePlay();
