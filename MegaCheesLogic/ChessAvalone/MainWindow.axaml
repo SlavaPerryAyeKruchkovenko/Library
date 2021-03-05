@@ -5,7 +5,7 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="ChessAvalone.MainWindow"
         Title="ChessAvalone"
-        WindowState="Minimized"
+        WindowState="Maximized"
         WindowStartupLocation="CenterScreen"
         Icon="/icon/_chess.ico">
   
@@ -41,7 +41,7 @@
                       VerticalContentAlignment="Center"
                       BorderThickness="0">
           <ToggleButton.Background>
-            <ImageBrush Stretch="None" Source="\icon\bars.png"/>
+            <ImageBrush  Source="\icon\bars.png"/>
           </ToggleButton.Background>
           
         </ToggleButton>

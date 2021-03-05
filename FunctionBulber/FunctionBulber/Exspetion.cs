@@ -30,11 +30,11 @@ namespace FunctionBulber.Logic
 			while (example.Contains(";"))
 			{
 				int index = example.IndexOf("log") + 3;
-				example = example.Substring(0, index) + "(" + example.Substring(index);
+				example = $"{example.Substring(0, index)} ( {example[index..]}";
 				index = example.CountOpperation(example.IndexOf("(", index) + 1);
-				example = example.Substring(0, index) + ")" + example.Substring(index);
+				example = $"{example.Substring(0, index)} ) {example[index..]}";
 				index = example.IndexOf(";");
-				example = example.Substring(0, index) + ")(" + example.Substring(index + 1);
+				example = $"{example.Substring(0, index)} )( {example[(index + 1)..]}";
 			}
 			return example;
 		}

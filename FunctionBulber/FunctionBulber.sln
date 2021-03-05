@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionBulber.Logic", "Fun
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionBuilber.Console", "FunctionBuilber.Console\FunctionBuilber.Console.csproj", "{307B647C-4232-4852-BE2E-104564AB0809}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionBilber.Test", "FunctionBilber.Test\FunctionBilber.Test.csproj", "{5B90293E-4478-41BC-B441-C604DA8275B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FunctionBilber.Test", "FunctionBilber.Test\FunctionBilber.Test.csproj", "{5B90293E-4478-41BC-B441-C604DA8275B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FunctionBilder.Dekstop", "FunctionBilder.Dekstop\FunctionBilder.Dekstop.csproj", "{6D390935-0CF5-4BF6-B86C-D0242394E75D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{5B90293E-4478-41BC-B441-C604DA8275B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B90293E-4478-41BC-B441-C604DA8275B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B90293E-4478-41BC-B441-C604DA8275B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D390935-0CF5-4BF6-B86C-D0242394E75D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D390935-0CF5-4BF6-B86C-D0242394E75D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D390935-0CF5-4BF6-B86C-D0242394E75D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D390935-0CF5-4BF6-B86C-D0242394E75D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
