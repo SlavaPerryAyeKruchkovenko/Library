@@ -1,7 +1,4 @@
 using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
-using System;
 
 namespace FunctionBilder.Dekstop
 {
@@ -19,5 +16,5 @@ namespace FunctionBilder.Dekstop
 				.UsePlatformDetect()
 				.LogToTrace();
 		
-	}
+	}	
 }

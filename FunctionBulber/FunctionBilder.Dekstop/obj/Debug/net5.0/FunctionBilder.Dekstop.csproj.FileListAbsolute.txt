@@ -118,7 +118,6 @@ C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder
 C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder.Dekstop\bin\Debug\net5.0\runtimes\linux-x64\native\libSkiaSharp.so
 C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder.Dekstop\bin\Debug\net5.0\runtimes\unix\lib\netcoreapp2.0\System.Drawing.Common.dll
 C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder.Dekstop\bin\Debug\net5.0\runtimes\win\lib\netcoreapp2.0\System.Drawing.Common.dll
-C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder.Dekstop\obj\Debug\net5.0\FunctionBilder.Dekstop.csprojAssemblyReference.cache
 C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder.Dekstop\obj\Debug\net5.0\FunctionBilder.Dekstop.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder.Dekstop\obj\Debug\net5.0\FunctionBilder.Dekstop.AssemblyInfoInputs.cache
 C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder.Dekstop\obj\Debug\net5.0\FunctionBilder.Dekstop.AssemblyInfo.cs
@@ -128,3 +127,6 @@ C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder
 C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder.Dekstop\obj\Debug\net5.0\ref\FunctionBilder.Dekstop.dll
 C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder.Dekstop\obj\Debug\net5.0\FunctionBilder.Dekstop.pdb
 C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder.Dekstop\obj\Debug\net5.0\FunctionBilder.Dekstop.genruntimeconfig.cache
+C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder.Dekstop\bin\Debug\net5.0\FunctionBulber.Logic.dll
+C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder.Dekstop\bin\Debug\net5.0\FunctionBulber.Logic.pdb
+C:\Users\Slava\Desktop\visual\ClassLibrary\Library\FunctionBulber\FunctionBilder.Dekstop\obj\Debug\net5.0\FunctionBilder.Dekstop.csprojAssemblyReference.cache

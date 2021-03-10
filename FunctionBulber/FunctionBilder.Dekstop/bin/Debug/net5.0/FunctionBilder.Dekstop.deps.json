@@ -10,7 +10,8 @@
         "dependencies": {
           "Avalonia": "0.10.0",
           "Avalonia.Desktop": "0.10.0",
-          "Avalonia.Diagnostics": "0.10.0"
+          "Avalonia.Diagnostics": "0.10.0",
+          "FunctionBulber.Logic": "1.0.0.0"
         },
         "runtime": {
           "FunctionBilder.Dekstop.dll": {}
@@ -885,6 +886,14 @@
             "fileVersion": "0.9.0.0"
           }
         }
+      },
+      "FunctionBulber.Logic/1.0.0.0": {
+        "runtime": {
+          "FunctionBulber.Logic.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -1320,6 +1329,11 @@
       "sha512": "sha512-KcTWL9aKuob9Qo2sOTTKFePs1rKGTwZrcBvMFuGVIVR5RojX3oIFj5UBLYfSGjYgrcImC7LjQI3DdCFwUnhNXw==",
       "path": "tmds.dbus/0.9.0",
       "hashPath": "tmds.dbus.0.9.0.nupkg.sha512"
+    },
+    "FunctionBulber.Logic/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

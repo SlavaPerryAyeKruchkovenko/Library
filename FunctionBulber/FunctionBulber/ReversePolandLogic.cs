@@ -42,6 +42,7 @@ namespace FunctionBulber.Logic
 		private string example { get; }
 		private Error error { get; set; }
 
+		public Stack<Element> GetStack() => this.reversePolandNotation;
 		public ReversePolandLogic(string input, IDrawer draw)
 		{
 			example = input.Replace(" ", "").Trim().ToLower();
@@ -64,10 +65,12 @@ namespace FunctionBulber.Logic
 
 		private static readonly List<string> priority = new List<string>
 		{ "+", "-", "*", "/", "%", "^", "!","sin", "cos", "tg", "ctg","sqrt",
-			"ln","log" , "(", ")" };
+			"ln","log","asin","acos","atg","actg","(", ")" };
 		private static readonly List<string> variables = new List<string>
-		{ "x","y","z"};
-		public Stack<Element> StacKInstalization()
+		{ "x","y"};
+		private static readonly List<string> consts = new List<string>
+		{ "pi","e"};
+		public void StacKInstalization()
 		{
 			for (int i = 0; i < example.Length; i++)
 			{
@@ -80,7 +83,7 @@ namespace FunctionBulber.Logic
 				}
 				else if (FoundOpperation(example[i].ToString(), operations, out Operations opp))
 				{
-					if (FoundPostfix(example[i - 1].ToString()) && opp.Name == "-")
+					if (opp.Name == "-" &&(i==0||FoundPostfix(example[i - 1].ToString())))
 						element.Opperation = new Postfix();
 					else
 						element.Opperation = opp;
@@ -108,8 +111,7 @@ namespace FunctionBulber.Logic
 				}
 					
 			}
-
-			return UnificationStack(reversePolandNotation, signs).Reverse();
+			this.reversePolandNotation = UnificationStack(reversePolandNotation, signs).Reverse();
 		}
 		private static double FoundNum(int startNum, string example, out int shift)
 		{

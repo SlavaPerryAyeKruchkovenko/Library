@@ -12,13 +12,13 @@
 
 			Printer print = new Printer();
 			ReversePolandLogic stack = new ReversePolandLogic(input, print);
-			Calculate calculate = new Calculate(print);
-
-			Stack<Element> elements = stack.StacKInstalization();
+			stack.StacKInstalization();
+			Calculate calculate = new Calculate(print,stack.GetStack());
+			
 			Console.WriteLine(stack.ToString());
 
-			double[] nums = new double[] { 0, 1, 2 };
-			double answer = calculate.CountRPN(nums, elements);
+			double[] nums = new double[] { 0, 1};
+			double answer = calculate.CountRPN(nums);
 			Console.WriteLine(answer);
 		}
 		class Printer : IDrawer

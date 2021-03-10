@@ -14,7 +14,7 @@ namespace FunctionBilber.Test
 		{
 			ReversePolandLogic RPL = new ReversePolandLogic(example, null);
 			Calculate calculate = new Calculate(null);
-			double num =calculate.CountRPN(new double[] { 0, 1, 2 }, RPL.StacKInstalization());
+			double num =calculate.CountRPN(new double[] { 0, 1}, RPL.StacKInstalization());
 			Assert.Equal(result, num);
 		}
 		public static IEnumerable<object[]> FunctionData()

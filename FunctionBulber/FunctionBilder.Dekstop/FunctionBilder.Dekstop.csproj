@@ -15,4 +15,9 @@
     <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
     <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0" />
    </ItemGroup>
+  <ItemGroup>
+    <Reference Include="FunctionBulber.Logic">
+      <HintPath>..\FunctionBulber\bin\Debug\netcoreapp3.1\FunctionBulber.Logic.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

@@ -55,7 +55,7 @@ namespace FunctionBulber.Logic
 			}
 			else return default;
 		}
-		public static bool CheckOnCorrectAnswer(Stack<Element> el,out string error)
+		public bool CheckOnCorrectAnswer(Stack<Element> el,out string error)
 		{
 			error = "Неправельное количество операций";
 			if (el.Count != 1)
@@ -63,13 +63,18 @@ namespace FunctionBulber.Logic
 			else
 				return false;
 		}
-		public static bool CheckOnCorrectFormula(Stack<Element> el,int num,out string error)
+		public bool CheckOnCorrectFormula(Stack<Element> el,int num,out string error)
 		{
 			error = "Неправельно сбалансировання формула";
 			if (el.Count < num)
 				return true;
 			else
 				return false;
+		}
+		public bool CanConvertToDouble(string num,out string error)
+		{
+			error = "Неправельный тип данных в параметре";
+			return double.TryParse(num, out _); 
 		}
 	}
 	

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Text;
 
 namespace FunctionBulber.Logic
@@ -22,6 +23,11 @@ namespace FunctionBulber.Logic
 			stack.Push(el);
 			return stack;
 		}
+		public static Stack<T> Clone<T>(this Stack<T> stack)
+		{
+			Contract.Requires(stack != null);
+			return new Stack<T>(new Stack<T>(stack));
+		}
 	}
 	public static class StringExtension
 	{
@@ -30,11 +36,11 @@ namespace FunctionBulber.Logic
 			while (example.Contains(";"))
 			{
 				int index = example.IndexOf("log") + 3;
-				example = $"{example.Substring(0, index)} ( {example[index..]}";
-				index = example.CountOpperation(example.IndexOf("(", index) + 1);
-				example = $"{example.Substring(0, index)} ) {example[index..]}";
+				example = $"{example.Substring(0, index)}({example[index..]}";
+				index = example.CountOpperation(example.IndexOf("(", index)+1);
+				example = $"{example.Substring(0, index)}){example[index..]}";
 				index = example.IndexOf(";");
-				example = $"{example.Substring(0, index)} )( {example[(index + 1)..]}";
+				example = $"{example.Substring(0, index)})({example[(index + 1)..]}";
 			}
 			return example;
 		}
