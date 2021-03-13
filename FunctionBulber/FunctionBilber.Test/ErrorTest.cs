@@ -15,10 +15,11 @@ namespace FunctionBilber.Test
 		public void TestErrorGuard(string example)
 		{
 			ReversePolandLogic stack = new ReversePolandLogic(example, null);
-			Calculate calculate = new Calculate(null);
+			stack.StacKInstalization();
+			Calculate calculate = new Calculate(null,stack.GetStack());
 			double[] nums = new double[] { 0, 1, 2 };
 
-			Assert.Throws<NullReferenceException>(() => calculate.CountRPN(nums,stack.StacKInstalization()));
+			Assert.Throws<NullReferenceException>(() => calculate.CountRPN(nums));
 		}
 		public static IEnumerable<object[]> ErrorData()
 		{

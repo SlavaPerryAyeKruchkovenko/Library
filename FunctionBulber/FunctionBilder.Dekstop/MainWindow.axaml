@@ -28,13 +28,15 @@
             <RowDefinition Height="2*"/>
           </Grid.RowDefinitions>
           <DockPanel Grid.ColumnSpan="2" Background="#F05171">
-            <Label Content=" Input: " Grid.Column="0"
-                   Grid.ColumnSpan="1"
-                   FontWeight="Bold"
-                   FontFamily="Calibri"
-                   FontSize="16"
-                   VerticalContentAlignment="Center"/>
-            <TextBox x:Name="FunctuionBox" 
+            <Grid ColumnDefinitions="1*,9*">
+              <Label Content=" Input: " Grid.Column="0"
+                    Grid.ColumnSpan="1"
+                    FontWeight="Bold"
+                    FontFamily="Calibri"
+                    FontSize="16"
+                    VerticalContentAlignment="Center"
+                    HorizontalContentAlignment="Center"/>
+            <TextBox x:Name="FunctuionBox" Grid.Column="1"
                      HorizontalContentAlignment="Center"
                      FontSize="16"
                      Cursor="Ibeam"
@@ -42,21 +44,30 @@
                      FontFamily="Calibri">
               cos(x)
             </TextBox>
+            </Grid>          
           </DockPanel>
           <DockPanel Grid.Row="1" Background="#F05171">
-            <Label Grid.Row="1" Grid.ColumnSpan="1" Content="Result:"
-                   FontWeight="Bold"
-                   FontFamily="Calibri"
-                   FontSize="16"
-                   VerticalContentAlignment="Center"/>
-            <TextBox x:Name="OutputBox" IsReadOnly="True"
-                     Grid.Column="1"
-                     ScrollViewer.VerticalScrollBarVisibility="Visible"
-                     ScrollViewer.HorizontalScrollBarVisibility="Auto"
+            <Grid ColumnDefinitions="1*,9*">
+              <Label Grid.Column="0" Grid.ColumnSpan="1" Content="Result:"
                      FontWeight="Bold"
                      FontFamily="Calibri"
-                     FontSize="16">
-            </TextBox>
+                     FontSize="16"
+                     VerticalContentAlignment="Center"
+                     HorizontalContentAlignment="Center"/>
+            <DataGrid x:Name="OutputDataGrid" IsReadOnly="True"
+                      Grid.Column="1"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      FontWeight="Bold"
+                      FontFamily="Calibri"
+                      FontSize="16"
+                      AutoGenerateColumns="True">              
+              <DataGrid.Columns>
+                <DataGridTextColumn Header="X" Width="*" Binding="{Binding Path= point.X}"/>       
+                <DataGridTextColumn Header="Y" Width="*" Binding="{Binding Path= point.Y}"/>
+              </DataGrid.Columns> 
+            </DataGrid>
+            </Grid>        
           </DockPanel>     
           <DockPanel Grid.Row="2" Background="#F05171">
             <Grid ColumnDefinitions="*,2*,*,2*,*,4*" ShowGridLines="True">
@@ -430,8 +441,9 @@
      </Grid>
      <Grid x:Name="FunctionGrid" Background="White" Grid.Column="1">
        <DockPanel Background="#D46AD0">
-         <Canvas x:Name="FunctionCanvas">
-        
+         <Canvas x:Name="FunctionCanvas" PropertyChanged="Canvas_SizeChanged" 
+                 ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                 ScrollViewer.VerticalScrollBarVisibility="Visible">        
          </Canvas>
        </DockPanel>
       <Border BorderBrush="#B820E6" BorderThickness="4"/>

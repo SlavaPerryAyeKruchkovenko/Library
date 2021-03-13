@@ -13,8 +13,9 @@ namespace FunctionBilber.Test
 		public void TestResult(string example,double result)
 		{
 			ReversePolandLogic RPL = new ReversePolandLogic(example, null);
-			Calculate calculate = new Calculate(null);
-			double num =calculate.CountRPN(new double[] { 0, 1}, RPL.StacKInstalization());
+			RPL.StacKInstalization();
+			Calculate calculate = new Calculate(null,RPL.GetStack());
+			double num =calculate.CountRPN(new double[] { 0, 1});
 			Assert.Equal(result, num);
 		}
 		public static IEnumerable<object[]> FunctionData()
@@ -29,7 +30,8 @@ namespace FunctionBilber.Test
 		public void TestStack(string example)
 		{
 			ReversePolandLogic RPL = new ReversePolandLogic(example, null);
-			Assert.NotEmpty(RPL.StacKInstalization());
+			RPL.StacKInstalization();
+			Assert.NotEmpty(RPL.GetStack());
 		}
 		public static IEnumerable<object[]> ExampleData()
 		{

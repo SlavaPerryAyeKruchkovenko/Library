@@ -23,7 +23,8 @@ namespace FunctionBilber.Test
 		public void Stack_Test(string exseption,Stack<Element> exStack)
 		{
 			ReversePolandLogic rpl = new ReversePolandLogic(exseption, null);
-			Stack<Element> stack = rpl.StacKInstalization();
+			rpl.StacKInstalization();
+			Stack<Element> stack = rpl.GetStack();
 			Assert.True(rpl.Equals(exStack.Reverse()));
 		}
 		public static IEnumerable<object[]> StackData()
