@@ -61,10 +61,10 @@
                       FontWeight="Bold"
                       FontFamily="Calibri"
                       FontSize="16"
-                      AutoGenerateColumns="True">              
+                      AutoGenerateColumns="False">              
               <DataGrid.Columns>
-                <DataGridTextColumn Header="X" Width="*" Binding="{Binding Path= point.X}"/>       
-                <DataGridTextColumn Header="Y" Width="*" Binding="{Binding Path= point.Y}"/>
+                <DataGridTextColumn Header="X" Width="*" Binding="{Binding Path= X}"/>       
+                <DataGridTextColumn Header="Y" Width="*" Binding="{Binding Path= Y}"/>
               </DataGrid.Columns> 
             </DataGrid>
             </Grid>        
