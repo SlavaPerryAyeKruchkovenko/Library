@@ -41,7 +41,8 @@
                      FontSize="16"
                      Cursor="Ibeam"
                      FontWeight="Bold"
-                     FontFamily="Calibri">
+                     FontFamily="Calibri"
+                     Tapped="HighlightTextBox_Click">
               cos(x)
             </TextBox>
             </Grid>          
@@ -82,21 +83,23 @@
                        FontFamily="Calibri"
                        FontSize="16"
                        VerticalContentAlignment="Center"
-                       HorizontalContentAlignment="Center">
+                       HorizontalContentAlignment="Center"
+                       Tapped="HighlightTextBox_Click">
                 0
               </TextBox>
               <Label Grid.Column="2" Grid.ColumnSpan="1" Content="Finish:"
-                  FontWeight="Bold"
-                  FontFamily="Calibri"
-                  FontSize="12"
-                  VerticalContentAlignment="Center"
-                  HorizontalContentAlignment="Center"/>
+                      FontWeight="Bold"
+                      FontFamily="Calibri"
+                      FontSize="12"
+                      VerticalContentAlignment="Center"
+                      HorizontalContentAlignment="Center"/>
               <TextBox x:Name="FinishNum" Grid.Column="3"
                        FontWeight="Bold"
                        FontFamily="Calibri"
                        FontSize="16"
                        VerticalContentAlignment="Center"
-                       HorizontalContentAlignment="Center">
+                       HorizontalContentAlignment="Center"
+                       Tapped="HighlightTextBox_Click">
                 180
               </TextBox>
               <Label Grid.Column="4" Grid.ColumnSpan="1" Content="Range:"
@@ -110,7 +113,8 @@
                        FontFamily="Calibri"
                        FontSize="16"
                        VerticalContentAlignment="Center"
-                       HorizontalContentAlignment="Center">
+                       HorizontalContentAlignment="Center"
+                       Tapped="HighlightTextBox_Click">
                 1
               </TextBox>
             </Grid>
@@ -440,11 +444,11 @@
         </Grid>
      </Grid>
      <Grid x:Name="FunctionGrid" Background="White" Grid.Column="1">
-       <DockPanel Background="#D46AD0">
-         <Canvas x:Name="FunctionCanvas" PropertyChanged="Canvas_SizeChanged" 
-                 ScrollViewer.HorizontalScrollBarVisibility="Visible"
-                 ScrollViewer.VerticalScrollBarVisibility="Visible">        
-         </Canvas>
+       <DockPanel Background="#D46AD0" Tapped="Canvas_Tap">
+         <ScrollViewer >
+           <Canvas x:Name="FunctionCanvas" PropertyChanged="Canvas_SizeChanged">
+           </Canvas>
+         </ScrollViewer>       
        </DockPanel>
       <Border BorderBrush="#B820E6" BorderThickness="4"/>
      </Grid>      

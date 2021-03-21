@@ -22,10 +22,10 @@ namespace FunctionBilder.Dekstop
 		Canvas drawCanvas;
 		IDrawer drawer;
 		List<Point> points { get; }
-		public FunctionDrawer(DataGrid _outputBox,Canvas canvas,IDrawer _drawer)
+		public FunctionDrawer(DataGrid _outputBox,Canvas _canvas,IDrawer _drawer)
 		{
 			this.outputBox = _outputBox;
-			this.drawCanvas = canvas;
+			this.drawCanvas = _canvas;
 			this.drawer = _drawer;
 			this.points = new List<Point>();
 		}
@@ -54,7 +54,7 @@ namespace FunctionBilder.Dekstop
 					DrawLabel(new Point[] { canvasSize,point },new string[] 
 					{point.X.ToString(),point.Y.ToString() });
 				}
-				if(double.IsNormal(point.Y))
+				if(!double.IsNaN(point.Y))
 				{
 					Figure figure = new MyEllipse();
 					Point pointNow = new Point(canvasSize.X + point.X, canvasSize.Y - point.Y);
@@ -82,7 +82,7 @@ namespace FunctionBilder.Dekstop
 		}
 		public void DrawAswer(List<Point> points)
 		{
-			this.outputBox.Items=points;
+			this.outputBox.Items = points;
 		}
 		public void DrawLabel(Point[] points,string[] content)
 		{

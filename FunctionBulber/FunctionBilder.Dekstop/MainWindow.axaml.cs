@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using FunctionBilder.Dekstop.viewModel;
 using FunctionBulber.Logic;
 using System;
 using System.ComponentModel;
@@ -12,11 +13,10 @@ namespace FunctionBilder.Dekstop
 	public class MainWindow : Window
 	{
 		IDrawer drawer { get; }
-		IFunctionDrawer functionDrawer { get; }
-		Canvas drawCanvas { get; }
+		Canvas drawCanvas { get; set; }
 		DataGrid outputBox { get; }
 		TextBox inputBox { get; }
-		TextBox nowBox { get; }
+		TextBox nowBox { get; set; }
 		Error error { get; set; }
 
 		public MainWindow()
@@ -30,7 +30,6 @@ namespace FunctionBilder.Dekstop
 			this.nowBox = this.inputBox;
 			this.drawer = new Drawer(this.inputBox);
 			this.drawCanvas = this.FindControl<Canvas>("FunctionCanvas");
-			this.functionDrawer = new FunctionDrawer(this.outputBox, this.drawCanvas, this.drawer);
 			this.error = new Error(this.drawer,false, null);
 		}
 		private void InitializeComponent()
@@ -46,14 +45,21 @@ namespace FunctionBilder.Dekstop
 			this.nowBox.Clear();
 		public void BtnPrefex_Click(object sender, RoutedEventArgs e) => 
 			this.inputBox.Text = $"-({this.inputBox.Text})";
+		public void HighlightTextBox_Click(object sender, RoutedEventArgs e)
+		{
+			this.nowBox = (TextBox)sender;
+		}
 		public void Canvas_SizeChanged(object sender1,AvaloniaPropertyChangedEventArgs e)
 		{
 			if (this.inputBox != null && this.inputBox.Text != null) 
-			BtnCount_Click(sender1, null);
+			BtnCount_Click(sender1, new RoutedEventArgs());
 		}
 		public void BtnCount_Click(object sender, RoutedEventArgs e)
 		{
-			//this.outputBox.Clear();
+			if (sender is Canvas)
+				this.drawCanvas = (Canvas)sender;
+
+			this.outputBox.Items=null;
 			this.drawCanvas.Children.Clear();
 			Point canvasSize= new Point(this.drawCanvas.Bounds.Width, this.drawCanvas.Bounds.Height);
 
@@ -63,20 +69,9 @@ namespace FunctionBilder.Dekstop
 			if (CheckOnErrors(boxes))
 				return;
 
-			this.functionDrawer.DrawLine(new Point(0, canvasSize.Y / 2),
-				new Point(canvasSize.X, canvasSize.Y / 2), Brushes.DeepPink);
-
-			this.functionDrawer.DrawLine(new Point(canvasSize.X / 2, 0),
-				new Point(canvasSize.X / 2, canvasSize.Y),Brushes.DeepPink);
-
-			this.functionDrawer.DrawArrows(new Point(canvasSize.X, canvasSize.Y / 2),
-				new Point(10,10));
-
-			this.functionDrawer.DrawArrows(new Point(canvasSize.X/2, 0),
-				new Point(10,-10));
-
-			this.functionDrawer.DrawFunction(Convert.ToDouble(boxes[0].Text), Convert.ToDouble(boxes[1].Text),
-				Convert.ToDouble(boxes[2].Text),reversePoland.GetStack());
+			Function function = new Function(new FunctionDrawer(this.outputBox, this.drawCanvas, this.drawer));
+			function.Render(canvasSize,new Point(Convert.ToDouble(boxes[0].Text),Convert.ToDouble(boxes[1].Text)),
+				reversePoland.GetStack(),Convert.ToDouble(boxes[2].Text));
 		}
 		private TextBox[] FoundTextBoxs()
 		{		
@@ -96,6 +91,11 @@ namespace FunctionBilder.Dekstop
 			}
 			return false;
 		}
+		public void Canvas_Tap(object sender, RoutedEventArgs e)
+		{
+			var window = new FunctionWindow();
+			window.Show();
+		}
 	}
 	public class Drawer : IDrawer
 	{
@@ -107,8 +107,7 @@ namespace FunctionBilder.Dekstop
 		public void Draw(string input)
 		{
 			this.tbx.Clear();
-			this.tbx.Text += input;
-			
+			this.tbx.Text += input;			
 		}
 
 	}

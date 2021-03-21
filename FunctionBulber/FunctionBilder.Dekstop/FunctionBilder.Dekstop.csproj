@@ -20,4 +20,9 @@
       <HintPath>..\FunctionBulber\bin\Debug\netcoreapp3.1\FunctionBulber.Logic.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="FunctionWindow.axaml.cs">
+      <DependentUpon>FunctionWindow.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>
