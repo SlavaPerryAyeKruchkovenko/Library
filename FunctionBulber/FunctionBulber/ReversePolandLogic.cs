@@ -33,8 +33,10 @@ namespace FunctionBulber.Logic
 			else return false;
 		}
 	}
-	
+
+#pragma warning disable CS0659 // Тип переопределяет Object.Equals(object o), но не переопределяет Object.GetHashCode()
 	public class ReversePolandLogic
+#pragma warning restore CS0659 // Тип переопределяет Object.Equals(object o), но не переопределяет Object.GetHashCode()
 	{
 		private Stack<Element> reversePolandNotation { get; set; }
 		private Stack<Element> signs { get; set; }

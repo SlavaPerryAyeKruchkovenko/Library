@@ -18,6 +18,7 @@ namespace FunctionBilder.Dekstop
 		TextBox inputBox { get; }
 		TextBox nowBox { get; set; }
 		Error error { get; set; }
+		TextBox[] boxes { get; }
 
 		public MainWindow()
 		{
@@ -31,6 +32,7 @@ namespace FunctionBilder.Dekstop
 			this.drawer = new Drawer(this.inputBox);
 			this.drawCanvas = this.FindControl<Canvas>("FunctionCanvas");
 			this.error = new Error(this.drawer,false, null);
+			this.boxes = FoundTextBoxs();
 		}
 		private void InitializeComponent()
 		{
@@ -59,19 +61,12 @@ namespace FunctionBilder.Dekstop
 			if (sender is Canvas)
 				this.drawCanvas = (Canvas)sender;
 
-			this.outputBox.Items=null;
+			this.outputBox.Items = null;
 			this.drawCanvas.Children.Clear();
-			Point canvasSize= new Point(this.drawCanvas.Bounds.Width, this.drawCanvas.Bounds.Height);
 
-			ReversePolandLogic reversePoland = new ReversePolandLogic(this.inputBox.Text, drawer);
-			reversePoland.StacKInstalization();
-			TextBox[] boxes = FoundTextBoxs();
-			if (CheckOnErrors(boxes))
+			if (CheckOnErrors(this.boxes))
 				return;
-
-			Function function = new Function(new FunctionDrawer(this.outputBox, this.drawCanvas, this.drawer));
-			function.Render(canvasSize,new Point(Convert.ToDouble(boxes[0].Text),Convert.ToDouble(boxes[1].Text)),
-				reversePoland.GetStack(),Convert.ToDouble(boxes[2].Text));
+			this.drawCanvas.GraphicRender(this.inputBox.Text,this.drawer, this.outputBox, this.boxes.ToDouble());
 		}
 		private TextBox[] FoundTextBoxs()
 		{		
@@ -93,22 +88,9 @@ namespace FunctionBilder.Dekstop
 		}
 		public void Canvas_Tap(object sender, RoutedEventArgs e)
 		{
-			var window = new FunctionWindow();
+			var window = new FunctionWindow(this.inputBox.Text,this.drawer,this.boxes.ToDouble());
 			window.Show();
 		}
 	}
-	public class Drawer : IDrawer
-	{
-		private TextBox tbx { get; }
-		public Drawer(TextBox _tbx)
-		{
-			tbx = _tbx;
-		}
-		public void Draw(string input)
-		{
-			this.tbx.Clear();
-			this.tbx.Text += input;			
-		}
-
-	}
+	
 }

@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using FunctionBilder.Dekstop.viewModel;
 using FunctionBulber.Logic;
+using System;
 using System.Collections.Generic;
 
 namespace FunctionBilder.Dekstop
@@ -46,22 +47,21 @@ namespace FunctionBilder.Dekstop
 				Calculate calculate = new Calculate(this.drawer, rpn);
 
 				Point point = new Point(i, calculate.CountRPN(new double[] { i, i }));
-
 				points.Add(point);
 
-				if (i % 10 == 0)
+				if (double.IsNormal(point.Y) || point.Y == 0) 
 				{
-					DrawLabel(new Point[] { canvasSize,point },new string[] 
-					{point.X.ToString(),point.Y.ToString() });
-				}
-				if(!double.IsNaN(point.Y))
-				{
+					if (i % 10 == 0)
+					{
+						DrawLabel(new Point[] { canvasSize, point }, new string[]
+						{point.X.ToString(),point.Y.ToString() });
+					}
 					Figure figure = new MyEllipse();
 					Point pointNow = new Point(canvasSize.X + point.X, canvasSize.Y - point.Y);
 
 					this.drawCanvas.Children.Insert(0, figure.Create(new Point[] { pointNow },Brushes.Red));
 
-					if(startLinePoint!=default)
+					if(Math.Abs(startLinePoint.X-point.X)==rangeX)
 					{
 						DrawLine(new Point(canvasSize.X+startLinePoint.X,canvasSize.Y-startLinePoint.Y),
 							pointNow,Brushes.Yellow);
@@ -82,7 +82,8 @@ namespace FunctionBilder.Dekstop
 		}
 		public void DrawAswer(List<Point> points)
 		{
-			this.outputBox.Items = points;
+			if (this.outputBox != null)
+				this.outputBox.Items = points;
 		}
 		public void DrawLabel(Point[] points,string[] content)
 		{
