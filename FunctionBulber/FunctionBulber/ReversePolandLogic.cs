@@ -47,18 +47,18 @@ namespace FunctionBulber.Logic
 		public Stack<Element> GetStack() => this.reversePolandNotation;
 		public ReversePolandLogic(string input, IDrawer draw)
 		{
-			example = input.Replace(" ", "").Trim().ToLower();
-			example = example.Replace(":", ";");
+			this.example = input.Replace(" ", "").Trim().ToLower();
+			this.example = this.example.Replace(":", ";");
 
-			error = new Error(draw, Error.CheckOnPriority
-				(example, out string errorType), errorType);
+			this.error = new Error(draw, Error.CheckOnPriority
+				(this.example, out string errorType), errorType);
 
 			this.reversePolandNotation = new Stack<Element>();
 			this.signs = new Stack<Element>();
 
-			if (!error.HaveError)
-				example = example.ReplaceSeparator();
-			operations = Assembly
+			if (!this.error.HaveError)
+				this.example = example.ReplaceSeparator();
+			this.operations = Assembly
 			.GetAssembly(typeof(Operations))
 			.GetTypes()
 			.Where(t => t.IsSubclassOf(typeof(Operations)));
@@ -74,34 +74,39 @@ namespace FunctionBulber.Logic
 		{ "pi","e"};
 		public void StacKInstalization()
 		{
-			for (int i = 0; i < example.Length; i++)
+			for (int i = 0; i < this.example.Length; i++)
 			{
 				Element element = new Element(null, null, 0);
-				if (double.TryParse(example[i].ToString(), out _))
+				if (double.TryParse(this.example[i].ToString(), out _))
 				{
-					element.Num = FoundNum(i, example, out int shift);
+					element.Num = FoundNum(i, this.example, out int shift);
 					i += shift;
-					reversePolandNotation.Push(element);
+					this.reversePolandNotation.Push(element);
 				}
-				else if (FoundOpperation(example[i].ToString(), operations, out Operations opp))
+				else if (FoundOpperation(this.example[i].ToString(), this.operations, out Operations opp))
 				{
-					if (opp.Name == "-" &&(i==0||FoundPostfix(example[i - 1].ToString())))
+					if (opp.Name == "-" && (i == 0 || FoundPostfix(this.example[i - 1].ToString())))
 						element.Opperation = new Postfix();
 					else
 						element.Opperation = opp;
 					PushOperation(element, i);
 				}
-				else if (example.Length > i + 4 && FoundFunction(i, example, out int shift))
+				else if (example.Length > i + 4 && FoundFunction(i, this.example, out int shift))
 				{
-					FoundOpperation(example[i..(i + shift)], operations, out opp);
+					FoundOpperation(this.example[i..(i + shift)], this.operations, out opp);
 					element.Opperation = opp;
 					i += shift - 1;
 					PushOperation(element, i);
 				}
-				else if (variables.Contains(example[i].ToString()))
+				else if (variables.Contains(this.example[i].ToString()))
 				{
-					element.Variable = example[i].ToString();
-					reversePolandNotation.Push(element);
+					element.Variable = this.example[i].ToString();
+					this.reversePolandNotation.Push(element);
+				}
+				else if (FoundConsts(this.example, i, out double num)) 
+				{
+					element.Num = num;
+					this.reversePolandNotation.Push(element);
 				}
 				else
 				{
@@ -189,6 +194,24 @@ namespace FunctionBulber.Logic
 			{
 				MixingOpperation(opperation, opperation.Opperation.Priority, false);
 			}	
+		}
+		private static bool FoundConsts(string example,int startIndex,out double num)
+		{
+			num = default;
+			if(example[startIndex..startIndex++]==consts[0])
+			{
+				num = Math.PI;
+				return true;
+			}
+			if(example[startIndex].ToString()==consts[1])
+			{
+				num = Math.E;
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		private void MixingOpperation(Element opperation, int index, bool needDelete)
 		{

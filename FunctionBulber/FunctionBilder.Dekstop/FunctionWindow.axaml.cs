@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using FunctionBilder.Dekstop.viewModel;
 using FunctionBulber.Logic;
@@ -43,6 +44,14 @@ namespace FunctionBilder.Dekstop
 				this.canvas.Children.Clear();
 				this.canvas.GraphicRender(this.function, this.drawer, null, this.location);
 			}				
+		}
+		public void MousePress(object sender, PointerPressedEventArgs e)
+		{
+
+		}
+		public void MouseUnpress(object sender , PointerReleasedEventArgs e)
+		{
+
 		}
 	}
 }

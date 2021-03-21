@@ -6,10 +6,13 @@
         x:Class="FunctionBilder.Dekstop.FunctionWindow"
         Title="Function"
         WindowState="Normal"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="/icons/functionIcon.png">
   <ScrollViewer IsVisible="True">
   <DockPanel Background="#D46AD0">   
-      <Canvas x:Name="BigFunctionCanvas" PropertyChanged="Canvas_SizeChanged">
+      <Canvas x:Name="BigFunctionCanvas" PropertyChanged="Canvas_SizeChanged"
+              PointerPressed="MousePress"
+              PointerReleased="MouseUnpress">
       </Canvas>    
   </DockPanel>
   </ScrollViewer>

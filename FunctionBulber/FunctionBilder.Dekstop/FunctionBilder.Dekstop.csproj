@@ -1,14 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="icons\functionIcon.png" />
+    <None Remove="icons\Icon.ico" />
     <None Remove="icons\icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <AvaloniaResource Include="icons\icon.png" />
+    <AvaloniaXaml Include="icons\functionIcon.png" />
+    <AvaloniaXaml Include="icons\Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.0" />

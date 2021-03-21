@@ -4,10 +4,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="250"
         x:Class="FunctionBilder.Dekstop.MainWindow"
-        Title="FunctionBilder.Dekstop"
+        Title="Calculator"
         WindowState="Normal"
         WindowStartupLocation="CenterScreen"
-        Icon="/icons/icon.png">
+        Icon="/icons/Icon.ico">
   <Grid x:Name="MainGrid">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="2*"/>

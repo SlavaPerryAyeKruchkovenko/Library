@@ -54,7 +54,9 @@ namespace FunctionBilder.Dekstop
 		public void Canvas_SizeChanged(object sender1,AvaloniaPropertyChangedEventArgs e)
 		{
 			if (this.inputBox != null && this.inputBox.Text != null) 
-			BtnCount_Click(sender1, new RoutedEventArgs());
+			{
+				BtnCount_Click(sender1, new RoutedEventArgs());
+			}
 		}
 		public void BtnCount_Click(object sender, RoutedEventArgs e)
 		{

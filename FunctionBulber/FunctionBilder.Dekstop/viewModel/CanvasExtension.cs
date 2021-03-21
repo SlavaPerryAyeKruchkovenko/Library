@@ -25,9 +25,11 @@ namespace FunctionBilder.Dekstop.viewModel
 		public static double[] ToDouble(this TextBox[] boxes)
 		{
 			return new double[]
-			{ Convert.ToDouble(boxes[0].Text),
-			Convert.ToDouble(boxes[1].Text),
-			Convert.ToDouble(boxes[2].Text)};
+			{ 
+				Convert.ToDouble(boxes[0].Text),
+				Convert.ToDouble(boxes[1].Text),
+				Convert.ToDouble(boxes[2].Text)
+			};
 		}
 	}
 	public class Drawer : IDrawer
