@@ -7,7 +7,7 @@
         Title="Calculator"
         WindowState="Normal"
         WindowStartupLocation="CenterScreen"
-        >
+        Icon="/icons/Icon.ico">
   <Grid x:Name="MainGrid">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="2*"/>
