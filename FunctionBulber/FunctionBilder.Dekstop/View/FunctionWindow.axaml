@@ -7,7 +7,7 @@
         Title="Function"
         WindowState="Normal"
         WindowStartupLocation="CenterScreen"
-        Icon="/icons/functionIcon.png">
+        >
   <Grid RowDefinitions="9*,*">
     <DockPanel  PointerPressed="MousePress" PointerReleased="MouseUnpress">   
       <Canvas x:Name="BigFunctionCanvas" PropertyChanged="Canvas_SizeChanged"
