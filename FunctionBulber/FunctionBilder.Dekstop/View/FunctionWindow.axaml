@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="FunctionBilder.Dekstop.View.FunctionWindow"
+        Title="Function"
+        WindowState="Normal"
+        WindowStartupLocation="CenterScreen"
+        Icon="/icons/functionIcon.png">
+  <Grid RowDefinitions="9*,*">
+    <DockPanel  PointerPressed="MousePress" PointerReleased="MouseUnpress">   
+      <Canvas x:Name="BigFunctionCanvas" PropertyChanged="Canvas_SizeChanged"
+              PointerWheelChanged="ZoomGraphick" Background="#D46AD0">
+      </Canvas>
+    </DockPanel>  
+   <Grid ColumnDefinitions="*,*" Background="#D46AA0" Grid.Row="1">
+     <Button Grid.Column="0" Content="Add new function" Click="AddNewGraphick"
+             Name="addBtn" Background="Gray" Grid.ColumnSpan="1"
+             VerticalAlignment="Stretch"
+             HorizontalAlignment="Stretch"
+             VerticalContentAlignment="Center"
+             HorizontalContentAlignment="Center">       
+     </Button>
+     <Grid ColumnDefinitions="*,8*,*,8*" Grid.Column="1">
+       <CheckBox x:Name="IsNeedEllipse" VerticalAlignment="Center"/>
+       <Label VerticalAlignment="Center" HorizontalContentAlignment="Center"
+          HorizontalAlignment="Left" VerticalContentAlignment="Center"
+          Grid.Column="1">
+         Point Visibile
+       </Label>
+       <CheckBox x:Name="IsNeedLabel" VerticalAlignment="Center" Grid.Column="2"/>
+       <Label VerticalAlignment="Center" HorizontalContentAlignment="Center"
+          HorizontalAlignment="Left" VerticalContentAlignment="Center"
+          Grid.Column="3">
+         Coordinates Visibile
+       </Label>
+     </Grid>      
+   </Grid>  
+  </Grid>
+</Window>

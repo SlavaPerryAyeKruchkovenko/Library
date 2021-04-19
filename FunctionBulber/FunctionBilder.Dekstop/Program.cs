@@ -1,4 +1,5 @@
-using Avalonia;
+﻿using Avalonia;
+using FunctionBilder.Dekstop.View;
 
 namespace FunctionBilder.Dekstop
 {
@@ -15,6 +16,6 @@ namespace FunctionBilder.Dekstop
 			=> AppBuilder.Configure<App>()
 				.UsePlatformDetect()
 				.LogToTrace();
-		
-	}	
+
+	}
 }

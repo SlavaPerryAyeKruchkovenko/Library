@@ -1,96 +1,120 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using FunctionBilder.Dekstop.viewModel;
+using FunctionBilder.Dekstop.Model;
 using FunctionBulber.Logic;
 using System;
 using System.Collections.Generic;
 
-namespace FunctionBilder.Dekstop
+namespace FunctionBilder.Dekstop.ViewModel
 {
 	interface IFunctionDrawer
 	{
-		void DrawLine(Point start,Point finish,IBrush brush);
-		void DrawFunction(double startX, double finishX, double rangeX,Stack<Element> elements);
-		void DrawAswer(List<Point> points);
-		void DrawArrows(Point start,Point range);
-		void DrawLabel(Point[] points, string[] content);
+		void DrawLine(Point startLocation, Point finishLocation, IBrush brush);
+		List<Point> DrawFunction(Point gap, double range, string function, Point location, double scale, IBrush[] brushes);
+		void DrawArrows(Point location, Point size);
+		void DrawLabels(Point gap, Point coordinate, double fontSize, bool isXLine);
 	}
-	
-	class FunctionDrawer:IFunctionDrawer
+
+	class FunctionDrawer : IFunctionDrawer
 	{
-		DataGrid outputBox;
-		Canvas drawCanvas;
-		IDrawer drawer;
-		List<Point> points { get; }
-		public FunctionDrawer(DataGrid _outputBox,Canvas _canvas,IDrawer _drawer)
+		private Canvas drawCanvas { get; }
+		public FunctionDrawer(Canvas _canvas)
 		{
-			this.outputBox = _outputBox;
-			this.drawCanvas = _canvas;
-			this.drawer = _drawer;
-			this.points = new List<Point>();
+			drawCanvas = _canvas;
 		}
-		public void DrawLine(Point start, Point finish,IBrush brush)
+		public void DrawLine(Point startLocation, Point finishLocation, IBrush brush)
 		{
 			Figure figure = new MyLine();
-			this.drawCanvas.Children.Insert(0, figure.Create(new Point[] { start, finish },brush));
+			drawCanvas.Children.Insert(0, figure.Create(new Point[] { startLocation, finishLocation }, brush, Field.LineScale));
 		}
-		public void DrawFunction(double startX, double finishX, double rangeX, 
-			Stack<Element> elements)
+		public List<Point> DrawFunction(Point gap, double range, string function, Point location, double scale, IBrush[] brushes)
 		{
+			var coordinates = new List<Point>();
 			Point startLinePoint = default;
-			for (double i = startX; i <= finishX; i += rangeX) 
+
+			Point canvasSize = new Point(drawCanvas.Bounds.Width / 2,
+					drawCanvas.Bounds.Height / 2) + location;
+
+			var RPN = new ReversePolandLogic(function);
+			RPN.StackInitialization();
+
+			for (double i = gap.X; i <= gap.Y; i += range)
 			{
-				Point canvasSize = new Point(this.drawCanvas.Bounds.Width / 2,
-					this.drawCanvas.Bounds.Height / 2);
-				Stack<Element> rpn = elements.Clone<Element>();
-				Calculate calculate = new Calculate(this.drawer, rpn);
+				i = Math.Round(i, range.Length());
+				Point point;
 
-				Point point = new Point(i, calculate.CountRPN(new double[] { i, i }));
-				points.Add(point);
-
-				if (double.IsNormal(point.Y) || point.Y == 0) 
+				if (Math.Abs(i * scale + location.X) < drawCanvas.Bounds.Width / 2)
 				{
-					if (i % 10 == 0)
-					{
-						DrawLabel(new Point[] { canvasSize, point }, new string[]
-						{point.X.ToString(),point.Y.ToString() });
-					}
-					Figure figure = new MyEllipse();
+
+					point = ModelNumerable.YCoordinate(RPN, new double[] { i, i }) * scale;
+
+					coordinates.Add(point);
+				}
+				else
+				{
+					continue;
+				}
+
+				if ((double.IsNormal(point.Y) || point.Y == 0) && Math.Abs(point.Y - location.Y) < drawCanvas.Bounds.Height / 2)
+				{
+
 					Point pointNow = new Point(canvasSize.X + point.X, canvasSize.Y - point.Y);
 
-					this.drawCanvas.Children.Insert(0, figure.Create(new Point[] { pointNow },Brushes.Red));
+					DrawPoint(pointNow, brushes[0], Field.Ratio * scale);
 
-					if(Math.Abs(startLinePoint.X-point.X)==rangeX)
+					if (Math.Abs(Math.Abs(startLinePoint.X - point.X) - range * scale) < range)
 					{
-						DrawLine(new Point(canvasSize.X+startLinePoint.X,canvasSize.Y-startLinePoint.Y),
-							pointNow,Brushes.Yellow);
-					}						
-					startLinePoint = point;		
+						double x = canvasSize.X + startLinePoint.X;
+						double y = canvasSize.Y - startLinePoint.Y;
+						DrawLine(new Point(x, y), pointNow, brushes[1]);
+					}
+					startLinePoint = point;
 				}
 				else
 				{
 					startLinePoint = default;
 				}
 			}
-			DrawAswer(this.points);
+			return coordinates;
 		}
-		public void DrawArrows(Point start,Point range)
+		public void DrawArrows(Point location, Point size)
 		{
 			Figure figure = new Mypolygon();
-			this.drawCanvas.Children.Insert(0, figure.Create(new Point[] { start, range }, Brushes.DeepPink));
+			drawCanvas.Children.Insert(0, figure.Create(new Point[] { location, size }, Brushes.DeepPink, 1));
 		}
-		public void DrawAswer(List<Point> points)
+		public void DrawLabels(Point gap, Point coordinate, double fontSize, bool isXLine)
 		{
-			if (this.outputBox != null)
-				this.outputBox.Items = points;
+
+			for (int i = (int)gap.X; i < gap.Y; i++)
+			{
+				if (i % fontSize == 0)
+				{
+					MyControler controler = new MyLabel();
+					Point coordinate1;
+
+					if (isXLine)
+					{
+						coordinate1 = new Point(coordinate.X + i, coordinate.Y);
+					}
+					else
+					{
+						coordinate1 = new Point(coordinate.X, coordinate.Y - i);
+					}
+					if (Math.Abs(coordinate1.X) > drawCanvas.Bounds.Width || Math.Abs(coordinate1.Y) > drawCanvas.Bounds.Height)
+					{
+						continue;
+					}
+					string content = (i / fontSize).ToString();
+					drawCanvas.Children.Insert(0, controler.Create(coordinate1, content, Field.Ratio * fontSize));
+				}
+
+			}
 		}
-		public void DrawLabel(Point[] points,string[] content)
+		private void DrawPoint(Point pointNow, IBrush brush, double scale)
 		{
-			MyControler controler = new MyLabel();
-			Control[] labels= controler.Create(points,ref content);
-			this.drawCanvas.Children.Insert(this.drawCanvas.Children.Count - 1, labels[0]);
-			this.drawCanvas.Children.Insert(this.drawCanvas.Children.Count - 1, labels[1]);
+			Figure figure = new MyEllipse();
+			drawCanvas.Children.Insert(0, figure.Create(new Point[] { pointNow }, brush, scale));
 		}
 	}
 }

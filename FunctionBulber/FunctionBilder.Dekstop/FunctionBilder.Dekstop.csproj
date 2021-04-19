@@ -27,5 +27,14 @@
     <Compile Update="FunctionWindow.axaml.cs">
       <DependentUpon>FunctionWindow.axaml</DependentUpon>
     </Compile>
+    <Compile Update="View\App.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="View\FunctionWindow.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="View\MainWindow.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

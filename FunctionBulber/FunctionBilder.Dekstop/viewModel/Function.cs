@@ -1,37 +1,65 @@
 ﻿using Avalonia;
 using Avalonia.Media;
-using FunctionBulber.Logic;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace FunctionBilder.Dekstop.viewModel
+namespace FunctionBilder.Dekstop.ViewModel
 {
 	class Function
 	{
-		IFunctionDrawer functionDrawer { get; }
-		public Function(IFunctionDrawer _functionDrawer)
+		private IFunctionDrawer functionDrawer { get; }
+		private Point rangeLocation { get; }
+		private Point layoutSize { get; }
+		private IBrush[] brushes { get; }
+		public Function(IFunctionDrawer _functionDrawer, Point _rangeLocation, Point _canvasSize, IBrush[] _brushes)
 		{
-			this.functionDrawer = _functionDrawer;
+			functionDrawer = _functionDrawer;
+			rangeLocation = _rangeLocation;
+			layoutSize = _canvasSize;
+			brushes = _brushes;
 		}
-		public void Render(Point canvasSize,Point cycleSize,Stack<Element> elements,double range)
+		public List<Point> Render(Point cycleSize, string function, double range, double scale)
 		{
-			this.functionDrawer.DrawLine(new Point(0, canvasSize.Y / 2),
-				new Point(canvasSize.X, canvasSize.Y / 2), Brushes.DeepPink);
+			Point[] points = new Point[]
+			{
+				new Point(-layoutSize.X/2-rangeLocation.X,layoutSize.X/2-rangeLocation.X),
+				new Point(layoutSize.X/2,layoutSize.Y/2)+rangeLocation
+			};
+			functionDrawer.DrawLabels(points[0], points[1], scale, true);
 
-			this.functionDrawer.DrawLine(new Point(canvasSize.X / 2, 0),
-				new Point(canvasSize.X / 2, canvasSize.Y), Brushes.DeepPink);
+			points = new Point[]
+			{
+				new Point(-layoutSize.Y/2+rangeLocation.Y,layoutSize.Y/2+rangeLocation.Y),
+				new Point(layoutSize.X/2,layoutSize.Y/2)+rangeLocation
+			};
+			functionDrawer.DrawLabels(points[0], points[1], scale, false);
 
-			this.functionDrawer.DrawArrows(new Point(canvasSize.X, canvasSize.Y / 2),
-				new Point(10, 10));
+			points = new Point[]
+			{
+				new Point(0, layoutSize.Y / 2+rangeLocation.Y),
+				new Point(layoutSize.X, layoutSize.Y / 2+rangeLocation.Y)
+			};
 
-			this.functionDrawer.DrawArrows(new Point(canvasSize.X / 2, 0),
-				new Point(10, -10));
+			functionDrawer.DrawLine(points[0], points[1], Brushes.DeepPink);
 
-			this.functionDrawer.DrawFunction(cycleSize.X, cycleSize.Y,
-				range, elements);
+			points = new Point[]
+			{
+				new Point(layoutSize.X / 2+rangeLocation.X, 0),
+				new Point(layoutSize.X / 2+rangeLocation.X, layoutSize.Y)
+			};
+
+			functionDrawer.DrawLine(points[0], points[1], Brushes.DeepPink);
+
+			points = new Point[]
+			{
+				new Point(layoutSize.X, layoutSize.Y / 2+rangeLocation.Y),
+				new Point(layoutSize.X / 2+rangeLocation.X, 0)
+			};
+
+			functionDrawer.DrawArrows(points[0], new Point(10, 10));
+
+			functionDrawer.DrawArrows(points[1], new Point(10, -10));
+
+			return functionDrawer.DrawFunction(cycleSize, range, function, rangeLocation, scale, brushes);
 		}
 	}
 }
