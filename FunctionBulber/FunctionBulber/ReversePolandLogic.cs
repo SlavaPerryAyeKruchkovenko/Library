@@ -8,14 +8,14 @@ namespace FunctionBulber.Logic
 {
 	public struct Element
 	{
-		public Operations Opperation { get; set; }
-		public string Variable { get; set; }
-		public double Num { get; set; }	
+		public Operations Opperation { get; }
+		public string Variable { get; }
+		public double Num { get; }
 		public Element(Operations opperation, string var, double num)
 		{
-			Opperation = opperation;
-			Variable = var;
-			Num = num;
+			this.Opperation = opperation;
+			this.Variable = var;
+			this.Num = num;
 		}
 		public bool Equals(Element element2)
 		{
@@ -28,7 +28,7 @@ namespace FunctionBulber.Logic
 				else
 				{
 					return this.Opperation.Equals(element2.Opperation);
-				}		
+				}
 			}
 			else return false;
 		}
@@ -42,110 +42,104 @@ namespace FunctionBulber.Logic
 		private Stack<Element> signs { get; set; }
 		private IEnumerable<Type> operations { get; set; }
 		private string example { get; }
-		private Error error { get; set; }
-
 		public Stack<Element> GetStack() => this.reversePolandNotation;
-		public ReversePolandLogic(string input, IDrawer draw)
+		public ReversePolandLogic(string input)
 		{
 			this.example = input.Replace(" ", "").Trim().ToLower();
 			this.example = this.example.Replace(":", ";");
 
-			this.error = new Error(draw, Error.CheckOnPriority
-				(this.example, out string errorType), errorType);
-
 			this.reversePolandNotation = new Stack<Element>();
 			this.signs = new Stack<Element>();
 
-			if (!this.error.HaveError)
+			if (FormatError.CheckOnPriority(this.example))
 				this.example = example.ReplaceSeparator();
+
 			this.operations = Assembly
 			.GetAssembly(typeof(Operations))
 			.GetTypes()
 			.Where(t => t.IsSubclassOf(typeof(Operations)));
 		}
 
-
 		private static readonly List<string> priority = new List<string>
 		{ "+", "-", "*", "/", "%", "^", "!","sin", "cos", "tg", "ctg","sqrt",
 			"ln","log","asin","acos","atg","actg","(", ")" };
 		private static readonly List<string> variables = new List<string>
-		{ "x","y"};
+		{ "x","y","z"};
 		private static readonly List<string> consts = new List<string>
 		{ "pi","e"};
-		public void StacKInstalization()
+
+		public void StackInitialization()
 		{
+			if (this.example == null)
+			{
+				string error = "Пустое выражение";
+				_ = new FormatError(error);
+			}
 			for (int i = 0; i < this.example.Length; i++)
 			{
-				Element element = new Element(null, null, 0);
-				if (double.TryParse(this.example[i].ToString(), out _))
+
+				if (Char.IsDigit(this.example[i]))
 				{
-					element.Num = FoundNum(i, this.example, out int shift);
-					i += shift;
+					Element element = new Element(null, null, FoundNum(ref i, this.example));
 					this.reversePolandNotation.Push(element);
 				}
-				else if (FoundOpperation(this.example[i].ToString(), this.operations, out Operations opp))
+				else if (IsConsts(this.example, ref i, out double num))
 				{
-					if (opp.Name == "-" && (i == 0 || FoundPostfix(this.example[i - 1].ToString())))
-						element.Opperation = new Postfix();
-					else
-						element.Opperation = opp;
-					PushOperation(element, i);
-				}
-				else if (example.Length > i + 4 && FoundFunction(i, this.example, out int shift))
-				{
-					FoundOpperation(this.example[i..(i + shift)], this.operations, out opp);
-					element.Opperation = opp;
-					i += shift - 1;
-					PushOperation(element, i);
+					Element element = new Element(null, null, num);
+					this.reversePolandNotation.Push(element);
 				}
 				else if (variables.Contains(this.example[i].ToString()))
 				{
-					element.Variable = this.example[i].ToString();
+					Element element = new Element(null, this.example[i].ToString(), 0);
 					this.reversePolandNotation.Push(element);
 				}
-				else if (FoundConsts(this.example, i, out double num)) 
+				else if (this.example[i] == '-' && (i == 0 || FoundPostfix(this.example[i - 1])))
 				{
-					element.Num = num;
-					this.reversePolandNotation.Push(element);
+					Element element = new Element(new Postfix(), null, 0);
+					PushOperation(element, i);
+				}
+				else if (IsOperation(i, this.example, out int shift))
+				{
+					Element element = new Element(FoundOpperation(this.example[i..(i + shift)], this.operations), null, 0);
+					i += shift - 1;
+					PushOperation(element, i);
 				}
 				else
 				{
-					this.error = new Error(error._draw, true, "Ошибка недопостимый символ");
+					string error = "Ошибка недопостимый символ";
+					_ = new FormatError(error);
 				}
-				if (this.error.HaveError)
-				{
-					break;
-				}
-					
 			}
-			this.reversePolandNotation = UnificationStack(reversePolandNotation, signs).Reverse();
+			this.reversePolandNotation = new Stack<Element>(UnificationStack(this.reversePolandNotation, this.signs));
 		}
-		private static double FoundNum(int startNum, string example, out int shift)
+		private static double FoundNum(ref int startNum, string example)
 		{
 			int finishNum = startNum + 1;
-			while (example.Length > finishNum &&
-				(double.TryParse(example[finishNum].ToString(), out _) || example[finishNum] == ','))
+			while (example.Length > finishNum && (Char.IsDigit(example[finishNum]) || example[finishNum] == ','))
 			{
 				finishNum++;
 			}
-
-			shift = finishNum - startNum - 1;
-			return Convert.ToDouble(example[startNum..finishNum]);
+			double answer = Convert.ToDouble(example[startNum..finishNum]);
+			startNum += finishNum - startNum - 1;
+			return answer;
 		}
-		private static bool FoundFunction(int functionStart, string example, out int shift)
+		private static bool IsOperation(int functionStart, string example, out int shift)
 		{
-			shift = 0;
+			shift = default;
 			for (int i = 1; i <= 4; i++)
 			{
 				shift = i;
 				if (priority.Contains(example[functionStart..(functionStart + i)]))
+				{
 					return true;
+				}
+
 			}
 			return false;
 		}
-		private static bool FoundOpperation(string opp, IEnumerable<Type> operations, out Operations operation)
+		private static Operations FoundOpperation(string opp, IEnumerable<Type> operations)
 		{
-			operation = null;
+			Operations operation = null;
 			if (priority.Contains(opp))
 			{
 				foreach (Type item in operations)
@@ -153,57 +147,60 @@ namespace FunctionBulber.Logic
 					operation = Activator.CreateInstance(item) as Operations;
 					if (operation.Name == opp)
 					{
-						return true;
+						return operation;
 					}
 				}
 			}
-			return false;
+			return null;
 		}
-		private static bool FoundPostfix(string opperation)
+		private static bool FoundPostfix(char opperation)
 		{
-			if (opperation == ")")
+			if (opperation == ')')
 				return false;
-			return priority.Contains(opperation);
+			return priority.Contains(opperation.ToString());
 		}
 		private void PushOperation(Element opperation, int index)
 		{
-			if (signs.Count == 0)
+			if (this.signs.Count == 0)
 			{
 				if (opperation.Opperation.Name != ")")
-					signs.Push(opperation);
+				{
+					this.signs.Push(opperation);
+				}
 				else
 				{
-					this.error = new Error
-						(this.error._draw, true, "Выражение не может начинаться с закрытой скобочки");
+					string error = "Выражение не может начинаться с закрытой скобочки";
+					_ = new FormatError(error);
 				}
 			}
 			else if (opperation.Opperation.Name == "(" && index == example.Length - 1)
 			{
-				this.error = new Error
-						(this.error._draw, true, "Выражение не может заканчиваться открывающей скобочкой");
+				string error = "Выражение не может заканчиваться открывающей скобочкой";
+				_ = new FormatError(error);
 			}
 			else if (opperation.Opperation.Name == ")")
 			{
 				MixingOpperation(opperation, 0, true);
-			}				
+			}
 			else if (opperation.Opperation.Name == "(")
 			{
-				signs.Push(opperation);
-			}	
+				this.signs.Push(opperation);
+			}
 			else
 			{
 				MixingOpperation(opperation, opperation.Opperation.Priority, false);
-			}	
+			}
 		}
-		private static bool FoundConsts(string example,int startIndex,out double num)
+		private static bool IsConsts(string example, ref int startIndex, out double num)
 		{
 			num = default;
-			if(example[startIndex..startIndex++]==consts[0])
+			if (startIndex + 1 < example.Length && example[startIndex..(startIndex + 2)] == consts[0])
 			{
+				startIndex++;
 				num = Math.PI;
 				return true;
 			}
-			if(example[startIndex].ToString()==consts[1])
+			if (example[startIndex].ToString() == consts[1])
 			{
 				num = Math.E;
 				return true;
@@ -215,41 +212,47 @@ namespace FunctionBulber.Logic
 		}
 		private void MixingOpperation(Element opperation, int index, bool needDelete)
 		{
-			int size = signs.Count;
+			int size = this.signs.Count;
 			for (int i = 0; i < size; i++)
 			{
-				if (signs.Peek().Opperation.Name == "(" && needDelete)
+				if (this.signs.Peek().Opperation.Name == "(" && needDelete)
 				{
-					signs.Pop();
+					this.signs.Pop();
 					break;
 				}
 				else if (signs.Peek().Opperation.Priority >= index &&
-				signs.Peek().Opperation.Name != "(")
+					this.signs.Peek().Opperation.Name != "(")
 				{
-					reversePolandNotation.Push(signs.Pop());
+					this.reversePolandNotation.Push(this.signs.Pop());
 				}
 				else
 				{
 					break;
 				}
-					
+
 			}
 			if (!needDelete)
 			{
-				signs.Push(opperation);
-			}	
+				this.signs.Push(opperation);
+			}
 		}
 		public new string ToString()
 		{
-			string result=null;
+			string result = null;
 			foreach (var item in this.reversePolandNotation)
 			{
 				if (item.Opperation == null && item.Variable == null)
-					result+=item.Num;
+				{
+					result += item.Num;
+				}
 				else if (item.Variable == null)
+				{
 					result += item.Opperation.Name;
+				}
 				else
+				{
 					result += item.Variable;
+				}
 				result += " ";
 			}
 			return result.Trim();
@@ -274,7 +277,10 @@ namespace FunctionBulber.Logic
 				foreach (var item in this.reversePolandNotation)
 				{
 					if (!item.Equals(exStack.Pop()))
+					{
 						return false;
+					}
+
 				}
 				return true;
 			}
@@ -282,7 +288,7 @@ namespace FunctionBulber.Logic
 			{
 				return false;
 			}
-				
+
 		}
 	}
 

@@ -101,7 +101,7 @@ namespace FunctionBulber.Logic
 	{
 		public override string Name => "sin";
 		public override short CountNum => 1;
-		public override int Priority => 3;
+		public override int Priority => 4;
 		public override double Count(double[] nums) => Math.Sin(nums[0]);
 		public override bool Equals(Operations opp)
 		{
@@ -112,7 +112,7 @@ namespace FunctionBulber.Logic
 	{
 		public override string Name => "asin";
 		public override short CountNum => 1;
-		public override int Priority => 3;
+		public override int Priority => 4;
 		public override double Count(double[] nums) => Math.Asin(nums[0]);
 		public override bool Equals(Operations opp)
 		{
@@ -123,7 +123,7 @@ namespace FunctionBulber.Logic
 	{
 		public override string Name => "cos";
 		public override short CountNum => 1;
-		public override int Priority => 3;
+		public override int Priority => 4;
 		public override double Count(double[] nums) => Math.Cos(nums[0]);
 		public override bool Equals(Operations opp)
 		{
@@ -134,7 +134,7 @@ namespace FunctionBulber.Logic
 	{
 		public override string Name => "acos";
 		public override short CountNum => 1;
-		public override int Priority => 3;
+		public override int Priority => 4;
 		public override double Count(double[] nums) => Math.Acos(nums[0]);
 		public override bool Equals(Operations opp)
 		{
@@ -145,7 +145,7 @@ namespace FunctionBulber.Logic
 	{
 		public override string Name => "tg";
 		public override short CountNum => 1;
-		public override int Priority => 3;
+		public override int Priority => 4;
 		public override double Count(double[] nums) => Math.Tan(nums[0]);
 		public override bool Equals(Operations opp)
 		{
@@ -156,7 +156,7 @@ namespace FunctionBulber.Logic
 	{
 		public override string Name => "atg";
 		public override short CountNum => 1;
-		public override int Priority => 3;
+		public override int Priority => 4;
 		public override double Count(double[] nums) => Math.Atan(nums[0]);
 		public override bool Equals(Operations opp)
 		{
@@ -167,7 +167,7 @@ namespace FunctionBulber.Logic
 	{
 		public override string Name => "ctg";
 		public override short CountNum => 1;
-		public override int Priority => 3;
+		public override int Priority => 4;
 		public override double Count(double[] nums) => 1 / Math.Tan(nums[0]);
 		public override bool Equals(Operations opp)
 		{
@@ -178,7 +178,7 @@ namespace FunctionBulber.Logic
 	{
 		public override string Name => "actg";
 		public override short CountNum => 1;
-		public override int Priority => 3;
+		public override int Priority => 4;
 		public override double Count(double[] nums) => 1 / Math.Atan(nums[0]);
 		public override bool Equals(Operations opp)
 		{
@@ -189,7 +189,7 @@ namespace FunctionBulber.Logic
 	{
 		public override string Name => "ln";
 		public override short CountNum => 1;
-		public override int Priority => 3;
+		public override int Priority => 4;
 		public override double Count(double[] nums) => Math.Log(nums[0]);
 		public override bool Equals(Operations opp)
 		{
@@ -200,7 +200,7 @@ namespace FunctionBulber.Logic
 	{
 		public override string Name => "log";
 		public override short CountNum => 2;
-		public override int Priority => 3;
+		public override int Priority => 4;
 		public override double Count(double[] nums) => Math.Log(nums[0], nums[1]);
 		public override bool Equals(Operations opp)
 		{
@@ -211,7 +211,7 @@ namespace FunctionBulber.Logic
 	{
 		public override string Name => "sqrt";
 		public override short CountNum => 1;
-		public override int Priority => 3;
+		public override int Priority => 4;
 		public override double Count(double[] nums) => Math.Sqrt(nums[0]);
 		public override bool Equals(Operations opp)
 		{
@@ -233,7 +233,7 @@ namespace FunctionBulber.Logic
 	{
 		public override string Name => ")";
 		public override short CountNum => 0;
-		public override int Priority => 4;
+		public override int Priority => 5;
 		public override double Count(double[] nums) => 0;
 		public override bool Equals(Operations opp)
 		{

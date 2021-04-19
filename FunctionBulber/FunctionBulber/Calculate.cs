@@ -5,75 +5,65 @@ namespace FunctionBulber.Logic
 {
 	public class Calculate
 	{
-		private Stack<Element> nums = new Stack<Element>();
-		private Stack<Element> rpn { get; }
 		private Operations operation { get; set; }
-		private Error error { get; set; }
-		public Calculate(IDrawer drawer, Stack<Element> _rpn)
+		public Calculate()
 		{
-			this.error = new Error(drawer, false, null);
-			this.rpn = _rpn;
+
 		}
-		public double CountRPN(double[] varabilesMeans)
+		public double CountRPN(double[] varabilesMeans, Stack<Element> rpn)
 		{
-			int size = this.rpn.Count;
-			string errorType;
+			Stack<Element> nums = new Stack<Element>();
+
+			int size = rpn.Count;
 			for (int i = 0; i < size; i++)
 			{
-				Element el = new Element(null, null, 0);
+				Element element = new Element(null, null, 0);
 
-				if (this.rpn.Peek().Opperation == null && this.rpn.Peek().Variable == null)
+				if (rpn.Peek().Opperation == null && rpn.Peek().Variable == null)
 				{
-					el.Num = this.rpn.Pop().Num;
-					this.nums.Push(el);
+					element = rpn.Pop();
+					nums.Push(element);
 				}
-				else if (this.rpn.Peek().Opperation == null)
+				else if (rpn.Peek().Opperation == null)
 				{
-					this.nums.Push(ReplaceNum(this.rpn.Pop(), varabilesMeans));
-				}		
+					nums.Push(ReplaceNum(rpn.Pop(), varabilesMeans));
+				}
 				else
 				{
-					this.operation = this.rpn.Pop().Opperation;
-					
-					if (this.operation.CountNum == 2)
-					{
-						this.error = new Error(this.error._draw, this.error.CheckOnCorrectFormula
-							(this.nums, 2, out errorType),errorType);
-						if (this.error.HaveError)
-							break;
-						el.Num = Math.Round(this.operation.Count(new double[] 
-						{ this.nums.Pop().Num, this.nums.Pop().Num }),3);					
-					}
-						
-					else if (this.operation.CountNum == 1)
-					{
-						this.error = new Error(this.error._draw, this.error.CheckOnCorrectFormula
-							(this.nums, 1, out errorType), errorType);
-						if (this.error.HaveError)
-							break;
-						el.Num = Math.Round(this.operation.Count(new double[] 
-						{ this.nums.Pop().Num }),3);					
-					}
-					this.nums.Push(el);
-				}			
-			}
-			this.error = new Error(this.error._draw, this.error.CheckOnCorrectAnswer
-				(this.nums,out errorType),errorType);
+					this.operation = rpn.Pop().Opperation;
 
-			if (!this.error.HaveError)
-				return this.nums.Pop().Num;
+					if (this.operation.CountNum == 2 && !FormatError.CheckOnUncorrectFormula(nums, 2))
+					{
+						double[] varibile = new double[] { nums.Pop().Num, nums.Pop().Num };
+						element = new Element(null, null, this.operation.Count(varibile));
+					}
+
+					else if (this.operation.CountNum == 1 && !FormatError.CheckOnUncorrectFormula(nums, 1))
+					{
+						double[] varibile = new double[] { nums.Pop().Num };
+						element = new Element(null, null, this.operation.Count(varibile));
+					}
+					nums.Push(element);
+				}
+			}
+
+			if (!ArgumentError.CheckOnUncorrectAnswer(nums))
+			{
+				return nums.Pop().Num;
+			}
 			else
+			{
 				return default;
+			}
 		}
 		private static Element ReplaceNum(Element varabile, double[] means)
 		{
-			Element element = new Element(null, null, 0);
 			switch (varabile.Variable)
 			{
-				case "x": element.Num = means[0]; break;
-				case "y": element.Num = means[1]; break;
+				case "x": return new Element(null, null, means[0]);
+				case "y": return new Element(null, null, means[1]);
 			}
-			return element;
+			return default;
 		}
 	}
 }
