@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="icons\functionIcon.png" />
+    <None Remove="icons\Icon.ico" />
+    <None Remove="icons\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaXaml Include="icons\functionIcon.png" />
+    <AvaloniaXaml Include="icons\Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.10.0" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.0" />
+   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="FunctionBulber.Logic">
+      <HintPath>..\FunctionBulber\bin\Debug\netcoreapp3.1\FunctionBulber.Logic.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="FunctionWindow.axaml.cs">
+      <DependentUpon>FunctionWindow.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\App.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="View\FunctionWindow.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="View\MainWindow.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+</Project>

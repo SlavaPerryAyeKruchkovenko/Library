@@ -52,3 +52,13 @@ Mkfile.old
 dkms.conf
 
 FunctionBulber/.vs/
+
+FunctionBulber/FunctionBulber/obj/
+
+FunctionBulber/FunctionBilber.Test/obj/
+
+FunctionBulber/FunctionBulber.sln
+
+FunctionBulber/FunctionBilder.Dekstop/obj/
+
+FunctionBulber/FunctionBuilber.Console/obj/

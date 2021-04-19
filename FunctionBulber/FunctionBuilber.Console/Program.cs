@@ -1,32 +1,48 @@
 ﻿namespace FunctionBuilber.Console
 {
 	using System;
-	using System.Collections.Generic;
 	using FunctionBulber.Logic;
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			Console.WriteLine("Введите выражение");
-			string input = Console.ReadLine().Trim();
+			IDrawer print = new Printer();
 
-			Printer print = new Printer();
-			ReversePolandLogic stack = new ReversePolandLogic(input, print);
-			Calculate calculate = new Calculate(print);
-
-			Stack<Element> elements = stack.StacKInstalization();
-			Console.WriteLine(stack.ToString());
-
-			double[] nums = new double[] { 0, 1, 2 };
-			double answer = calculate.CountRPN(nums, elements);
-			Console.WriteLine(answer);
-		}
-		class Printer : IDrawer
-		{
-			public void Draw(string input)
+			while (true)
 			{
-				Console.WriteLine(input);
+				print.Draw(CountFunction);
 			}
 		}
+		static void CountFunction()
+		{
+			Console.WriteLine("Введите Выражение");
+			string input = Console.ReadLine().Trim();
+			ReversePolandLogic stack = new ReversePolandLogic(input);
+			stack.StackInitialization();
+			Calculate calculate = new Calculate();
+
+			Console.WriteLine(stack.ToString());
+
+			double[] nums = new double[] { 0, 1 };
+			double answer = calculate.CountRPN(nums, stack.GetStack());
+			Console.WriteLine(answer);
+		}
+
+		class Printer : IDrawer
+		{
+			public void Draw(IDrawer.Instalize func)
+			{
+				try
+				{
+					func();
+				}
+				catch (Exception ex)
+				{
+					Console.WriteLine(ex.Message);
+					Program.Main(default);
+				}
+			}
+		}
+
 	}
 }
