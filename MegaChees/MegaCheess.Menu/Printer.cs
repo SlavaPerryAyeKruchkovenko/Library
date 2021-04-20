@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MegaCheess.Menu
 {
-	using MegaChessLogic;
+	using MegaChess.Logic;
 	class Printer : IDrawer
 	{
 		private static int coordinateX = Console.WindowWidth / 2 - 39;
