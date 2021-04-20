@@ -1,8 +1,0 @@
-C:\Users\Slava\Desktop\visual\ClassLibrary\Library\MegaCheesLogic\MegaCheesLogic\bin\Debug\netcoreapp3.1\MegaChessLogic.deps.json
-C:\Users\Slava\Desktop\visual\ClassLibrary\Library\MegaCheesLogic\MegaCheesLogic\bin\Debug\netcoreapp3.1\MegaChessLogic.dll
-C:\Users\Slava\Desktop\visual\ClassLibrary\Library\MegaCheesLogic\MegaCheesLogic\bin\Debug\netcoreapp3.1\MegaChessLogic.pdb
-C:\Users\Slava\Desktop\visual\ClassLibrary\Library\MegaCheesLogic\MegaCheesLogic\obj\Debug\netcoreapp3.1\MegaChessLogic.AssemblyInfoInputs.cache
-C:\Users\Slava\Desktop\visual\ClassLibrary\Library\MegaCheesLogic\MegaCheesLogic\obj\Debug\netcoreapp3.1\MegaChessLogic.AssemblyInfo.cs
-C:\Users\Slava\Desktop\visual\ClassLibrary\Library\MegaCheesLogic\MegaCheesLogic\obj\Debug\netcoreapp3.1\MegaChessLogic.csproj.CoreCompileInputs.cache
-C:\Users\Slava\Desktop\visual\ClassLibrary\Library\MegaCheesLogic\MegaCheesLogic\obj\Debug\netcoreapp3.1\MegaChessLogic.dll
-C:\Users\Slava\Desktop\visual\ClassLibrary\Library\MegaCheesLogic\MegaCheesLogic\obj\Debug\netcoreapp3.1\MegaChessLogic.pdb
