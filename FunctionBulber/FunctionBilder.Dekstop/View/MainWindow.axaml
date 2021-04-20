@@ -7,27 +7,11 @@
         Title="Calculator"
         WindowState="Normal"
         WindowStartupLocation="CenterScreen"
-        Icon="/icons/Icon.ico">
-  <Grid x:Name="MainGrid">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="2*"/>
-      <ColumnDefinition Width="*"/>
-    </Grid.ColumnDefinitions>
-    <Grid x:Name="DekstopGrid" Background="White"
-          Grid.Column="0">
-      <Grid.RowDefinitions>
-        <RowDefinition Height="6*"/>
-        <RowDefinition Height="12*"/>
-        <RowDefinition Height="2*"/>
-      </Grid.RowDefinitions>
-      
-        <Grid x:Name="InputputGrid" Grid.Row="0">
-          <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="4*"/>
-            <RowDefinition Height="2*"/>
-          </Grid.RowDefinitions>
-          <DockPanel Grid.ColumnSpan="2" Background="#F05171">
+        >
+  <Grid x:Name="MainGrid" ColumnDefinitions="2*,*">
+    <Grid x:Name="DekstopGrid" Grid.Column="0" RowDefinitions="3*,6*,*" Background="#F05171">  
+        <Grid x:Name="InputputGrid" Grid.Row="0" RowDefinitions="3*,4*,2*">
+          <DockPanel Grid.ColumnSpan="2">
             <Grid ColumnDefinitions="1*,9*">
               <Label Content=" Input: " Grid.Column="0"
                     Grid.ColumnSpan="1"
@@ -42,12 +26,13 @@
                      Cursor="Ibeam"
                      FontWeight="Bold"
                      FontFamily="Calibri"
+                     Background="#FF9797"
                      Tapped="HighlightTextBox_Click">
               cos(x)
             </TextBox>
             </Grid>          
           </DockPanel>
-          <DockPanel Grid.Row="1" Background="#F05171">
+          <DockPanel Grid.Row="1">
             <Grid ColumnDefinitions="1*,9*">
               <Label Grid.Column="0" Grid.ColumnSpan="1" Content="Result:"
                      FontWeight="Bold"
@@ -70,7 +55,7 @@
             </DataGrid>
             </Grid>        
           </DockPanel>     
-          <DockPanel Grid.Row="2" Background="#F05171">
+          <DockPanel Grid.Row="2">
             <Grid ColumnDefinitions="*,2*,*,2*,*,4*" ShowGridLines="True">
               <Label Grid.Column="0" Grid.ColumnSpan="1" Content="Start:"
                   FontWeight="Bold"
@@ -84,6 +69,7 @@
                        FontSize="16"
                        VerticalContentAlignment="Center"
                        HorizontalContentAlignment="Center"
+                       Background="#FF9797"
                        Tapped="HighlightTextBox_Click">
                 0
               </TextBox>
@@ -99,6 +85,7 @@
                        FontSize="16"
                        VerticalContentAlignment="Center"
                        HorizontalContentAlignment="Center"
+                       Background="#FF9797"
                        Tapped="HighlightTextBox_Click">
                 180
               </TextBox>
@@ -114,6 +101,7 @@
                        FontSize="16"
                        VerticalContentAlignment="Center"
                        HorizontalContentAlignment="Center"
+                       Background="#FF9797"
                        Tapped="HighlightTextBox_Click">
                 1
               </TextBox>
@@ -126,43 +114,32 @@
           <Border Grid.Row="2" BorderBrush="#FF3F3F"
                   BorderThickness="4"/>
         </Grid>
-        <Grid x:Class="Buttons" ShowGridLines="True" Grid.Row="1">
+        <Grid Grid.Row="1">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>          
           </Grid.ColumnDefinitions>
           
-          <DockPanel x:Name="Functions" Background="Gray">
-            <Grid ShowGridLines="True">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-              </Grid.ColumnDefinitions>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-              </Grid.RowDefinitions>
+          <DockPanel Background="Gray">
+            <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*,*,*,*,*">
               <Button Content="Sin"
+                      VerticalAlignment="Stretch"
+                     HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Center"
+                      VerticalContentAlignment="Center"
+                      FontSize="16" BorderThickness="6"
+                      Click="BtnCalculate_Click"/>
+              <Button Grid.Column="1"
+                      Content="Cos" 
                       VerticalAlignment="Stretch"
                       HorizontalAlignment="Stretch"
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"
                       FontSize="16" BorderThickness="6"
                       Click="BtnCalculate_Click"/>
-              <Button Grid.Column="1"
-                      Content="Cos" VerticalAlignment="Stretch"
-                      HorizontalAlignment="Stretch"
-                      HorizontalContentAlignment="Center"
-                      VerticalContentAlignment="Center"
-                      FontSize="16" BorderThickness="6"
-                      Click="BtnCalculate_Click"/>
               <Button Grid.Column="2"
-                      Content="Tg" VerticalAlignment="Stretch"
+                      Content="Tg"
+                      VerticalAlignment="Stretch"
                       HorizontalAlignment="Stretch"
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"
@@ -275,22 +252,9 @@
                       Click="BtnCalculate_Click"/>
             </Grid>
           </DockPanel>
-          <DockPanel x:Name="NumbersAndOps" Grid.Column="2"
+          <DockPanel Grid.Column="2"
                      Background="#D7D7D7">
-            <Grid ShowGridLines="True">
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-              </Grid.ColumnDefinitions>
-              <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-              </Grid.RowDefinitions>
+            <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*,*,*,*,*">
               <Button Content="C" 
                       VerticalAlignment="Stretch"
                       HorizontalAlignment="Stretch"
@@ -313,7 +277,7 @@
                       FontSize="16" BorderThickness="6"
                       Click="BtnPrefex_Click"/>
               <Button Grid.Row="1"
-                    Content="+" VerticalAlignment="Stretch"
+                      Content="+" VerticalAlignment="Stretch"
                       HorizontalAlignment="Stretch"
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"
@@ -334,7 +298,7 @@
                       FontSize="16" BorderThickness="6"
                       Click="BtnCalculate_Click"/>
               <Button x:Name="Btn1" Grid.Row="2"
-                    Content="1" VerticalAlignment="Stretch"
+                      Content="1" VerticalAlignment="Stretch"
                       HorizontalAlignment="Stretch"
                       HorizontalContentAlignment="Center"
                       VerticalContentAlignment="Center"
@@ -432,7 +396,7 @@
                     Content="Counting Example"
                     Cursor="AppStarting" Opacity="0.8" 
                     BorderThickness="2,2,2,2"
-                    FontSize="24" Foreground="Black"
+                    FontSize="24"
                     Background="#D46AD0"
                     Click="BtnCount_Click"
                     FontFamily="Calibri"
@@ -443,14 +407,12 @@
           <Border BorderBrush="#FF3F3F" BorderThickness="4"/>
         </Grid>
      </Grid>
-     <Grid x:Name="FunctionGrid" Background="White" Grid.Column="1">
+     <Grid x:Name="FunctionGrid" Grid.Column="1">
        <DockPanel Background="#D46AD0" Tapped="Canvas_Tap">
-         <ScrollViewer >
-           <Canvas x:Name="FunctionCanvas" PropertyChanged="Canvas_SizeChanged">
-           </Canvas>
-         </ScrollViewer>       
-       </DockPanel>
-      <Border BorderBrush="#B820E6" BorderThickness="4"/>
+         <Border BorderBrush="#B820E6" BorderThickness="4">
+           <Canvas x:Name="FunctionCanvas" PropertyChanged="Canvas_SizeChanged"/>
+         </Border>
+       </DockPanel>     
      </Grid>      
   </Grid>
 </Window>
