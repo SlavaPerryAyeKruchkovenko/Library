@@ -51,7 +51,7 @@ namespace FunctionBilder.Dekstop.View
 		{
 			if (this.inputBox != null && this.inputBox.Text != null && this.size != this.Bounds)
 			{
-				drawer.Draw(CreateGraphic);
+				this.drawer.Draw(CreateGraphic);
 			}
 			this.size = this.Bounds;
 		}
@@ -62,18 +62,19 @@ namespace FunctionBilder.Dekstop.View
 		}
 		public void Canvas_Tap(object sender, RoutedEventArgs e)
 		{
-			var window = new FunctionWindow(this.inputBox.Text, this.boxes.ToDouble());
+			var window = new FunctionWindow(this.inputBox.Text, new StandartField(default,default), this.boxes.ToDouble());
 			window.Show();
 		}
 		private void CreateGraphic()
 		{
-			if (CheckOnErrors(boxes))
+			if (CheckOnErrors(this.boxes))
 			{
 				this.outputBox.Items = null;
 				this.drawCanvas.Children.Clear();
 
-				this.outputBox.Items = this.drawCanvas.GraphicRender(this.inputBox.Text, this.boxes.ToDouble(), default,
-					Field.StandartScale, Field.StandartGraphicColor());
+				Point layoutSize = new Point(this.drawCanvas.Bounds.Width, this.drawCanvas.Bounds.Height);
+				this.outputBox.Items = this.drawCanvas.GraphicRender
+					(this.inputBox.Text, this.boxes.ToDouble(), new StandartField(default, layoutSize), 1);
 			}
 		}
 		private TextBox[] FoundTextBoxs()

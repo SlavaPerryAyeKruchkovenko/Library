@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Media;
+using FunctionBilder.Dekstop.Model;
 using System.Collections.Generic;
 
 namespace FunctionBilder.Dekstop.ViewModel
@@ -7,31 +8,34 @@ namespace FunctionBilder.Dekstop.ViewModel
 	class Function
 	{
 		private IFunctionDrawer functionDrawer { get; }
-		private Point rangeLocation { get; }
-		private Point layoutSize { get; }
-		private IBrush[] brushes { get; }
-		public Function(IFunctionDrawer _functionDrawer, Point _rangeLocation, Point _canvasSize, IBrush[] _brushes)
+		
+		private Field field { get; }
+		public Function(IFunctionDrawer _functionDrawer,Field _field)
 		{
-			functionDrawer = _functionDrawer;
-			rangeLocation = _rangeLocation;
-			layoutSize = _canvasSize;
-			brushes = _brushes;
+			this.functionDrawer = _functionDrawer;
+			this.field = _field;
 		}
-		public List<Point> Render(Point cycleSize, string function, double range, double scale)
+		public List<Point> Render(string function, double scale,double[] gap)
 		{
+			Point cycleSize = new Point(gap[0], gap[1]);
+			double range = gap[2];
+
+			Point rangeLocation = this.field.BeginOfCountdown;
+			Point layoutSize = this.field.LayoutSize;
+
 			Point[] points = new Point[]
 			{
 				new Point(-layoutSize.X/2-rangeLocation.X,layoutSize.X/2-rangeLocation.X),
 				new Point(layoutSize.X/2,layoutSize.Y/2)+rangeLocation
 			};
-			functionDrawer.DrawLabels(points[0], points[1], scale, true);
+			this.functionDrawer.DrawLabels(points[0], points[1], scale, true, this.field.Ratio);
 
 			points = new Point[]
 			{
 				new Point(-layoutSize.Y/2+rangeLocation.Y,layoutSize.Y/2+rangeLocation.Y),
 				new Point(layoutSize.X/2,layoutSize.Y/2)+rangeLocation
 			};
-			functionDrawer.DrawLabels(points[0], points[1], scale, false);
+			this.functionDrawer.DrawLabels(points[0], points[1], scale, false, this.field.Ratio);
 
 			points = new Point[]
 			{
@@ -39,7 +43,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 				new Point(layoutSize.X, layoutSize.Y / 2+rangeLocation.Y)
 			};
 
-			functionDrawer.DrawLine(points[0], points[1], Brushes.DeepPink);
+			this.functionDrawer.DrawLine(points[0], points[1], this.field.AxisColor, this.field.AxisLineScale);
 
 			points = new Point[]
 			{
@@ -47,7 +51,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 				new Point(layoutSize.X / 2+rangeLocation.X, layoutSize.Y)
 			};
 
-			functionDrawer.DrawLine(points[0], points[1], Brushes.DeepPink);
+			this.functionDrawer.DrawLine(points[0], points[1], this.field.AxisColor,this.field.AxisLineScale);
 
 			points = new Point[]
 			{
@@ -55,11 +59,11 @@ namespace FunctionBilder.Dekstop.ViewModel
 				new Point(layoutSize.X / 2+rangeLocation.X, 0)
 			};
 
-			functionDrawer.DrawArrows(points[0], new Point(10, 10));
+			this.functionDrawer.DrawArrows(points[0], new Point(10, 10), this.field.AxisColor);
 
-			functionDrawer.DrawArrows(points[1], new Point(10, -10));
+			this.functionDrawer.DrawArrows(points[1], new Point(10, -10), this.field.AxisColor);
 
-			return functionDrawer.DrawFunction(cycleSize, range, function, rangeLocation, scale, brushes);
+			return this.functionDrawer.DrawFunction(cycleSize, range, function, scale, this.field);
 		}
 	}
 }
