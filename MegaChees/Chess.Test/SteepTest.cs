@@ -3,7 +3,7 @@ using Xunit;
 
 namespace MegaChess.Test
 {
-	using MegaChessLogic;
+	using MegaChess.Logic;
 	using System.Collections.Generic;
 
 	public class SteepTest
