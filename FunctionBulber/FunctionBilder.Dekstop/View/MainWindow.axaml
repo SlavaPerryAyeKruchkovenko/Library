@@ -114,7 +114,7 @@
           <Border Grid.Row="2" BorderBrush="#FF3F3F"
                   BorderThickness="4"/>
         </Grid>
-        <Grid x:Class="Buttons" ShowGridLines="True" Grid.Row="1">
+        <Grid x:Class="Buttons" Grid.Row="1" >
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>          
