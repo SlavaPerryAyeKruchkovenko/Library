@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Media;
 using FunctionBilder.Dekstop.Model;
 using FunctionBulber.Logic;
@@ -8,46 +7,46 @@ using System.Collections.Generic;
 
 namespace FunctionBilder.Dekstop.ViewModel
 {
-	interface IFunctionDrawer
+	public interface IFunctionDrawer
 	{
 		void DrawLine(Point startLocation, Point finishLocation, IBrush brush, short lineScale);
-		List<Point> DrawFunction(Point gap, double range, string function, double scale, Field field);
+		void DrawFunction(Graphic graphic, string function);
 		void DrawArrows(Point location, Point size,IBrush brush);
 		void DrawLabels(Point gap, Point coordinate, double fontSize, bool isXLine, double ratio);
 	}
 
 	class FunctionDrawer : IFunctionDrawer
 	{
-		private Canvas drawCanvas { get; }
-		public FunctionDrawer(Canvas _canvas)
+		private Field field { get; }
+		public FunctionDrawer(Field _field)
 		{
-			this.drawCanvas = _canvas;
+			this.field = _field;
 		}
 		public void DrawLine(Point startLocation, Point finishLocation, IBrush brush, short lineScale)
 		{
 			Figure figure = new MyLine();
-			this.drawCanvas.Children.Insert(0, figure.Create(new Point[] { startLocation, finishLocation }, brush, lineScale));
+			this.field.Canvas.Children.Insert(0, figure.Create(new Point[] { startLocation, finishLocation }, brush, lineScale));
 		}
-		public List<Point> DrawFunction(Point gap, double range, string function, double scale, Field field)
+		public void DrawFunction(Graphic graphic, string function)
 		{
 			var coordinates = new List<Point>();
 			Point startLinePoint = default;
 
-			Point canvasSize = new Point(this.drawCanvas.Bounds.Width / 2,
-					this.drawCanvas.Bounds.Height / 2) + field.BeginOfCountdown;
+			Point canvasSize = this.field.LayoutSize / 2 + this.field.BeginOfCountdown;
 
 			var RPN = new ReversePolandLogic(function);
 			RPN.StackInitialization();
 
-			for (double i = gap.X; i <= gap.Y; i += range)
+			double range = graphic.gap[2];
+			for (double i = graphic.gap[0]; i <= graphic.gap[1]; i += range)
 			{
 				i = Math.Round(i, range.Length());
 				Point point;
 
-				if (Math.Abs(i * scale + field.BeginOfCountdown.X) < this.drawCanvas.Bounds.Width / 2)
+				if (Math.Abs(i * this.field.Scale + this.field.BeginOfCountdown.X) < this.field.Canvas.Bounds.Width / 2)
 				{
 
-					point = ModelNumerable.YCoordinate(RPN, new double[] { i, i }) * scale;
+					point = ModelNumerable.YCoordinate(RPN, new double[] { i, i }) * this.field.Scale;
 
 					coordinates.Add(point);
 				}
@@ -56,18 +55,18 @@ namespace FunctionBilder.Dekstop.ViewModel
 					continue;
 				}
 
-				if ((double.IsNormal(point.Y) || point.Y == 0) && Math.Abs(point.Y - field.BeginOfCountdown.Y) < this.drawCanvas.Bounds.Height / 2)
+				if ((double.IsNormal(point.Y) || point.Y == 0) && Math.Abs(point.Y - this.field.BeginOfCountdown.Y) < this.field.Canvas.Bounds.Height / 2)
 				{
 
 					Point pointNow = new Point(canvasSize.X + point.X, canvasSize.Y - point.Y);
 
-					DrawPoint(pointNow, field.PointColor, field.Ratio * scale);
+					DrawPoint(pointNow, graphic.PointColor, this.field.Ratio * this.field.Scale);
 
-					if (Math.Abs(Math.Abs(startLinePoint.X - point.X) - range * scale) < range)
+					if (Math.Abs(Math.Abs(startLinePoint.X - point.X) - range * this.field.Scale) < range)
 					{
 						double x = canvasSize.X + startLinePoint.X;
 						double y = canvasSize.Y - startLinePoint.Y;
-						DrawLine(new Point(x, y), pointNow, field.LineColor, field.AxisLineScale);
+						DrawLine(new Point(x, y), pointNow, graphic.LineColor, this.field.AxisLineScale);
 					}
 					startLinePoint = point;
 				}
@@ -76,12 +75,12 @@ namespace FunctionBilder.Dekstop.ViewModel
 					startLinePoint = default;
 				}
 			}
-			return coordinates;
+			DrawAnswer(coordinates);
 		}
 		public void DrawArrows(Point location, Point size,IBrush brush)
 		{
 			Figure figure = new Mypolygon();
-			this.drawCanvas.Children.Insert(0, figure.Create(new Point[] { location, size }, brush, 1));
+			this.field.Canvas.Children.Insert(0, figure.Create(new Point[] { location, size }, brush, 1));
 		}
 		public void DrawLabels(Point gap, Point coordinate, double fontSize, bool isXLine,double ratio)
 		{
@@ -101,12 +100,12 @@ namespace FunctionBilder.Dekstop.ViewModel
 					{
 						coordinate1 = new Point(coordinate.X, coordinate.Y - i);
 					}
-					if (Math.Abs(coordinate1.X) > drawCanvas.Bounds.Width || Math.Abs(coordinate1.Y) > drawCanvas.Bounds.Height)
+					if (Math.Abs(coordinate1.X) > this.field.Canvas.Bounds.Width || Math.Abs(coordinate1.Y) > this.field.Canvas.Bounds.Height)
 					{
 						continue;
 					}
 					string content = (i / fontSize).ToString();
-					this.drawCanvas.Children.Insert(0, controler.Create(coordinate1, content, ratio*fontSize));
+					this.field.Canvas.Children.Insert(0, controler.Create(coordinate1, content, ratio*fontSize));
 				}
 
 			}
@@ -114,7 +113,12 @@ namespace FunctionBilder.Dekstop.ViewModel
 		private void DrawPoint(Point pointNow, IBrush brush, double scale)
 		{
 			Figure figure = new MyEllipse();
-			this.drawCanvas.Children.Insert(0, figure.Create(new Point[] { pointNow }, brush, scale));
+			this.field.Canvas.Children.Insert(0, figure.Create(new Point[] { pointNow }, brush, scale));
+		}
+		private void DrawAnswer(List<Point> points)
+		{
+			if (this.field.Input != null) 
+			this.field.Input.Items = points;
 		}
 	}
 }

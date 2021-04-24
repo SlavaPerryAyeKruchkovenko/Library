@@ -88,8 +88,8 @@ namespace FunctionBilder.Dekstop.View
 			this.canvas.Children.Clear();
 
 			Point size = new Point(this.size.Size.Width, this.size.Size.Height);
-			var myField = new MyField(this.field, this.range, size);
-			this.canvas.GraphicRender(this.function, this.gap, myField, this.zoom);
+			//var myField = new MyField(this.field, this.range, size);
+			//this.canvas.GraphicRender(this.function, this.gap, myField, this.zoom);
 		}
 	}
 }

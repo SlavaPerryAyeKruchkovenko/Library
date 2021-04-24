@@ -1,38 +1,30 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-
+using System.Collections.Generic;
 
 namespace FunctionBilder.Dekstop.Model
 {
-	public abstract class Field
+	public class Field
 	{
 		public readonly short NormalVizualRangeForLabel = -10;
-		public abstract short AxisLineScale { get; }
-		public virtual short Scale { get; }
-		public virtual short FontSize { get; }
-		public virtual bool IsLabelVisible { get; }
+		public readonly double Ratio = 0.4;
+		public short AxisLineScale { get; } = 5;
+		public short Scale { get; } = 40;
+		public short FontSize { get; } = 6;
+		public bool IsLabelVisible { get; }
 		public IBrush AxisColor { get; } = Brushes.DeepPink;
-		public virtual Point BeginOfCountdown { get; }
-		public abstract Point LayoutSize { get; }	
-		public abstract Canvas Canvas { get; }		
-	
-		public Point CountLayoutSize(Canvas canvas)
+		public Point BeginOfCountdown { get; } = default;
+		public Point LayoutSize { get; }
+		public Canvas Canvas { get; }
+		public DataGrid Input { get; }
+		public Field(Canvas canvas,DataGrid input)
 		{
-			return new Point(canvas.Bounds.Width, canvas.Bounds.Height);
+			this.Canvas = canvas;
+			this.LayoutSize = this.CountLayoutSize(this.Canvas);
+			this.Input = input;
 		}
-	}
-
-	public class MyField:Field
-	{
-		public override short AxisLineScale { get; }
-		public override short Scale { get; }
-		public override short FontSize { get; }
-		public override bool IsLabelVisible { get; }
-		public override Point BeginOfCountdown { get; }
-		public override Point LayoutSize { get; }
-		public override Canvas Canvas { get; }
-		public MyField(Canvas canvas, Point newRange, short[] scales,bool isVisible)
+		public Field(Canvas canvas, Point newRange, short[] scales, bool isVisible,DataGrid input)
 		{
 			this.Canvas = canvas;
 
@@ -44,21 +36,12 @@ namespace FunctionBilder.Dekstop.Model
 			this.BeginOfCountdown = newRange;
 
 			this.IsLabelVisible = isVisible;
+
+			this.Input = input;
 		}
-		
-	}
-	public class StandartField:Field
-	{
-		public override short AxisLineScale { get; } = 5;
-		public override short Scale { get; } = 40;
-		public override short FontSize { get; } = 6;		
-		public override Point BeginOfCountdown { get; } = default;
-		public override Point LayoutSize { get; }
-		public override Canvas Canvas { get; }
-		public StandartField(Canvas canvas)
+		public Point CountLayoutSize(Canvas canvas)
 		{
-			this.Canvas = canvas;
-			this.LayoutSize = this.CountLayoutSize(this.Canvas);
+			return new Point(canvas.Bounds.Width, canvas.Bounds.Height);
 		}
 	}
 }

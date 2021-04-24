@@ -11,12 +11,11 @@ namespace FunctionBilder.Dekstop.View
 	public class MainWindow : Window
 	{
 		private IDrawer drawer { get; }
-		private Canvas drawCanvas { get; set; }
-		private DataGrid outputBox { get; }
 		private TextBox inputBox { get; }
 		private TextBox nowBox { get; set; }
 		private TextBox[] boxes { get; }
 		private Rect size { get; set; }
+		private Field field { get; set; }
 
 		public MainWindow()
 		{
@@ -24,13 +23,12 @@ namespace FunctionBilder.Dekstop.View
 #if DEBUG
 			this.AttachDevTools();
 #endif
-			this.outputBox = this.FindControl<DataGrid>("OutputDataGrid");
 			this.inputBox = this.FindControl<TextBox>("FunctuionBox");
-			this.drawCanvas = this.FindControl<Canvas>("FunctionCanvas");
 			this.nowBox = inputBox;
 			this.drawer = new Drawer(inputBox);
 			this.boxes = FoundTextBoxs();
 			this.size = Bounds;
+			this.field = new Field(this.FindControl<Canvas>("FunctionCanvas"), this.FindControl<DataGrid>("OutputDataGrid"));
 		}
 		private void InitializeComponent()
 		{
@@ -62,19 +60,22 @@ namespace FunctionBilder.Dekstop.View
 		}
 		public void Canvas_Tap(object sender, RoutedEventArgs e)
 		{
-			var window = new FunctionWindow(this.inputBox.Text, new StandartField(default,default), this.boxes.ToDouble());
+			var window = new FunctionWindow(this.inputBox.Text, new Field(default,default), this.boxes.ToDouble());
 			window.Show();
 		}
 		private void CreateGraphic()
 		{
 			if (CheckOnErrors(this.boxes))
 			{
-				this.outputBox.Items = null;
-				this.drawCanvas.Children.Clear();
+				this.field.Input.Items = null;
+				this.field.Canvas.Children.Clear();
+				this.field = new Field(this.field.Canvas, this.field.Input);
 
-				Point layoutSize = new Point(this.drawCanvas.Bounds.Width, this.drawCanvas.Bounds.Height);
-				this.outputBox.Items = this.drawCanvas.GraphicRender
-					(this.inputBox.Text, this.boxes.ToDouble(), new StandartField(default, layoutSize), 1);
+				var graphic = new Graphic(this.boxes.ToDouble());
+				var function = new Function(new FunctionDrawer(this.field),this.inputBox.Text,graphic);
+				function.Render(this.field);
+				//this.drawCanvas.GraphicRender
+				//	(this.inputBox.Text, this.boxes.ToDouble(), new StandartField(default, layoutSize), 1);
 			}
 		}
 		private TextBox[] FoundTextBoxs()
