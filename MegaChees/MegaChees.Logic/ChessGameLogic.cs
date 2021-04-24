@@ -10,15 +10,15 @@ namespace MegaChess.Logic
 		private Board board { get; }
 		public ChessGameLogic(IDrawer _drawer, int _startX, int _startY)
 		{
-			drawer = _drawer;
-			board = new Board();
-			startX = _startX;
-			startY = _startY;
+			this.drawer = _drawer;
+			this.board = new Board();
+			this.startX = _startX;
+			this.startY = _startY;
 		}
 
 		public void ChessLogic(bool isNewGame)
 		{
-			drawer.CursorVisible(true);
+			this.drawer.CursorVisible(true);
 			if (isNewGame)
 			{
 				NewGamePlay();
@@ -45,8 +45,8 @@ namespace MegaChess.Logic
 		}
 		private void SearchFigure(ref int x, ref int y, out char a, out char b)
 		{
-			b = drawer.ConvertToTKeyFormat(x, y, out a);
-			if (board.board[a][b] != null && board.board[a][b].IsMyFigura)
+			b = this.drawer.ConvertToTKeyFormat(x, y, out a);
+			if (this.board.board[a][b] != null && this.board.board[a][b].IsMyFigura)
 				return;
 			else
 				NewGamePlay();
