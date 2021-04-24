@@ -12,7 +12,7 @@ namespace FunctionBilder.Dekstop.Model
 		public virtual short Scale { get; }
 		public virtual short FontSize { get; }
 		public virtual bool IsLabelVisible { get; }
-		public abstract IBrush AxisColor { get; }
+		public IBrush AxisColor { get; } = Brushes.DeepPink;
 		public virtual Point BeginOfCountdown { get; }
 		public abstract Point LayoutSize { get; }	
 		public abstract Canvas Canvas { get; }		
@@ -29,14 +29,12 @@ namespace FunctionBilder.Dekstop.Model
 		public override short Scale { get; }
 		public override short FontSize { get; }
 		public override bool IsLabelVisible { get; }
-		public override IBrush AxisColor { get; }
 		public override Point BeginOfCountdown { get; }
 		public override Point LayoutSize { get; }
 		public override Canvas Canvas { get; }
-		public MyField(Canvas canvas, IBrush axisColor, Point newRange, short[] scales,bool isVisible)
+		public MyField(Canvas canvas, Point newRange, short[] scales,bool isVisible)
 		{
 			this.Canvas = canvas;
-			this.AxisColor = axisColor;
 
 			this.AxisLineScale = scales[0];
 			this.Scale = scales[1];
@@ -54,7 +52,6 @@ namespace FunctionBilder.Dekstop.Model
 		public override short AxisLineScale { get; } = 5;
 		public override short Scale { get; } = 40;
 		public override short FontSize { get; } = 6;		
-		public override IBrush AxisColor { get; } = Brushes.DeepPink;
 		public override Point BeginOfCountdown { get; } = default;
 		public override Point LayoutSize { get; }
 		public override Canvas Canvas { get; }
