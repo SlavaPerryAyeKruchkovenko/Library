@@ -21,6 +21,11 @@ namespace FunctionBilder.Dekstop
 			this.IsVisibleElipse = isVisible;
 			this.gap = _gap;
 		}
+		public Graphic(bool isVisible, double[] _gap)
+		{
+			this.IsVisibleElipse = isVisible;
+			this.gap = _gap;
+		}
 		public Graphic(double[] _gap)
 		{
 			this.gap = _gap;

@@ -16,25 +16,25 @@
     </DockPanel>  
    <Grid ColumnDefinitions="*,*" Background="#D46AA0" Grid.Row="1">
      <Button Grid.Column="0" Content="Add new function" Click="AddNewGraphick"
-             Name="addBtn" Background="Gray" Grid.ColumnSpan="1"
+             Name="AddBtn" Background="Gray" Grid.ColumnSpan="1"
              VerticalAlignment="Stretch"
              HorizontalAlignment="Stretch"
              VerticalContentAlignment="Center"
              HorizontalContentAlignment="Center">       
      </Button>
      <Grid ColumnDefinitions="*,8*,*,8*" Grid.Column="1">
-       <CheckBox x:Name="IsNeedEllipse" VerticalAlignment="Center"/>
+       <CheckBox x:Name="IsNeedEllipse" Click="ClickCheckBoxEllipse" VerticalAlignment="Center"/>
        <Label VerticalAlignment="Center" HorizontalContentAlignment="Center"
           HorizontalAlignment="Left" VerticalContentAlignment="Center"
           Grid.Column="1">
          Point Visibile
        </Label>
-       <CheckBox x:Name="IsNeedLabel" VerticalAlignment="Center" Grid.Column="2"/>
-       <Label VerticalAlignment="Center" HorizontalContentAlignment="Center"
+       <CheckBox x:Name="IsNeedLabel" Click="ClickCheckBoxLabel" VerticalAlignment="Center" Grid.Column="2"/>
+        <Label VerticalAlignment="Center" HorizontalContentAlignment="Center"
           HorizontalAlignment="Left" VerticalContentAlignment="Center"
           Grid.Column="3">
          Coordinates Visibile
-       </Label>
+        </Label>
      </Grid>      
    </Grid>  
   </Grid>

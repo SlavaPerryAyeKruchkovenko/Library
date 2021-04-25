@@ -16,6 +16,7 @@ namespace FunctionBilder.Dekstop.View
 		private TextBox[] boxes { get; }
 		private Rect size { get; set; }
 		private Field field { get; set; }
+		private Function function { get; set; }
 
 		public MainWindow()
 		{
@@ -60,24 +61,9 @@ namespace FunctionBilder.Dekstop.View
 		}
 		public void Canvas_Tap(object sender, RoutedEventArgs e)
 		{
-			var window = new FunctionWindow(this.inputBox.Text, new Field(default,default), this.boxes.ToDouble());
+			var window = new FunctionWindow(this.function);
 			window.Show();
-		}
-		private void CreateGraphic()
-		{
-			if (CheckOnErrors(this.boxes))
-			{
-				this.field.Input.Items = null;
-				this.field.Canvas.Children.Clear();
-				this.field = new Field(this.field.Canvas, this.field.Input);
-
-				var graphic = new Graphic(this.boxes.ToDouble());
-				var function = new Function(new FunctionDrawer(this.field),this.inputBox.Text,graphic);
-				function.Render(this.field);
-				//this.drawCanvas.GraphicRender
-				//	(this.inputBox.Text, this.boxes.ToDouble(), new StandartField(default, layoutSize), 1);
-			}
-		}
+		}	
 		private TextBox[] FoundTextBoxs()
 		{
 			var startBox = this.FindControl<TextBox>("StartNum");
@@ -94,6 +80,20 @@ namespace FunctionBilder.Dekstop.View
 			}
 			return isDouble;
 		}
+		private void CreateGraphic()
+		{
+			if (CheckOnErrors(this.boxes))
+			{
+				this.field.Input.Items = null;
+				this.field.Canvas.Children.Clear();
 
+				var scales = new short[] { 1, 1, 1 };
+				this.field = new Field(this.field.Canvas, default, scales, false, this.field.Input);
+
+				var graphic = new Graphic(false, this.boxes.ToDouble());
+				this.function = new Function(this.inputBox.Text, graphic);
+				this.function.Render(this.field);
+			}
+		}
 	}
 }

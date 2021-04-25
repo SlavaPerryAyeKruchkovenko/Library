@@ -38,6 +38,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 			RPN.StackInitialization();
 
 			double range = graphic.gap[2];
+
 			for (double i = graphic.gap[0]; i <= graphic.gap[1]; i += range)
 			{
 				i = Math.Round(i, range.Length());
@@ -45,9 +46,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 
 				if (Math.Abs(i * this.field.Scale + this.field.BeginOfCountdown.X) < this.field.Canvas.Bounds.Width / 2)
 				{
-
 					point = ModelNumerable.YCoordinate(RPN, new double[] { i, i }) * this.field.Scale;
-
 					coordinates.Add(point);
 				}
 				else
@@ -60,8 +59,10 @@ namespace FunctionBilder.Dekstop.ViewModel
 
 					Point pointNow = new Point(canvasSize.X + point.X, canvasSize.Y - point.Y);
 
-					DrawPoint(pointNow, graphic.PointColor, this.field.Ratio * this.field.Scale);
-
+					if(graphic.IsVisibleElipse)
+					{
+						DrawPoint(pointNow, graphic.PointColor, this.field.Ratio * this.field.Scale);
+					}					
 					if (Math.Abs(Math.Abs(startLinePoint.X - point.X) - range * this.field.Scale) < range)
 					{
 						double x = canvasSize.X + startLinePoint.X;

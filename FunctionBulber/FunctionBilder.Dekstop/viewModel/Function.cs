@@ -7,35 +7,39 @@ namespace FunctionBilder.Dekstop.ViewModel
 {
 	public class Function
 	{
-		private IFunctionDrawer functionDrawer { get; }
-		private string function { get; }
-		private Graphic graphic { get; }
+		private IFunctionDrawer functionDrawer { get; set; }
+		public string FunctionText { get; }
+		public Graphic Graphic { get; }
 		
-		public Function(IFunctionDrawer _functionDrawer,string _function,Graphic _graphic)
+		public Function(string _function,Graphic _graphic)
 		{
-			this.functionDrawer = _functionDrawer;
-			this.function = _function;
-			this.graphic = _graphic;
+			this.FunctionText = _function;
+			this.Graphic = _graphic;
 		}
 		public void Render(Field field)
 		{
+			this.functionDrawer = new FunctionDrawer(field);
+
 			Point rangeLocation = field.BeginOfCountdown;
 			Point layoutSize = field.LayoutSize;
+			Point[] points;
 
-			Point[] points = new Point[]
-			{
-				new Point(-layoutSize.X/2-rangeLocation.X,layoutSize.X/2-rangeLocation.X),
-				new Point(layoutSize.X/2,layoutSize.Y/2)+rangeLocation
-			};
-			this.functionDrawer.DrawLabels(points[0], points[1], field.Scale, true, field.Ratio);
-
-			points = new Point[]
-			{
-				new Point(-layoutSize.Y/2+rangeLocation.Y,layoutSize.Y/2+rangeLocation.Y),
-				new Point(layoutSize.X/2,layoutSize.Y/2)+rangeLocation
-			};
-			this.functionDrawer.DrawLabels(points[0], points[1], field.Scale, false, field.Ratio);
-
+			if (field.IsLabelVisible)
+			{	
+				points = new Point[]		
+				{
+					new Point(-layoutSize.X/2-rangeLocation.X,layoutSize.X/2-rangeLocation.X),
+					new Point(layoutSize.X/2,layoutSize.Y/2)+rangeLocation
+				};
+				this.functionDrawer.DrawLabels(points[0], points[1], field.Scale, true, field.Ratio);
+			
+				points = new Point[]
+				{
+					new Point(-layoutSize.Y/2+rangeLocation.Y,layoutSize.Y/2+rangeLocation.Y),
+					new Point(layoutSize.X/2,layoutSize.Y/2)+rangeLocation
+				};
+				this.functionDrawer.DrawLabels(points[0], points[1], field.Scale, false, field.Ratio);
+			}			
 			points = new Point[]
 			{
 				new Point(0, layoutSize.Y / 2+rangeLocation.Y),
@@ -62,7 +66,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 
 			this.functionDrawer.DrawArrows(points[1], new Point(10, -10), field.AxisColor);
 
-			this.functionDrawer.DrawFunction(this.graphic,this.function);
+			this.functionDrawer.DrawFunction(this.Graphic,this.FunctionText);
 		}
 	}
 }
