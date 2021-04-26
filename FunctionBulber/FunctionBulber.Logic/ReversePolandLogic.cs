@@ -41,18 +41,18 @@ namespace FunctionBulber.Logic
 		private Stack<Element> reversePolandNotation { get; set; }
 		private Stack<Element> signs { get; set; }
 		private IEnumerable<Type> operations { get; set; }
-		private string example { get; }
+		private string function { get; }
 		public Stack<Element> GetStack() => this.reversePolandNotation;
-		public ReversePolandLogic(string input)
+		public ReversePolandLogic(string _function)
 		{
-			this.example = input.Replace(" ", "").Trim().ToLower();
-			this.example = this.example.Replace(":", ";");
+			this.function = _function.Replace(" ", "").Trim().ToLower();
+			this.function = this.function.Replace(":", ";");
 
 			this.reversePolandNotation = new Stack<Element>();
 			this.signs = new Stack<Element>();
 
-			if (FormatError.CheckOnPriority(this.example))
-				this.example = example.ReplaceSeparator();
+			if (FormatError.CheckOnPriority(this.function))
+				this.function = function.ReplaceSeparator();
 
 			this.operations = Assembly
 			.GetAssembly(typeof(Operations))
@@ -70,37 +70,37 @@ namespace FunctionBulber.Logic
 
 		public void StackInitialization()
 		{
-			if (this.example == null)
+			if (this.function == null)
 			{
 				string error = "Пустое выражение";
 				_ = new FormatError(error);
 			}
-			for (int i = 0; i < this.example.Length; i++)
+			for (int i = 0; i < this.function.Length; i++)
 			{
 
-				if (Char.IsDigit(this.example[i]))
+				if (Char.IsDigit(this.function[i]))
 				{
-					Element element = new Element(null, null, FoundNum(ref i, this.example));
+					Element element = new Element(null, null, FoundNum(ref i, this.function));
 					this.reversePolandNotation.Push(element);
 				}
-				else if (IsConsts(this.example, ref i, out double num))
+				else if (IsConsts(this.function, ref i, out double num))
 				{
 					Element element = new Element(null, null, num);
 					this.reversePolandNotation.Push(element);
 				}
-				else if (variables.Contains(this.example[i].ToString()))
+				else if (variables.Contains(this.function[i].ToString()))
 				{
-					Element element = new Element(null, this.example[i].ToString(), 0);
+					Element element = new Element(null, this.function[i].ToString(), 0);
 					this.reversePolandNotation.Push(element);
 				}
-				else if (this.example[i] == '-' && (i == 0 || FoundPostfix(this.example[i - 1])))
+				else if (this.function[i] == '-' && (i == 0 || FoundPostfix(this.function[i - 1])))
 				{
 					Element element = new Element(new Postfix(), null, 0);
 					PushOperation(element, i);
 				}
-				else if (IsOperation(i, this.example, out int shift))
+				else if (IsOperation(i, this.function, out int shift))
 				{
-					Element element = new Element(FoundOpperation(this.example[i..(i + shift)], this.operations), null, 0);
+					Element element = new Element(FoundOpperation(this.function[i..(i + shift)], this.operations), null, 0);
 					i += shift - 1;
 					PushOperation(element, i);
 				}
@@ -173,7 +173,7 @@ namespace FunctionBulber.Logic
 					_ = new FormatError(error);
 				}
 			}
-			else if (opperation.Opperation.Name == "(" && index == example.Length - 1)
+			else if (opperation.Opperation.Name == "(" && index == function.Length - 1)
 			{
 				string error = "Выражение не может заканчиваться открывающей скобочкой";
 				_ = new FormatError(error);

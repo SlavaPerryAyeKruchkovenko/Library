@@ -1,4 +1,5 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
 using System;
 
 namespace FunctionBilder.Dekstop.Model

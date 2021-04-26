@@ -32,8 +32,8 @@ namespace FunctionBilder.Dekstop.Model
 			this.Scale = scales[1];
 			this.FontSize = scales[2];
 
-			this.LayoutSize = this.CountLayoutSize(this.Canvas);
 			this.BeginOfCountdown = newRange;
+			this.LayoutSize = this.CountLayoutSize(this.Canvas);		
 
 			this.IsLabelVisible = isVisible;
 
