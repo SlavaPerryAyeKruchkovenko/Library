@@ -22,8 +22,8 @@ namespace FunctionBilder.Dekstop.View
 		private Rect size { get; set; }
 		private short fontSize { get; set; }
 		private CheckBox labelVisible { get; }
-		private CheckBox ellipseVisible { get; }
 		private Slider slider { get; }
+		private bool isPressed { get; set; } = false;
 #pragma warning disable CS8618 // ѕоле, не допускающее значени€ NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. ¬озможно, стоит объ€вить поле как допускающее значени€ NULL.
 		public FunctionWindow()
 #pragma warning restore CS8618 // ѕоле, не допускающее значени€ NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. ¬озможно, стоит объ€вить поле как допускающее значени€ NULL.
@@ -39,7 +39,6 @@ namespace FunctionBilder.Dekstop.View
 
 			this.field = new Field(this.FindControl<Canvas>("BigFunctionCanvas"), null);
 			this.labelVisible = this.FindControl<CheckBox>("IsNeedLabel");
-			this.ellipseVisible = this.FindControl<CheckBox>("IsNeedEllipse");
 			this.slider = this.FindControl<Slider>("sliderScale");
 			this.zoom = this.field.Scale;
 			this.fontSize = this.field.FontSize;
@@ -59,12 +58,17 @@ namespace FunctionBilder.Dekstop.View
 		}
 		public void MousePress(object sender, PointerPressedEventArgs e)
 		{
+			this.isPressed = true;
 			this.range -= e.GetCurrentPoint(this.field.Canvas).Position;
 		}
 		public void MouseUnpress(object sender, PointerReleasedEventArgs e)
 		{
-			this.range += e.GetCurrentPoint(this.field.Canvas).Position;
-			this.drawer.Draw(CreateGraphic);
+			if(this.isPressed)
+			{
+				this.range += e.GetCurrentPoint(this.field.Canvas).Position;
+				this.drawer.Draw(CreateGraphic);
+			}
+			this.isPressed = false;
 		}
 		public void AddNewGraphick(object sender, RoutedEventArgs e)
 		{
@@ -89,7 +93,7 @@ namespace FunctionBilder.Dekstop.View
 		{
 			for (int i = 0; i < this.functions.Count;i++)
 			{
-				var graphic = new Graphic(this.functions[i].Graphic.IsVisibleElipse == true ? false : true, this.functions[i].Graphic.gap);
+				var graphic = new Graphic(this.functions[i].Graphic.IsVisibleElipse != true, this.functions[i].Graphic.gap);
 				this.functions[i] = new Function(this.functions[i].FunctionText, graphic);
 			}
 			this.drawer.Draw(CreateGraphic);
@@ -98,7 +102,7 @@ namespace FunctionBilder.Dekstop.View
 		{
 			var myToolTip = new MyToolTip();
 			string content = "";
-			double x = this.field.LayoutSize.X + this.range.X;
+			double x = (this.field.LayoutSize.X + this.range.X)/this.zoom;
 			Point cursor = e.GetCurrentPoint(this.field.Canvas).Position;
 
 			foreach (var item in this.functions)
@@ -108,16 +112,18 @@ namespace FunctionBilder.Dekstop.View
 				Point point = ModelNumerable.YCoordinate(RPN, new double[] { x });
 				content += item.FunctionText;
 
-				if (Math.Abs(cursor.Y - point.Y) < 5)
+				if (Math.Abs(cursor.Y - point.Y) < this.zoom)
 				{
 					content += " " + point.Y.ToString() + "\n";
 				}
 				else
 				{
-					content += "Ќе имеет значени€ в данной точке" + "\n";
+					content += " Ќе имеет значени€ в данной точке" + "\n";
 				}			
 			}
-			this.field.Canvas.Children.Insert(0, myToolTip.Create(cursor, content, this.fontSize));			
+
+			ToolTip.SetTip(this.field.Canvas,myToolTip.Create(cursor, content, this.fontSize));
+			ToolTip.SetIsOpen(this.field.Canvas, true);
 		}		
 		static void InstalizeWindow(FunctionWindow window)
 		{

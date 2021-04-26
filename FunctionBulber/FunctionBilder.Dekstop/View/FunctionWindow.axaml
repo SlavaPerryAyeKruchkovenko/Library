@@ -11,18 +11,25 @@
   <Grid RowDefinitions="9*,*">
     <DockPanel  PointerPressed="MousePress" PointerReleased="MouseUnpress">   
       <Canvas x:Name="BigFunctionCanvas" PropertyChanged="Canvas_SizeChanged"
-              PointerWheelChanged="ZoomGraphick" PointerEnter="FocusCoordinate"
+              PointerWheelChanged="ZoomGraphick"
               Background="#D46AD0">
       </Canvas>
     </DockPanel>  
    <Grid ColumnDefinitions="*,*" Background="#D46AA0" Grid.Row="1">
-     <Button Grid.Column="0" Content="Add new function" Click="AddNewGraphick"
-             Name="AddBtn" Background="Gray" Grid.ColumnSpan="1"
-             VerticalAlignment="Stretch"
-             HorizontalAlignment="Stretch"
-             VerticalContentAlignment="Center"
-             HorizontalContentAlignment="Center">       
-     </Button>
+     <Grid ColumnDefinitions="*,*">
+      <Button Grid.Column="0" Content="Add new function" Click="AddNewGraphick"
+              Background="Gray" Grid.ColumnSpan="1"
+              VerticalAlignment="Stretch"
+              HorizontalAlignment="Stretch"
+              VerticalContentAlignment="Center"
+              HorizontalContentAlignment="Center"/>
+      <Button Grid.Column="1" Content="Delete function" 
+              Background="Gray" Grid.ColumnSpan="1"
+              VerticalAlignment="Stretch"
+              HorizontalAlignment="Stretch"
+              VerticalContentAlignment="Center"
+              HorizontalContentAlignment="Center"/>   
+     </Grid>
      <Grid ColumnDefinitions="*,4*,*,4*,10*" Grid.Column="1">
        <CheckBox x:Name="IsNeedEllipse" Click="ClickCheckBoxEllipse" VerticalAlignment="Center"/>
        <Label VerticalAlignment="Center" HorizontalContentAlignment="Center"
