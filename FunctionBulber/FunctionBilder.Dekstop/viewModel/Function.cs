@@ -1,6 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Media;
 using FunctionBilder.Dekstop.Model;
+using FunctionBulber.Logic;
+using System;
 using System.Collections.Generic;
 
 namespace FunctionBilder.Dekstop.ViewModel
@@ -77,6 +79,25 @@ namespace FunctionBilder.Dekstop.ViewModel
 				this.Graphic = new Graphic(false, new double[] { -3, 3, 0.01 });
 				this.FunctionText = "Sqrt(sin(x) ^ 2) + 5 * e ^ (-x ^ 100) * cos(x)";
 			}
+		}
+		public string GetCoordinateInPoint(Point pointNow)
+		{
+			string content = "";
+			var RPN = new ReversePolandLogic(this.FunctionText);
+			RPN.StackInitialization();
+			Point point = ModelNumerable.YCoordinate(RPN, new double[] { pointNow.X });
+			content += this.FunctionText;
+
+			if (Math.Abs(-1 * pointNow.Y - point.Y) < 0.5)
+			{
+				content += " в точке " + Math.Round(point.X, 2).ToString();
+				content += " ~ " + Math.Round(point.Y, 2).ToString() + "\n";
+			}
+			else
+			{
+				content += " Не имеет значения в данной точке" + "\n";
+			}
+			return content;
 		}
 	}
 }

@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using FunctionBilder.Dekstop.Model;
@@ -64,7 +65,12 @@ namespace FunctionBilder.Dekstop.View
 		{
 			var window = new FunctionWindow(this.function);
 			window.Show();
-		}	
+		}
+		public void PressEnter(object sender, KeyEventArgs e)
+		{
+			if (e.Key.Equals(Key.Enter))
+				this.drawer.Draw(CreateGraphic);
+		}
 		private TextBox[] FoundTextBoxs()
 		{
 			var startBox = this.FindControl<TextBox>("StartNum");

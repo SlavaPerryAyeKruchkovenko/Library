@@ -117,20 +117,7 @@ namespace FunctionBilder.Dekstop.View
 
 			foreach (var item in this.functions)
 			{
-				var RPN = new ReversePolandLogic(item.FunctionText);
-				RPN.StackInitialization();
-				Point point = ModelNumerable.YCoordinate(RPN, new double[] { pointNow.X });
-				content += item.FunctionText;
-
-				if (Math.Abs(-1 * pointNow.Y - point.Y) < 1)
-				{
-					content += " в точке " + Math.Round(point.X, 2).ToString();
-					content += " ~ " + Math.Round(point.Y, 2).ToString() + "\n";
-				}
-				else
-				{
-					content += " Ќе имеет значени€ в данной точке" + "\n";
-				}
+				content += item.GetCoordinateInPoint(pointNow);
 			}
 			ToolTip.SetTip(this.field.Canvas, myToolTip.Create(pointNow, content, 16));
 			ToolTip.SetIsOpen(this.field.Canvas, false);
@@ -142,7 +129,8 @@ namespace FunctionBilder.Dekstop.View
 #if DEBUG
 			window.AttachDevTools();
 #endif
-			window.range = default;		
+			window.range = default;
+			window.size = default;
 		}
 		private void CreateGraphic()
 		{

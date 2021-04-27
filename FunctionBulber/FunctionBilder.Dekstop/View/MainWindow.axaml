@@ -7,7 +7,8 @@
         Title="Calculator"
         WindowState="Normal"
         WindowStartupLocation="CenterScreen"
-        Icon="/icons/Icon.ico">
+        Icon="/icons/Icon.ico"
+        KeyUp="PressEnter">
   <Window.Styles>
     <Style Selector="Button.visual">
       <Setter Property="VerticalAlignment" Value="Stretch"/>
