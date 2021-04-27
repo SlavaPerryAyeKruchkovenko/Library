@@ -4,5 +4,18 @@
   <Application.Styles>
     <FluentTheme Mode="Light"/>
     <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+    <Style Selector="Button.BigButton">
+      <Setter Property="VerticalAlignment" Value="Stretch"/>
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+      <Setter Property="Cursor" Value="AppStarting"/>
+      <Setter Property="Opacity" Value="0.8"/>
+      <Setter Property="Background" Value="#D46AD0"/>
+      <Setter Property="FontSize" Value="24"/>
+      <Setter Property="BorderThickness" Value="2,2,2,2"/>
+      <Setter Property="FontFamily" Value="Calibri"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    </Style>
   </Application.Styles>
 </Application>

@@ -30,8 +30,7 @@
       <Setter Property="FontFamily" Value="Calibri"/>
       <Setter Property="Background" Value="#FF9797"/>
     </Style>
-    <Style Selector="Label.shortcut">
-      
+    <Style Selector="Label.shortcut">      
       <Setter Property="FontFamily" Value="Calibri"/>
       <Setter Property="FontWeight" Value="Bold"/>
       <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -222,18 +221,9 @@
           <DockPanel Background="#9B3475" 
                      VerticalAlignment="Stretch"
                      HorizontalAlignment="Stretch">
-            <Button x:Name="InputBtn" 
-                    VerticalAlignment="Stretch"
-                    HorizontalAlignment="Stretch"
-                    Content="Counting Example"
-                    Cursor="AppStarting" Opacity="0.8" 
-                    BorderThickness="2,2,2,2"
-                    FontSize="24"
-                    Background="#D46AD0"
-                    Click="BtnCount_Click"
-                    FontFamily="Calibri"
-                    FontWeight="Bold"
-                    HorizontalContentAlignment="Center">
+            <Button x:Name="InputBtn" Classes="BigButton"  
+                    Content="Count Function"
+                    Click="BtnCount_Click">
             </Button>
           </DockPanel>
           <Border Classes="outline"/>

@@ -70,9 +70,13 @@ namespace FunctionBilder.Dekstop.View
 			}
 			this.isPressed = false;
 		}
-		public void AddNewGraphick(object sender, RoutedEventArgs e)
+		public void AddNewGraphic(object sender, RoutedEventArgs e)
 		{
 			throw new Exception("Савелий лох");
+		}
+		public void DeleteAnyGraphic(object sender, RoutedEventArgs e)
+		{
+			throw new Exception("Савелий и тут Лох");
 		}
 		public void ZoomGraphick(object sender, PointerWheelEventArgs e)
 		{
