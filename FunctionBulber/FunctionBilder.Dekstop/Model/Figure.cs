@@ -86,6 +86,7 @@ namespace FunctionBilder.Dekstop.Model
 				Content = content,
 				FontSize = fontSize,
 				IsVisible = true,
+				BorderThickness = new Thickness(4),
 				Margin = new Thickness(coordinate.X,coordinate.Y)
 			};
 			return myToolTip;

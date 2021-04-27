@@ -8,18 +8,19 @@ namespace FunctionBilder.Dekstop.ViewModel
 	public class Function
 	{
 		private IFunctionDrawer functionDrawer { get; set; }
-		public string FunctionText { get; }
-		public Graphic Graphic { get; }
+		public string FunctionText { get; private set; }
+		public Graphic Graphic { get; private set; }
 		
 		public Function(string _function,Graphic _graphic)
 		{
 			this.FunctionText = _function;
 			this.Graphic = _graphic;
-		}
+		}		
 		public void Render(Field field)
 		{
 			this.functionDrawer = new FunctionDrawer(field);
 
+			ChangeGraphic();
 			Point rangeLocation = field.BeginOfCountdown;
 			Point layoutSize = field.LayoutSize;
 			Point[] points;
@@ -67,6 +68,15 @@ namespace FunctionBilder.Dekstop.ViewModel
 			this.functionDrawer.DrawArrows(points[1], new Point(10, -10), field.AxisColor);
 
 			this.functionDrawer.DrawFunction(this.Graphic,this.FunctionText);
+		}
+		private static List<string> dicks = new List<string> { "dick", "член", "пиписька", "хуй", "cock", "pennis" };
+		private void ChangeGraphic()
+		{
+			if (dicks.Contains(this.FunctionText.Trim()))
+			{
+				this.Graphic = new Graphic(false, new double[] { -3, 3, 0.01 });
+				this.FunctionText = "Sqrt(sin(x) ^ 2) + 5 * e ^ (-x ^ 100) * cos(x)";
+			}
 		}
 	}
 }

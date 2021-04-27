@@ -19,10 +19,11 @@ namespace FunctionBilder.Dekstop.View
 		private short zoom { get; set; }
 		private Field field { get; set; }
 		private List<Function> functions { get; }
-		private Rect size { get; set; }
 		private short fontSize { get; set; }
+		private Rect size { get; set; }
 		private CheckBox labelVisible { get; }
 		private Slider slider { get; }
+		private Point lastCutrsorPosition { get; set; }
 		private bool isPressed { get; set; } = false;
 #pragma warning disable CS8618 // ѕоле, не допускающее значени€ NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. ¬озможно, стоит объ€вить поле как допускающее значени€ NULL.
 		public FunctionWindow()
@@ -43,7 +44,7 @@ namespace FunctionBilder.Dekstop.View
 			this.zoom = this.field.Scale;
 			this.fontSize = this.field.FontSize;
 
-			this.drawer = new Drawer(new object());							
+			this.drawer = new Drawer(new object());
 		}
 		private void InitializeComponent()
 		{
@@ -103,31 +104,37 @@ namespace FunctionBilder.Dekstop.View
 			this.drawer.Draw(CreateGraphic);
 		}
 		public void FocusCoordinate(object sender, PointerEventArgs e)
-		{
+		{								
+			Point cursor = e.GetCurrentPoint(this.field.Canvas).Position;
+			if (Math.Abs(this.lastCutrsorPosition.X - cursor.X) < 10 && Math.Abs(this.lastCutrsorPosition.Y - cursor.Y) < 10)
+			{
+				ToolTip.SetIsOpen(this.field.Canvas, true);
+				return;
+			}
+			Point pointNow = (cursor - this.range - this.field.LayoutSize / 2) / this.zoom;
 			var myToolTip = new MyToolTip();
 			string content = "";
-			double x = (this.field.LayoutSize.X + this.range.X)/this.zoom;
-			Point cursor = e.GetCurrentPoint(this.field.Canvas).Position;
 
 			foreach (var item in this.functions)
 			{
 				var RPN = new ReversePolandLogic(item.FunctionText);
 				RPN.StackInitialization();
-				Point point = ModelNumerable.YCoordinate(RPN, new double[] { x });
+				Point point = ModelNumerable.YCoordinate(RPN, new double[] { pointNow.X });
 				content += item.FunctionText;
 
-				if (Math.Abs(cursor.Y - point.Y) < this.zoom)
+				if (Math.Abs(-1 * pointNow.Y - point.Y) < 1)
 				{
-					content += " " + point.Y.ToString() + "\n";
+					content += " в точке " + Math.Round(point.X, 2).ToString();
+					content += " ~ " + Math.Round(point.Y, 2).ToString() + "\n";
 				}
 				else
 				{
 					content += " Ќе имеет значени€ в данной точке" + "\n";
-				}			
+				}
 			}
-
-			ToolTip.SetTip(this.field.Canvas,myToolTip.Create(cursor, content, this.fontSize));
-			ToolTip.SetIsOpen(this.field.Canvas, true);
+			ToolTip.SetTip(this.field.Canvas, myToolTip.Create(pointNow, content, 16));
+			ToolTip.SetIsOpen(this.field.Canvas, false);
+			this.lastCutrsorPosition = cursor;
 		}		
 		static void InstalizeWindow(FunctionWindow window)
 		{
@@ -135,7 +142,6 @@ namespace FunctionBilder.Dekstop.View
 #if DEBUG
 			window.AttachDevTools();
 #endif
-			window.size = default;
 			window.range = default;		
 		}
 		private void CreateGraphic()

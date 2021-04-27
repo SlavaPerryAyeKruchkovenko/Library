@@ -5,6 +5,7 @@ using Avalonia.Markup.Xaml;
 using FunctionBilder.Dekstop.Model;
 using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
+using System.Collections.Generic;
 
 namespace FunctionBilder.Dekstop.View
 {
@@ -79,19 +80,19 @@ namespace FunctionBilder.Dekstop.View
 				isDouble = NaNError.CanConvertToDouble(tBox.Text);
 			}
 			return isDouble;
-		}
+		}		
 		private void CreateGraphic()
-		{
+		{			
 			if (CheckOnErrors(this.boxes))
 			{
 				this.field.Input.Items = null;
 				this.field.Canvas.Children.Clear();
 
 				var scales = new short[] { 1, 1, 1 };
-				this.field = new Field(this.field.Canvas, default, scales, false, this.field.Input);
-
+				this.field = new Field(this.field.Canvas, default, scales, true, this.field.Input);
+				
 				var graphic = new Graphic(false, this.boxes.ToDouble());
-				this.function = new Function(this.inputBox.Text, graphic);
+				this.function = new Function(this.inputBox.Text, graphic);			
 				this.function.Render(this.field);
 			}
 		}

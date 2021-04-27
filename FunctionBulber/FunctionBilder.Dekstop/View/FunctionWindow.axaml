@@ -8,34 +8,36 @@
         WindowState="Normal"
         WindowStartupLocation="CenterScreen"
         Icon="/icons/functionIcon.png">
+  <Window.Styles>
+    <Style Selector="Label.Designation">
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+  </Window.Styles>
   <Grid RowDefinitions="9*,*">
     <DockPanel  PointerPressed="MousePress" PointerReleased="MouseUnpress">   
       <Canvas x:Name="BigFunctionCanvas" PropertyChanged="Canvas_SizeChanged"
-              PointerWheelChanged="ZoomGraphick"
+              PointerWheelChanged="ZoomGraphick" PointerMoved="FocusCoordinate"
               Background="#D46AD0">
       </Canvas>
     </DockPanel>  
    <Grid ColumnDefinitions="*,*" Background="#E42AFF" Grid.Row="1">
      <Grid ColumnDefinitions="*,*">
       <Button Grid.Column="0" Content="Add new function" Click="AddNewGraphic"
-              BorderThickness="10"
-              Classes="BigButton"/>
+              BorderThickness="10" Classes="BigButton"/>
       <Button Grid.Column="1" Content="Delete function"
               Classes="BigButton"
-              BorderThickness="10"
-              Click="DeleteAnyGraphic"/>   
+              BorderThickness="10" Click="DeleteAnyGraphic"/>   
      </Grid>
      <Grid ColumnDefinitions="*,4*,*,4*,10*" Grid.Column="1">
        <CheckBox x:Name="IsNeedEllipse" Click="ClickCheckBoxEllipse" VerticalAlignment="Center"/>
-       <Label VerticalAlignment="Center" HorizontalContentAlignment="Center"
-          HorizontalAlignment="Left" VerticalContentAlignment="Center"
-          Grid.Column="1">
+       <Label Classes="Designation" Grid.Column="1">
          Points
        </Label>
        <CheckBox x:Name="IsNeedLabel" Click="ClickCheckBoxLabel" VerticalAlignment="Center" Grid.Column="2"/>
-        <Label VerticalAlignment="Center" HorizontalContentAlignment="Center"
-          HorizontalAlignment="Left" VerticalContentAlignment="Center"
-          Grid.Column="3">
+        <Label Classes="Designation" Grid.Column="3">
          Coordinates
         </Label>
        <Slider x:Name="sliderScale" Grid.Column="4" PointerMoved="SliderZoom"
