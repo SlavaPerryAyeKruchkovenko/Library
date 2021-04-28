@@ -1,5 +1,4 @@
 ﻿using Avalonia;
-using Avalonia.Media;
 using FunctionBilder.Dekstop.Model;
 using FunctionBulber.Logic;
 using System;
@@ -11,21 +10,21 @@ namespace FunctionBilder.Dekstop.ViewModel
 	{
 		private IFunctionDrawer functionDrawer { get; set; }
 		public string FunctionText { get; private set; }
-		private ReversePolandLogic RPN {get;}
+		private ReversePolandLogic RPN { get; set; }
 		public Graphic Graphic { get; private set; }
 		
 		public Function(string _function,Graphic _graphic)
 		{
 			this.FunctionText = _function;
 			this.Graphic = _graphic;
+			ChangeGraphic();
 			this.RPN = new ReversePolandLogic(this.FunctionText);
 			this.RPN.StackInitialization();
 		}		
 		public void Render(Field field)
 		{
 			this.functionDrawer = new FunctionDrawer(field);
-
-			ChangeGraphic();
+						
 			Point rangeLocation = field.BeginOfCountdown;
 			Point layoutSize = field.LayoutSize;
 			Point[] points;

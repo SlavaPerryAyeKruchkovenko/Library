@@ -20,7 +20,7 @@
     <DockPanel  PointerPressed="MousePress" PointerReleased="MouseUnpress">   
       <Canvas x:Name="BigFunctionCanvas" PropertyChanged="Canvas_SizeChanged"
               PointerWheelChanged="ZoomGraphick" PointerMoved="FocusCoordinate"
-              Background="#D46AD0">
+              DoubleTapped="BackToStart" Background="#D46AD0">
       </Canvas>
     </DockPanel>  
    <Grid ColumnDefinitions="*,*" Background="#E42AFF" Grid.Row="1">

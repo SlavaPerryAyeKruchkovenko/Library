@@ -9,6 +9,7 @@ using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace FunctionBilder.Dekstop.View
 {
@@ -90,6 +91,12 @@ namespace FunctionBilder.Dekstop.View
 			ChangeScale((short)(this.slider.Value - this.zoom));
 			this.drawer.Draw(CreateGraphic);
 		}
+		private void BackToStart(object sender, RoutedEventArgs e)
+		{
+			this.range = default;
+			this.drawer.Draw(CreateGraphic);
+			this.isPressed = false;
+		}
 		public void ClickCheckBoxLabel(object sender, RoutedEventArgs e)
 		{
 			this.drawer.Draw(CreateGraphic);
@@ -150,7 +157,7 @@ namespace FunctionBilder.Dekstop.View
 			{
 				this.zoom -= 5;
 				this.fontSize -= 5;
-				this.range -= this.range * 5 / this.zoom;
+				this.range -= this.range*4.5  / this.zoom;
 			}
 			else if (newScale > 0 && this.zoom < 100 || newScale < 0 && this.zoom > 1) 
 			{
