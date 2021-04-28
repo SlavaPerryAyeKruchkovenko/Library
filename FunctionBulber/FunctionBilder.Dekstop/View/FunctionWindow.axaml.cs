@@ -73,7 +73,7 @@ namespace FunctionBilder.Dekstop.View
 		}
 		public void AddNewGraphic(object sender, RoutedEventArgs e)
 		{
-			throw new Exception("Савелий лох");
+			
 		}
 		public void DeleteAnyGraphic(object sender, RoutedEventArgs e)
 		{
@@ -96,7 +96,7 @@ namespace FunctionBilder.Dekstop.View
 		}
 		public void ClickCheckBoxEllipse(object sender, RoutedEventArgs e)
 		{
-			for (int i = 0; i < this.functions.Count;i++)
+			for (int i = 0; i < this.functions.Count; i++) 
 			{
 				var graphic = new Graphic(this.functions[i].Graphic.IsVisibleElipse != true, this.functions[i].Graphic.gap);
 				this.functions[i] = new Function(this.functions[i].FunctionText, graphic);

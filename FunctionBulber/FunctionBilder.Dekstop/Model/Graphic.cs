@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using FunctionBilder.Dekstop.Model;
 using FunctionBilder.Dekstop.ViewModel;
+using FunctionBulber.Logic;
 
 namespace FunctionBilder.Dekstop
 {
@@ -29,6 +30,15 @@ namespace FunctionBilder.Dekstop
 		public Graphic(double[] _gap)
 		{
 			this.gap = _gap;
+		}
+		public static bool CanConvertBoxes(TextBox[] textBoxes)
+		{
+			bool isDouble = default;
+			foreach (var tBox in textBoxes)
+			{
+				isDouble = NaNError.CanConvertToDouble(tBox.Text);
+			}
+			return isDouble;
 		}
 	}
 }

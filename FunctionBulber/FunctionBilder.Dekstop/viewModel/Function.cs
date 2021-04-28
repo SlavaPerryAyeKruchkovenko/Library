@@ -11,12 +11,15 @@ namespace FunctionBilder.Dekstop.ViewModel
 	{
 		private IFunctionDrawer functionDrawer { get; set; }
 		public string FunctionText { get; private set; }
+		private ReversePolandLogic RPN {get;}
 		public Graphic Graphic { get; private set; }
 		
 		public Function(string _function,Graphic _graphic)
 		{
 			this.FunctionText = _function;
 			this.Graphic = _graphic;
+			this.RPN = new ReversePolandLogic(this.FunctionText);
+			this.RPN.StackInitialization();
 		}		
 		public void Render(Field field)
 		{
@@ -69,7 +72,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 
 			this.functionDrawer.DrawArrows(points[1], new Point(10, -10), field.AxisColor);
 
-			this.functionDrawer.DrawFunction(this.Graphic,this.FunctionText);
+			this.functionDrawer.DrawFunction(this.Graphic,this.RPN);
 		}
 		private static List<string> dicks = new List<string> { "dick", "член", "пиписька", "хуй", "cock", "pennis" };
 		private void ChangeGraphic()
@@ -83,12 +86,10 @@ namespace FunctionBilder.Dekstop.ViewModel
 		public string GetCoordinateInPoint(Point pointNow)
 		{
 			string content = "";
-			var RPN = new ReversePolandLogic(this.FunctionText);
-			RPN.StackInitialization();
-			Point point = ModelNumerable.YCoordinate(RPN, new double[] { pointNow.X });
+			Point point = ModelNumerable.YCoordinate(this.RPN, new double[] { pointNow.X });
 			content += this.FunctionText;
 
-			if (Math.Abs(-1 * pointNow.Y - point.Y) < 0.5)
+			if (Math.Abs(-1 * pointNow.Y - point.Y) < 0.5 && point.X >= this.Graphic.gap[0] && point.X <= this.Graphic.gap[1]) 
 			{
 				content += " в точке " + Math.Round(point.X, 2).ToString();
 				content += " ~ " + Math.Round(point.Y, 2).ToString() + "\n";

@@ -8,7 +8,7 @@
         WindowState="Normal"
         WindowStartupLocation="CenterScreen"
         Icon="/icons/functionIcon.png">
-  <Window.Styles>
+  <Window.Styles>   
     <Style Selector="Label.Designation">
       <Setter Property="VerticalAlignment" Value="Center"/>
       <Setter Property="HorizontalAlignment" Value="Left"/>

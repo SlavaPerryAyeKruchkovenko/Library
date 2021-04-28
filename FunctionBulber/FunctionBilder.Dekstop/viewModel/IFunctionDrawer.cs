@@ -10,7 +10,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 	public interface IFunctionDrawer
 	{
 		void DrawLine(Point startLocation, Point finishLocation, IBrush brush, short lineScale);
-		void DrawFunction(Graphic graphic, string function);
+		void DrawFunction(Graphic graphic, ReversePolandLogic function);
 		void DrawArrows(Point location, Point size,IBrush brush);
 		void DrawLabels(Point gap, Point coordinate, double fontSize, bool isXLine, double ratio);
 	}
@@ -27,15 +27,12 @@ namespace FunctionBilder.Dekstop.ViewModel
 			Figure figure = new MyLine();
 			this.field.Canvas.Children.Insert(0, figure.Create(new Point[] { startLocation, finishLocation }, brush, lineScale));
 		}
-		public void DrawFunction(Graphic graphic, string function)
+		public void DrawFunction(Graphic graphic, ReversePolandLogic RPN)
 		{
 			var coordinates = new List<Point>();
 			Point startLinePoint = default;
 
 			Point canvasSize = this.field.LayoutSize / 2 + this.field.BeginOfCountdown;
-
-			var RPN = new ReversePolandLogic(function);
-			RPN.StackInitialization();
 
 			double range = graphic.gap[2];
 

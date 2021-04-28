@@ -78,18 +78,10 @@ namespace FunctionBilder.Dekstop.View
 			var rangeBox = this.FindControl<TextBox>("RangeNum");
 			return new TextBox[] { startBox, finishBox, rangeBox };
 		}
-		private bool CheckOnErrors(TextBox[] textBoxes)
-		{
-			bool isDouble = default;
-			foreach (var tBox in textBoxes)
-			{
-				isDouble = NaNError.CanConvertToDouble(tBox.Text);
-			}
-			return isDouble;
-		}		
+		
 		private void CreateGraphic()
 		{			
-			if (CheckOnErrors(this.boxes))
+			if (Graphic.CanConvertBoxes(this.boxes))
 			{
 				this.field.Input.Items = null;
 				this.field.Canvas.Children.Clear();

@@ -70,7 +70,7 @@ namespace FunctionBulber.Logic
 				_ = new NaNError(error);
 
 			return true;
-		}
+		}		
 	}
 
 }
