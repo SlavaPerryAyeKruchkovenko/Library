@@ -8,14 +8,6 @@
         WindowState="Normal"
         WindowStartupLocation="CenterScreen"
         Icon="/icons/functionIcon.png">
-  <Window.Styles>   
-    <Style Selector="Label.Designation">
-      <Setter Property="VerticalAlignment" Value="Center"/>
-      <Setter Property="HorizontalAlignment" Value="Left"/>
-      <Setter Property="HorizontalContentAlignment" Value="Center"/>
-      <Setter Property="VerticalContentAlignment" Value="Center"/>
-    </Style>
-  </Window.Styles>
   <Grid RowDefinitions="9*,*">
     <DockPanel  PointerPressed="MousePress" PointerReleased="MouseUnpress">   
       <Canvas x:Name="BigFunctionCanvas" PropertyChanged="Canvas_SizeChanged"
@@ -25,10 +17,11 @@
     </DockPanel>  
    <Grid ColumnDefinitions="*,*" Background="#E42AFF" Grid.Row="1">
      <Grid ColumnDefinitions="*,*">
-      <Button Grid.Column="0" Content="Add new function" Click="AddNewGraphic"
-              BorderThickness="10" Classes="BigButton"/>
+      <Button Grid.Column="0" Content="Add new function" 
+              Click="AddNewGraphic" BorderThickness="10" 
+              Classes="BigButton" Background="#D46AD0"/>
       <Button Grid.Column="1" Content="Delete function"
-              Classes="BigButton"
+              Classes="BigButton" Background="#D46AD0"
               BorderThickness="10" Click="DeleteAnyGraphic"/>   
      </Grid>
      <Grid ColumnDefinitions="*,4*,*,4*,10*" Grid.Column="1">

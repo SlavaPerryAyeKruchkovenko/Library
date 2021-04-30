@@ -9,7 +9,6 @@
       <Setter Property="HorizontalAlignment" Value="Stretch"/>
       <Setter Property="Cursor" Value="AppStarting"/>
       <Setter Property="Opacity" Value="0.8"/>
-      <Setter Property="Background" Value="#D46AD0"/>
       <Setter Property="FontSize" Value="24"/>
       <Setter Property="BorderThickness" Value="2,2,2,2"/>
       <Setter Property="FontFamily" Value="Calibri"/>
@@ -35,6 +34,12 @@
     <Style Selector="Border.outline">
       <Setter Property="BorderBrush" Value="#FF3F3F"/>
       <Setter Property="BorderThickness" Value="6"/>
+    </Style>
+    <Style Selector="Label.Designation">
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="HorizontalAlignment" Value="Left"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
     </Style>
   </Application.Styles>
 </Application>

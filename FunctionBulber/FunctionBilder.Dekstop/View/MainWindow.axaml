@@ -172,7 +172,7 @@
                      VerticalAlignment="Stretch"
                      HorizontalAlignment="Stretch">
             <Button x:Name="InputBtn" Classes="BigButton"  
-                    Content="Count Function"
+                    Content="Count Function" Background="#D46AD0"
                     Click="BtnCount_Click">
             </Button>
           </DockPanel>

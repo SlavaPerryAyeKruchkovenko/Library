@@ -29,7 +29,7 @@ namespace FunctionBilder.Dekstop.View
 			this.inputBox = this.FindControl<UserControl>("InputBox").FindControl<TextBox>("FunctuionBox");
 			this.nowBox = this.inputBox;
 			this.drawer = new Drawer(this.inputBox);
-			this.boxes = FoundTextBoxs();
+			this.boxes = FoundTextBoxs(this);
 			this.size = this.Bounds;
 			this.field = new Field(this.FindControl<Canvas>("FunctionCanvas"), this.FindControl<DataGrid>("OutputDataGrid"));
 		}
@@ -42,7 +42,7 @@ namespace FunctionBilder.Dekstop.View
 			this.inputBox = this.FindControl<UserControl>("InputBox").FindControl<TextBox>("FunctuionBox");		
 			this.nowBox = this.inputBox;
 			this.drawer = new Drawer(this.inputBox);
-			this.boxes = FoundTextBoxs();
+			this.boxes = FoundTextBoxs(this);
 			this.size = this.Bounds;
 			this.field = new Field(this.FindControl<Canvas>("FunctionCanvas"), this.FindControl<DataGrid>("OutputDataGrid"));
 			this.function = _function;
@@ -87,11 +87,11 @@ namespace FunctionBilder.Dekstop.View
 			if (e.Key.Equals(Key.Enter))
 				this.drawer.Draw(CreateGraphic);
 		}
-		private TextBox[] FoundTextBoxs()
+		public static TextBox[] FoundTextBoxs(Window window)
 		{
-			var startBox = this.FindControl<UserControl>("GapBoxs").FindControl<TextBox>("StartNum");
-			var finishBox = this.FindControl<UserControl>("GapBoxs").FindControl<TextBox>("FinishNum");
-			var rangeBox = this.FindControl<UserControl>("GapBoxs").FindControl<TextBox>("RangeNum");
+			var startBox = window.FindControl<UserControl>("GapBoxs").FindControl<TextBox>("StartNum");
+			var finishBox = window.FindControl<UserControl>("GapBoxs").FindControl<TextBox>("FinishNum");
+			var rangeBox = window.FindControl<UserControl>("GapBoxs").FindControl<TextBox>("RangeNum");
 			if (rangeBox.Text.Contains("."))
 			{
 				rangeBox.Text = rangeBox.Text.Replace('.', ',');
