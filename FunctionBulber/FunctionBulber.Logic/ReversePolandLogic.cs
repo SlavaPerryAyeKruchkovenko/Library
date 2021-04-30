@@ -70,7 +70,7 @@ namespace FunctionBulber.Logic
 
 		public void StackInitialization()
 		{
-			if (this.function == null)
+			if (this.function == null || this.function == "") 
 			{
 				string error = "Пустое выражение";
 				_ = new FormatError(error);

@@ -26,12 +26,27 @@ namespace FunctionBilder.Dekstop.View
 #if DEBUG
 			this.AttachDevTools();
 #endif
-			this.inputBox = this.FindControl<TextBox>("FunctuionBox");
-			this.nowBox = inputBox;
-			this.drawer = new Drawer(inputBox);
+			this.inputBox = this.FindControl<UserControl>("InputBox").FindControl<TextBox>("FunctuionBox");
+			this.nowBox = this.inputBox;
+			this.drawer = new Drawer(this.inputBox);
 			this.boxes = FoundTextBoxs();
-			this.size = Bounds;
+			this.size = this.Bounds;
 			this.field = new Field(this.FindControl<Canvas>("FunctionCanvas"), this.FindControl<DataGrid>("OutputDataGrid"));
+		}
+		public MainWindow(Function _function)
+		{
+			InitializeComponent();
+#if DEBUG
+			this.AttachDevTools();
+#endif
+			this.inputBox = this.FindControl<UserControl>("InputBox").FindControl<TextBox>("FunctuionBox");		
+			this.nowBox = this.inputBox;
+			this.drawer = new Drawer(this.inputBox);
+			this.boxes = FoundTextBoxs();
+			this.size = this.Bounds;
+			this.field = new Field(this.FindControl<Canvas>("FunctionCanvas"), this.FindControl<DataGrid>("OutputDataGrid"));
+			this.function = _function;
+			this.inputBox.Text = this.function.FunctionText;
 		}
 		private void InitializeComponent()
 		{
@@ -50,7 +65,7 @@ namespace FunctionBilder.Dekstop.View
 		}
 		public void Canvas_SizeChanged(object sender1, AvaloniaPropertyChangedEventArgs e)
 		{
-			if (this.inputBox != null && this.inputBox.Text != null && this.size != this.Bounds)
+			if (this.inputBox != null && this.size != this.Bounds)
 			{
 				this.drawer.Draw(CreateGraphic);
 			}
@@ -65,6 +80,7 @@ namespace FunctionBilder.Dekstop.View
 		{
 			var window = new FunctionWindow(this.function);
 			window.Show();
+			this.Close();
 		}
 		public void PressEnter(object sender, KeyEventArgs e)
 		{
@@ -73,9 +89,13 @@ namespace FunctionBilder.Dekstop.View
 		}
 		private TextBox[] FoundTextBoxs()
 		{
-			var startBox = this.FindControl<TextBox>("StartNum");
-			var finishBox = this.FindControl<TextBox>("FinishNum");
-			var rangeBox = this.FindControl<TextBox>("RangeNum");
+			var startBox = this.FindControl<UserControl>("GapBoxs").FindControl<TextBox>("StartNum");
+			var finishBox = this.FindControl<UserControl>("GapBoxs").FindControl<TextBox>("FinishNum");
+			var rangeBox = this.FindControl<UserControl>("GapBoxs").FindControl<TextBox>("RangeNum");
+			if (rangeBox.Text.Contains("."))
+			{
+				rangeBox.Text = rangeBox.Text.Replace('.', ',');
+			}
 			return new TextBox[] { startBox, finishBox, rangeBox };
 		}
 		
@@ -88,7 +108,8 @@ namespace FunctionBilder.Dekstop.View
 
 				var scales = new short[] { 1, 1, 1 };
 				this.field = new Field(this.field.Canvas, default, scales, true, this.field.Input);
-				
+				this.field.RenderField();
+
 				var graphic = new Graphic(false, this.boxes.ToDouble());
 				this.function = new Function(this.inputBox.Text, graphic);			
 				this.function.Render(this.field);

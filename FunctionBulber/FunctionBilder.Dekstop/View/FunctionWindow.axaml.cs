@@ -9,6 +9,7 @@ using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading;
 
 namespace FunctionBilder.Dekstop.View
@@ -20,7 +21,6 @@ namespace FunctionBilder.Dekstop.View
 		private short zoom { get; set; }
 		private Field field { get; set; }
 		private List<Function> functions { get; }
-		private short fontSize { get; set; }
 		private Rect size { get; set; }
 		private CheckBox labelVisible { get; }
 		private Slider slider { get; }
@@ -43,7 +43,6 @@ namespace FunctionBilder.Dekstop.View
 			this.labelVisible = this.FindControl<CheckBox>("IsNeedLabel");
 			this.slider = this.FindControl<Slider>("sliderScale");
 			this.zoom = this.field.Scale;
-			this.fontSize = this.field.FontSize;
 
 			this.drawer = new Drawer(new object());
 		}
@@ -51,19 +50,25 @@ namespace FunctionBilder.Dekstop.View
 		{
 			AvaloniaXamlLoader.Load(this);
 		}
-		public void Canvas_SizeChanged(object sender1, AvaloniaPropertyChangedEventArgs e)
+		protected override void OnClosing(CancelEventArgs e)
+		{
+			var window = new MainWindow(this.functions[0]);
+			window.Show();
+			this.OnClosed(e);
+		}
+		private void Canvas_SizeChanged(object sender1, AvaloniaPropertyChangedEventArgs e)
 		{
 			if (this.size != ((Canvas)sender1).Bounds)
 			{			
 				this.drawer.Draw(CreateGraphic);
 			}
 		}
-		public void MousePress(object sender, PointerPressedEventArgs e)
+		private void MousePress(object sender, PointerPressedEventArgs e)
 		{
 			this.isPressed = true;
 			this.range -= e.GetCurrentPoint(this.field.Canvas).Position;
 		}
-		public void MouseUnpress(object sender, PointerReleasedEventArgs e)
+		private void MouseUnpress(object sender, PointerReleasedEventArgs e)
 		{
 			if(this.isPressed)
 			{
@@ -72,21 +77,22 @@ namespace FunctionBilder.Dekstop.View
 			}
 			this.isPressed = false;
 		}
-		public void AddNewGraphic(object sender, RoutedEventArgs e)
+		private void AddNewGraphic(object sender, RoutedEventArgs e)
 		{
-			
+			var graphicWindow = new GraphicWindow();
+			graphicWindow.Show();
 		}
-		public void DeleteAnyGraphic(object sender, RoutedEventArgs e)
+		private void DeleteAnyGraphic(object sender, RoutedEventArgs e)
 		{
 			throw new Exception("Савелий и тут Лох");
 		}
-		public void ZoomGraphick(object sender, PointerWheelEventArgs e)
+		private void ZoomGraphick(object sender, PointerWheelEventArgs e)
 		{
 			ChangeScale((short)e.Delta.Y);
 			this.drawer.Draw(CreateGraphic);
 			this.slider.Value = this.zoom;
 		}
-		public void SliderZoom(object sender, PointerEventArgs e)
+		private void SliderZoom(object sender, PointerEventArgs e)
 		{
 			ChangeScale((short)(this.slider.Value - this.zoom));
 			this.drawer.Draw(CreateGraphic);
@@ -97,7 +103,7 @@ namespace FunctionBilder.Dekstop.View
 			this.drawer.Draw(CreateGraphic);
 			this.isPressed = false;
 		}
-		public void ClickCheckBoxLabel(object sender, RoutedEventArgs e)
+		private void ClickCheckBoxLabel(object sender, RoutedEventArgs e)
 		{
 			this.drawer.Draw(CreateGraphic);
 		}
@@ -110,7 +116,7 @@ namespace FunctionBilder.Dekstop.View
 			}
 			this.drawer.Draw(CreateGraphic);
 		}
-		public void FocusCoordinate(object sender, PointerEventArgs e)
+		private void FocusCoordinate(object sender, PointerEventArgs e)
 		{								
 			Point cursor = e.GetCurrentPoint(this.field.Canvas).Position;
 			if (Math.Abs(this.lastCutrsorPosition.X - cursor.X) < 10 && Math.Abs(this.lastCutrsorPosition.Y - cursor.Y) < 10)
@@ -129,8 +135,8 @@ namespace FunctionBilder.Dekstop.View
 			ToolTip.SetTip(this.field.Canvas, myToolTip.Create(pointNow, content, 16));
 			ToolTip.SetIsOpen(this.field.Canvas, false);
 			this.lastCutrsorPosition = cursor;
-		}		
-		static void InstalizeWindow(FunctionWindow window)
+		}
+		private static void InstalizeWindow(FunctionWindow window)
 		{
 			window.InitializeComponent();
 #if DEBUG
@@ -144,8 +150,10 @@ namespace FunctionBilder.Dekstop.View
 			this.size = this.field.Canvas.Bounds;
 			this.field.Canvas.Children.Clear();
 
-			var scales = new short[] { this.field.AxisLineScale, this.zoom, this.fontSize };
+			var scales = new short[] { this.field.AxisLineScale, this.zoom };
 			this.field = new Field(this.field.Canvas, this.range, scales, this.labelVisible.IsChecked.Value, null);
+
+			this.field.RenderField();
 			foreach (var item in this.functions)
 			{
 				item.Render(this.field);
@@ -156,14 +164,12 @@ namespace FunctionBilder.Dekstop.View
 			if (newScale < 0 && this.zoom > 5)
 			{
 				this.zoom -= 5;
-				this.fontSize -= 5;
-				this.range -= this.range*4.5  / this.zoom;
+				this.range -= this.range * 4.2 / this.zoom;
 			}
 			else if (newScale > 0 && this.zoom < 100 || newScale < 0 && this.zoom > 1) 
 			{
 				this.zoom += newScale;
-				this.fontSize += newScale;
-				this.range += this.range / this.zoom;
+				this.range += this.range * 1.12 / this.zoom;
 			}
 			else
 			{

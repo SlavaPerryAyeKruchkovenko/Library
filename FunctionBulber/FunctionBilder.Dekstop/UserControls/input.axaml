@@ -1,0 +1,16 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             x:Class="FunctionBilder.Dekstop.UserControls.input">
+  <Border Classes="outline">
+    <DockPanel Grid.ColumnSpan="2">  
+      <Label DockPanel.Dock="Left" Content=" Input: " Grid.Column="0" FontSize="16"
+              Grid.ColumnSpan="1" Classes="shortcut"/>
+      <TextBox DockPanel.Dock="Right" x:Name="FunctuionBox" Grid.Column="1"
+               Classes="InputBox" >
+        x^cos(x)
+      </TextBox>      
+    </DockPanel>
+  </Border>
+</UserControl>

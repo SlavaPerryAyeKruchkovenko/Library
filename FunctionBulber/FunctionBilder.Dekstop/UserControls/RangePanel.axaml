@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FunctionBilder.Dekstop.UserControls.RangePanel">
+  <Border Classes="outline">
+    <Grid ColumnDefinitions="3*,3*,5*" ShowGridLines="True">
+      <DockPanel>
+        <Label Content="Start:" Classes="shortcut" FontSize="12"
+               DockPanel.Dock="Left"/>
+        <TextBox x:Name="StartNum"
+                 Classes="InputBox" DockPanel.Dock="Right">
+          -10
+        </TextBox>
+      </DockPanel>
+      <DockPanel Grid.Column="1">
+        <Label  Content="Finish:" DockPanel.Dock="Left"
+              Classes="shortcut" FontSize="12"/>
+        <TextBox x:Name="FinishNum"
+                 Classes="InputBox" DockPanel.Dock="Right">
+          10
+        </TextBox>
+      </DockPanel>
+      <DockPanel Grid.Column="2">
+        <Label Content="Range:" DockPanel.Dock="Left"
+              Classes="shortcut" FontSize="12"/>
+        <TextBox x:Name="RangeNum"
+                 Classes="InputBox" DockPanel.Dock="Right">
+          0.1
+        </TextBox>
+      </DockPanel>
+    </Grid>
+  </Border> 
+</UserControl>

@@ -12,7 +12,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 		void DrawLine(Point startLocation, Point finishLocation, IBrush brush, short lineScale);
 		void DrawFunction(Graphic graphic, ReversePolandLogic function);
 		void DrawArrows(Point location, Point size,IBrush brush);
-		void DrawLabels(Point gap, Point coordinate, double fontSize, bool isXLine, double ratio);
+		void DrawLabels(Point gap, Point coordinate, bool isXLine);
 	}
 
 	class FunctionDrawer : IFunctionDrawer
@@ -80,30 +80,30 @@ namespace FunctionBilder.Dekstop.ViewModel
 			Figure figure = new Mypolygon();
 			this.field.Canvas.Children.Insert(0, figure.Create(new Point[] { location, size }, brush, 1));
 		}
-		public void DrawLabels(Point gap, Point coordinate, double fontSize, bool isXLine,double ratio)
+		public void DrawLabels(Point gap, Point coordinate, bool isXLine)
 		{
-
 			for (int i = (int)gap.X; i < gap.Y; i++)
 			{
-				if (i % fontSize == 0)
+				if (i % this.field.Scale == 0)
 				{
 					MyControler controler = new MyLabel();
-					Point coordinate1;
+					Point newCoordinate;
 
 					if (isXLine)
 					{
-						coordinate1 = new Point(coordinate.X + i, coordinate.Y);
+						newCoordinate = new Point(coordinate.X + i, coordinate.Y);
 					}
 					else
 					{
-						coordinate1 = new Point(coordinate.X, coordinate.Y - i);
+						newCoordinate = new Point(coordinate.X, coordinate.Y - i);
 					}
-					if (Math.Abs(coordinate1.X) > this.field.Canvas.Bounds.Width || Math.Abs(coordinate1.Y) > this.field.Canvas.Bounds.Height)
+					if (Math.Abs(newCoordinate.X) > this.field.Canvas.Bounds.Width || Math.Abs(newCoordinate.Y) > this.field.Canvas.Bounds.Height)
 					{
 						continue;
 					}
-					string content = (i / fontSize).ToString();
-					this.field.Canvas.Children.Insert(0, controler.Create(coordinate1, content, ratio*fontSize));
+					string content = (i / this.field.Scale).ToString();
+					DrawPoint(newCoordinate, this.field.AxisColor, this.field.Ratio * this.field.Scale);					
+					this.field.Canvas.Children.Insert(0, controler.Create(newCoordinate, content, this.field.Ratio * this.field.Scale));
 				}
 
 			}
