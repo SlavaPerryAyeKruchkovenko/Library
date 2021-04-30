@@ -6,6 +6,7 @@ using Avalonia.Markup.Xaml;
 using FunctionBilder.Dekstop.Model;
 using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
+using System;
 using System.Collections.Generic;
 
 namespace FunctionBilder.Dekstop.View
@@ -58,14 +59,10 @@ namespace FunctionBilder.Dekstop.View
 			this.nowBox.Text += but.Content;
 		}
 		public void BtnClear_Click(object sender, RoutedEventArgs e) => this.nowBox.Clear();
-		public void BtnPrefex_Click(object sender, RoutedEventArgs e) => this.inputBox.Text = $"-({this.inputBox.Text})";
-		public void HighlightTextBox_Click(object sender, RoutedEventArgs e)
-		{
-			this.nowBox = (TextBox)sender;
-		}
+		public void BtnPrefex_Click(object sender, RoutedEventArgs e) => this.inputBox.Text = $"-({this.inputBox.Text})";		
 		public void Canvas_SizeChanged(object sender1, AvaloniaPropertyChangedEventArgs e)
 		{
-			if (this.inputBox != null && this.size != this.Bounds)
+			if (this.inputBox != null && (Math.Abs(this.size.Height - this.Bounds.Height) > 10 || Math.Abs(this.size.Width - this.Bounds.Width) > 10)) 
 			{
 				this.drawer.Draw(CreateGraphic);
 			}
