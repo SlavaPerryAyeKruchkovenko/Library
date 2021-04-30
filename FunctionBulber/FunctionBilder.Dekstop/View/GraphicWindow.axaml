@@ -6,15 +6,32 @@
         x:Class="FunctionBilder.Dekstop.View.GraphicWindow"
         Height="150" Width="400" MaxWidth="400" MinWidth="400"
         MaxHeight="200" MinHeight="200" Position="300,620">
+  <Window.Styles>
+    <Style Selector="MenuItem.ColorList">
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+      <Setter Property="Opacity" Value="0.8"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+      <Setter Property="FontSize" Value="16"/>
+    </Style>
+  </Window.Styles>
   <StackPanel Background="#F05171">
     <views:input x:Name="InputBox"/>
     <views:RangePanel x:Name="GapBoxs"/>
     <DockPanel>
-      <views:GraphicCheckBoxes/>
-      <ContextMenu Cursor="UpArrow">
-        <MenuItem Header="Color" Tapped="OpenMenu">
+      <views:GraphicCheckBoxes x:Name="PointCheckBox"/>
+      <ContextMenu DockPanel.Dock="Left" Cursor="UpArrow" Background="#FF9797">
+        <MenuItem Header="Line Color" Classes="ColorList" Tapped="OpenMenu" x:Name="LineItem">
           <MenuItem.ContextMenu>
-            <ContextMenu x:Name="ColorMenu" Tapped="AddColor">
+            <ContextMenu x:Name="LineColorMenu" Tapped="AddColor">
+            </ContextMenu>
+          </MenuItem.ContextMenu>
+        </MenuItem>
+      </ContextMenu>
+      <ContextMenu DockPanel.Dock="Right" Cursor="DragMove" Background="#FF9797">
+        <MenuItem Header="Point Color" Classes="ColorList" Tapped="OpenMenu" x:Name="PointItem">
+          <MenuItem.ContextMenu>
+            <ContextMenu x:Name="PointColorMenu" Tapped="AddColor">
             </ContextMenu>
           </MenuItem.ContextMenu>
         </MenuItem>

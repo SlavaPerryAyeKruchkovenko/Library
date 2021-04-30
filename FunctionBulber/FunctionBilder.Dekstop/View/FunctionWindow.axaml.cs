@@ -26,7 +26,6 @@ namespace FunctionBilder.Dekstop.View
 		private Slider slider { get; }
 		private Point lastCutrsorPosition { get; set; }
 		private bool isPressed { get; set; } = false;
-		private GraphicWindow window { get; } 
 #pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		public FunctionWindow()
 #pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
@@ -42,11 +41,10 @@ namespace FunctionBilder.Dekstop.View
 
 			this.field = new Field(this.FindControl<Canvas>("BigFunctionCanvas"), null);
 			this.labelVisible = this.FindControl<CheckBox>("IsNeedLabel");
-			this.slider = this.FindControl<Slider>("sliderScale");
+			this.slider = this.FindControl<Slider>("SliderScale");
 			this.zoom = this.field.Scale;
 
 			this.drawer = new Drawer(new object());
-			this.window = new GraphicWindow();
 		}
 		private void InitializeComponent()
 		{
@@ -81,7 +79,8 @@ namespace FunctionBilder.Dekstop.View
 		}
 		private void AddNewGraphic(object sender, RoutedEventArgs e)
 		{
-			this.window.Show();
+			var window = new GraphicWindow();
+			window.Show();
 		}
 		private void DeleteAnyGraphic(object sender, RoutedEventArgs e)
 		{

@@ -15,20 +15,23 @@ namespace FunctionBilder.Dekstop.View
 	{
 		private TextBox inputBox { get; }
 		private TextBox[] rangeBoxes { get; }
-		private Function function { get; set; }
-		private IBrush color { get; set; }
-		public ObservableCollection<IBrush> colors { get; } 
+		private IBrush lineColor { get; set; } = Brushes.Yellow;
+		private IBrush pointColor { get; set; } = Brushes.Red;
+		private MenuItem lineItem { get; }
+		private MenuItem pointItem { get; }		
 		public GraphicWindow()
 		{
-			this.colors = new ObservableCollection<IBrush>() { Brushes.Aqua, Brushes.Purple, Brushes.Sienna, Brushes.Silver, Brushes.SkyBlue, Brushes.White, Brushes.YellowGreen };
 			InitializeComponent();
 #if DEBUG
 			this.AttachDevTools();
 #endif
-			var menu = this.FindControl<ContextMenu>("ColorMenu");
-			menu.Items = this.colors;
+			this.lineItem = this.Find<MenuItem>("LineItem");
+			this.pointItem = this.Find<MenuItem>("PointItem");
+			this.FindControl<ContextMenu>("LineColorMenu").Items = Graphic.Colors;
+			this.FindControl<ContextMenu>("PointColorMenu").Items = Graphic.Colors;
 			this.inputBox = this.FindControl<UserControl>("InputBox").FindControl<TextBox>("FunctuionBox");
 			this.rangeBoxes = MainWindow.FoundTextBoxs(this);
+			
 		}
 		private void InitializeComponent()
 		{
@@ -36,16 +39,30 @@ namespace FunctionBilder.Dekstop.View
 		}
 		private void AddColor(object sender, RoutedEventArgs e)
 		{
-			this.color = (IBrush)((MenuItem)sender);
+			var menu = (ContextMenu)sender;
+			var color = menu.SelectedItem == null ? Brushes.Aqua : (IBrush)menu.SelectedItem;
+			if (menu.Name== "LineColorMenu")
+			{				
+				this.lineItem.Header = color;
+				this.lineColor = color;
+			}			
+			else
+			{
+				this.pointItem.Header = color;
+				this.pointColor = color;
+			}
 		}
 		private void OpenMenu(object sender, RoutedEventArgs e)
 		{
 			((MenuItem)sender).ContextMenu.Open();
 		}
 		private void AddFunction(object sender, RoutedEventArgs e)
-		{			
-			var graphic = new Graphic(this.rangeBoxes.ToDouble());
-			this.function = new Function(this.inputBox.Text, graphic);
+		{
+			var checkBox = this.Find<UserControl>("PointCheckBox").Find<CheckBox>("IsNeedEllipse");
+			IBrush[] brushes = new IBrush[] { this.pointColor, this.lineColor };
+
+			var graphic = new Graphic(brushes, checkBox.IsChecked.Value, this.rangeBoxes.ToDouble());
+			var function = new Function(this.inputBox.Text, graphic);
 			this.Close();
 		}
 	}

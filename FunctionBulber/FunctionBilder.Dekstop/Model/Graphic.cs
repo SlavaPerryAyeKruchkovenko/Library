@@ -4,11 +4,13 @@ using Avalonia.Media;
 using FunctionBilder.Dekstop.Model;
 using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
+using System.Collections.ObjectModel;
 
 namespace FunctionBilder.Dekstop
 {
 	public class Graphic
 	{
+		public static readonly ObservableCollection<IBrush> Colors = new ObservableCollection<IBrush>() { Brushes.Aqua, Brushes.Purple, Brushes.Sienna, Brushes.Silver, Brushes.SkyBlue, Brushes.White, Brushes.YellowGreen };
 		public readonly double Ratio = 0.4;
 		public IBrush PointColor { get; } = Brushes.Red;
 		public IBrush LineColor { get; } = Brushes.Yellow;
