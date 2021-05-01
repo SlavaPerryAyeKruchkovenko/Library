@@ -2,6 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 using FunctionBilder.Dekstop.ViewModel;
+using System;
 using System.Collections.Generic;
 
 namespace FunctionBilder.Dekstop.Model
@@ -57,14 +58,19 @@ namespace FunctionBilder.Dekstop.Model
 					new Point(-layoutSize.X/2-rangeLocation.X,layoutSize.X/2-rangeLocation.X),
 					new Point(layoutSize.X/2,layoutSize.Y/2)+rangeLocation
 				};
-				this.functionDrawer.DrawLabels(points[0], points[1], true);
-
+				if (Math.Abs(rangeLocation.Y) < layoutSize.Y / 2)
+				{
+					this.functionDrawer.DrawLabels(points[0], points[1], true);
+				}
 				points = new Point[]
 				{
 					new Point(-layoutSize.Y/2+rangeLocation.Y,layoutSize.Y/2+rangeLocation.Y),
 					new Point(layoutSize.X/2,layoutSize.Y/2)+rangeLocation
 				};
-				this.functionDrawer.DrawLabels(points[0], points[1], false);
+				if (Math.Abs(rangeLocation.X) < layoutSize.X / 2)
+				{
+					this.functionDrawer.DrawLabels(points[0], points[1], false);
+				}					
 			}
 			points = new Point[]
 			{

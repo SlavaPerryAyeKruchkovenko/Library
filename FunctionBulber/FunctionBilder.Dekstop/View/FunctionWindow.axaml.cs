@@ -23,7 +23,7 @@ namespace FunctionBilder.Dekstop.View
 		private List<Function> functions { get; }
 		private Rect size { get; set; }
 		private CheckBox labelVisible { get; }
-		private Slider slider { get; }
+		public Slider slider { get; }
 		private Point lastCutrsorPosition { get; set; }
 		private bool isPressed { get; set; } = false;
 #pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
@@ -79,7 +79,7 @@ namespace FunctionBilder.Dekstop.View
 		}
 		private void AddNewGraphic(object sender, RoutedEventArgs e)
 		{
-			var window = new GraphicWindow();
+			var window = new GraphicWindow(this.functions);
 			window.Show();
 		}
 		private void DeleteAnyGraphic(object sender, RoutedEventArgs e)
@@ -111,7 +111,7 @@ namespace FunctionBilder.Dekstop.View
 		{
 			for (int i = 0; i < this.functions.Count; i++) 
 			{
-				var graphic = new Graphic(this.functions[i].Graphic.IsVisibleElipse != true, this.functions[i].Graphic.gap);
+				var graphic = new Graphic(this.functions[i].Graphic.GraphicColor(),this.functions[i].Graphic.IsVisibleElipse != true, this.functions[i].Graphic.gap);
 				this.functions[i] = new Function(this.functions[i].FunctionText, graphic);
 			}
 			this.drawer.Draw(CreateGraphic);

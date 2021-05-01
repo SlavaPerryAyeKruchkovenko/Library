@@ -97,10 +97,6 @@ namespace FunctionBilder.Dekstop.ViewModel
 					{
 						newCoordinate = new Point(coordinate.X, coordinate.Y - i);
 					}
-					if (Math.Abs(newCoordinate.X) > this.field.Canvas.Bounds.Width || Math.Abs(newCoordinate.Y) > this.field.Canvas.Bounds.Height)
-					{
-						continue;
-					}
 					string content = (i / this.field.Scale).ToString();
 					DrawPoint(newCoordinate, this.field.AxisColor, this.field.Ratio * this.field.Scale);					
 					this.field.Canvas.Children.Insert(0, controler.Create(newCoordinate, content, this.field.Ratio * this.field.Scale));

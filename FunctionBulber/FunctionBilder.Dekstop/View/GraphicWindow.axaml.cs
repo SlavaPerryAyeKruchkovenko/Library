@@ -8,6 +8,7 @@ using FunctionBilder.Dekstop.Model;
 using FunctionBilder.Dekstop.ViewModel;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace FunctionBilder.Dekstop.View
 {
@@ -18,29 +19,44 @@ namespace FunctionBilder.Dekstop.View
 		private IBrush lineColor { get; set; } = Brushes.Yellow;
 		private IBrush pointColor { get; set; } = Brushes.Red;
 		private MenuItem lineItem { get; }
-		private MenuItem pointItem { get; }		
-		public GraphicWindow()
+		private MenuItem pointItem { get; }
+		private List<Function> functions { get; }
+#pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
+		public GraphicWindow ()
+#pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		{
 			InitializeComponent();
 #if DEBUG
 			this.AttachDevTools();
 #endif
+		}
+		public GraphicWindow(List<Function> _functions)
+		{
+			InitializeComponent();
+#if DEBUG
+			this.AttachDevTools();
+#endif
+			this.functions = _functions;
 			this.lineItem = this.Find<MenuItem>("LineItem");
 			this.pointItem = this.Find<MenuItem>("PointItem");
 			this.FindControl<ContextMenu>("LineColorMenu").Items = Graphic.Colors;
 			this.FindControl<ContextMenu>("PointColorMenu").Items = Graphic.Colors;
 			this.inputBox = this.FindControl<UserControl>("InputBox").FindControl<TextBox>("FunctuionBox");
-			this.rangeBoxes = MainWindow.FoundTextBoxs(this);
-			
+			this.rangeBoxes = MainWindow.FoundTextBoxs(this);			
 		}
+		 
 		private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
 		}
-		private void AddColor(object sender, RoutedEventArgs e)
+		private void AddColor(object sender, SelectionChangedEventArgs e)
 		{
 			var menu = (ContextMenu)sender;
-			var color = menu.SelectedItem == null ? Brushes.Aqua : (IBrush)menu.SelectedItem;
+			if (menu.SelectedItem == null)
+			{
+				return;
+			}				
+			var color = (IBrush)menu.SelectedItem;
 			if (menu.Name== "LineColorMenu")
 			{				
 				this.lineItem.Header = color;
@@ -52,6 +68,7 @@ namespace FunctionBilder.Dekstop.View
 				this.pointColor = color;
 			}
 		}
+		
 		private void OpenMenu(object sender, RoutedEventArgs e)
 		{
 			((MenuItem)sender).ContextMenu.Open();
@@ -63,6 +80,7 @@ namespace FunctionBilder.Dekstop.View
 
 			var graphic = new Graphic(brushes, checkBox.IsChecked.Value, this.rangeBoxes.ToDouble());
 			var function = new Function(this.inputBox.Text, graphic);
+			this.functions.Add(function);
 			this.Close();
 		}
 	}

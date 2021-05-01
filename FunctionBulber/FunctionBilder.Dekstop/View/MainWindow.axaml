@@ -18,7 +18,10 @@
       <Setter Property="VerticalContentAlignment" Value="Center"/>
       <Setter Property="FontSize" Value="16"/>
       <Setter Property="BorderThickness" Value="6"/>
-    </Style>        
+    </Style>
+    <Style Selector="Canvas.Purple">
+      <Setter Property="Background" Value="#D46AD0"/>
+    </Style>
   </Window.Styles>
   <Grid ColumnDefinitions="2*,*">
     <Grid Grid.Column="0" RowDefinitions="3*,6*,*" Background="#F05171">  
@@ -171,20 +174,18 @@
           <DockPanel Background="#9B3475" 
                      VerticalAlignment="Stretch"
                      HorizontalAlignment="Stretch">
-            <Button x:Name="InputBtn" Classes="BigButton"  
-                    Content="Count Function" Background="#D46AD0"
+            <Button x:Name="InputBtn" Classes="BigButton Purple"  
+                    Content="Count Function"
                     Click="BtnCount_Click">
             </Button>
           </DockPanel>
           <Border Classes="outline"/>
         </Grid>
      </Grid>
-     <Grid Grid.Column="1">
-       <DockPanel Background="#D46AD0" Tapped="Canvas_Tap">
+      <DockPanel Grid.Column="1">
          <Border BorderBrush="#B820E6" BorderThickness="4">
-           <Canvas x:Name="FunctionCanvas" PropertyChanged="Canvas_SizeChanged"/>
+           <Canvas x:Name="FunctionCanvas" Tapped="Canvas_Tap" PropertyChanged="Canvas_SizeChanged" Classes="Purple"/>
          </Border>
-       </DockPanel>     
-     </Grid>      
+      </DockPanel>         
   </Grid>
 </Window>

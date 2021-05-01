@@ -23,7 +23,7 @@
       <ContextMenu DockPanel.Dock="Left" Cursor="UpArrow" Background="#FF9797">
         <MenuItem Header="Line Color" Classes="ColorList" Tapped="OpenMenu" x:Name="LineItem">
           <MenuItem.ContextMenu>
-            <ContextMenu x:Name="LineColorMenu" Tapped="AddColor">
+            <ContextMenu x:Name="LineColorMenu" SelectionChanged="AddColor">
             </ContextMenu>
           </MenuItem.ContextMenu>
         </MenuItem>
@@ -31,13 +31,13 @@
       <ContextMenu DockPanel.Dock="Right" Cursor="DragMove" Background="#FF9797">
         <MenuItem Header="Point Color" Classes="ColorList" Tapped="OpenMenu" x:Name="PointItem">
           <MenuItem.ContextMenu>
-            <ContextMenu x:Name="PointColorMenu" Tapped="AddColor">
+            <ContextMenu x:Name="PointColorMenu" SelectionChanged="AddColor">
             </ContextMenu>
           </MenuItem.ContextMenu>
         </MenuItem>
       </ContextMenu>
     </DockPanel>
-    <Button Grid.Column="0" Content="Add new function" BorderThickness="10"
-            Classes="BigButton" Background="#FF9797" Click="AddFunction"/>
+    <Button Grid.Column="0" Content="Add new function"
+            Classes="BigButton Routed" Background="#FF9797" Click="AddFunction"/>
   </StackPanel>
 </Window>
