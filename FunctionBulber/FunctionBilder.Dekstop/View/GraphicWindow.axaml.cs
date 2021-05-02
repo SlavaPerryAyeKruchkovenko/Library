@@ -1,14 +1,13 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using FunctionBilder.Dekstop.Model;
 using FunctionBilder.Dekstop.ViewModel;
+using FunctionBulber.Logic;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+
 
 namespace FunctionBilder.Dekstop.View
 {
@@ -16,6 +15,7 @@ namespace FunctionBilder.Dekstop.View
 	{
 		private TextBox inputBox { get; }
 		private TextBox[] rangeBoxes { get; }
+		private IDrawer drawer { get; }
 		private IBrush lineColor { get; set; } = Brushes.Yellow;
 		private IBrush pointColor { get; set; } = Brushes.Red;
 		private MenuItem lineItem { get; }
@@ -42,9 +42,9 @@ namespace FunctionBilder.Dekstop.View
 			this.FindControl<ContextMenu>("LineColorMenu").Items = Graphic.Colors;
 			this.FindControl<ContextMenu>("PointColorMenu").Items = Graphic.Colors;
 			this.inputBox = this.FindControl<UserControl>("InputBox").FindControl<TextBox>("FunctuionBox");
-			this.rangeBoxes = MainWindow.FoundTextBoxs(this);			
-		}
-		 
+			this.rangeBoxes = MainWindow.FoundTextBoxs(this);
+			this.drawer = new Drawer(this.inputBox);
+		}	 
 		private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
@@ -74,6 +74,10 @@ namespace FunctionBilder.Dekstop.View
 			((MenuItem)sender).ContextMenu.Open();
 		}
 		private void AddFunction(object sender, RoutedEventArgs e)
+		{
+			this.drawer.Draw(CreateFunction);
+		}
+		private void CreateFunction()
 		{
 			var checkBox = this.Find<UserControl>("PointCheckBox").Find<CheckBox>("IsNeedEllipse");
 			IBrush[] brushes = new IBrush[] { this.pointColor, this.lineColor };

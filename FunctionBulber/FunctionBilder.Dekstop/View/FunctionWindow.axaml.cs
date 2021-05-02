@@ -10,6 +10,7 @@ using FunctionBulber.Logic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Reactive.Subjects;
 using System.Threading;
 
 namespace FunctionBilder.Dekstop.View
@@ -23,14 +24,18 @@ namespace FunctionBilder.Dekstop.View
 		private List<Function> functions { get; }
 		private Rect size { get; set; }
 		private CheckBox labelVisible { get; }
-		public Slider slider { get; }
+		public Slider Slider { get; }
 		private Point lastCutrsorPosition { get; set; }
 		private bool isPressed { get; set; } = false;
 #pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		public FunctionWindow()
 #pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		{
+			this.functions = new List<Function>();
+
 			InstalizeWindow(this);
+			this.drawer = new Drawer(new object());
+			this.field = new Field(this.FindControl<Canvas>("BigFunctionCanvas"), null);
 		}
 		public FunctionWindow(Function _function)
 		{
@@ -38,13 +43,18 @@ namespace FunctionBilder.Dekstop.View
 			this.functions.Add(_function);		
 
 			InstalizeWindow(this);
-
+		
 			this.field = new Field(this.FindControl<Canvas>("BigFunctionCanvas"), null);
 			this.labelVisible = this.FindControl<CheckBox>("IsNeedLabel");
-			this.slider = this.FindControl<Slider>("SliderScale");
+			this.Slider = this.FindControl<Slider>("SliderScale");
 			this.zoom = this.field.Scale;
 
 			this.drawer = new Drawer(new object());
+
+			var label = this.FindControl<Label>("ScaleLabel");
+			label.DataContext = this;
+
+			label.GetObservable(Label.ContentProperty).Subscribe(value => value = "Scale " + value);			
 		}
 		private void InitializeComponent()
 		{
@@ -90,11 +100,11 @@ namespace FunctionBilder.Dekstop.View
 		{
 			ChangeScale((short)e.Delta.Y);
 			this.drawer.Draw(CreateGraphic);
-			this.slider.Value = this.zoom;
+			this.Slider.Value = this.zoom;
 		}
 		private void SliderZoom(object sender, PointerEventArgs e)
 		{
-			ChangeScale((short)(this.slider.Value - this.zoom));
+			ChangeScale((short)(this.Slider.Value - this.zoom));
 			this.drawer.Draw(CreateGraphic);
 		}
 		private void BackToStart(object sender, RoutedEventArgs e)

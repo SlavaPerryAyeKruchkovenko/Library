@@ -251,4 +251,15 @@ namespace FunctionBulber.Logic
 			return opp is Other2;
 		}
 	}
+	public class Abs : Operations
+	{
+		public override string Name => "abs";
+		public override short CountNum => 1;
+		public override int Priority => 4;
+		public override double Count(double[] nums) => Math.Abs(nums[0]);
+		public override bool Equals(Operations opp)
+		{
+			return opp is Abs;
+		}
+	}
 }

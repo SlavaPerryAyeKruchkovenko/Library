@@ -62,7 +62,7 @@ namespace FunctionBulber.Logic
 
 		private static readonly List<string> priority = new List<string>
 		{ "+", "-", "*", "/", "%", "^", "!","sin", "cos", "tg", "ctg","sqrt",
-			"ln","log","asin","acos","atg","actg","(", ")" };
+			"ln","log","asin","acos","atg","actg","abs","(", ")" };
 		private static readonly List<string> variables = new List<string>
 		{ "x","y","z"};
 		private static readonly List<string> consts = new List<string>

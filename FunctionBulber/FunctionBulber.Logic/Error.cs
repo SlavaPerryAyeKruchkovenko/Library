@@ -7,7 +7,7 @@ namespace FunctionBulber.Logic
 	{
 		public Error(string errorType)
 		{
-			throw new Exception(errorType);
+			 throw new Exception(errorType);
 		}
 	}
 	public class FormatError : Error

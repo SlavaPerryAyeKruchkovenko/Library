@@ -32,9 +32,10 @@
          Coordinates
         </Label>
        <StackPanel Grid.Column="4">
-         <Label Content="{Binding Path=slider.Value}"/>
+         <Label x:Name="ScaleLabel" Content="{Binding Slider.Value}" Classes="shortcut"/>
          <Slider x:Name="SliderScale" PointerMoved="SliderZoom"
-               Value="40" Minimum="1" Maximum="100" Foreground="Red">
+               Value="40" Minimum="1" Maximum="100" Foreground="Red"
+                 Margin="0,-10,0,0">
          </Slider>
        </StackPanel>
      </Grid>      
