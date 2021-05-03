@@ -7,7 +7,7 @@ using FunctionBilder.Dekstop.Model;
 using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
 using System.Collections.Generic;
-
+using static FunctionBulber.Logic.IDrawer;
 
 namespace FunctionBilder.Dekstop.View
 {
@@ -20,6 +20,7 @@ namespace FunctionBilder.Dekstop.View
 		private IBrush pointColor { get; set; } = Brushes.Red;
 		private MenuItem lineItem { get; }
 		private MenuItem pointItem { get; }
+		private Instalize RedrawFunction { get; }
 		private List<Function> functions { get; }
 #pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		public GraphicWindow ()
@@ -30,7 +31,7 @@ namespace FunctionBilder.Dekstop.View
 			this.AttachDevTools();
 #endif
 		}
-		public GraphicWindow(List<Function> _functions)
+		public GraphicWindow(List<Function> _functions, Instalize func)
 		{
 			InitializeComponent();
 #if DEBUG
@@ -44,6 +45,7 @@ namespace FunctionBilder.Dekstop.View
 			this.inputBox = this.FindControl<UserControl>("InputBox").FindControl<TextBox>("FunctuionBox");
 			this.rangeBoxes = MainWindow.FoundTextBoxs(this);
 			this.drawer = new Drawer(this.inputBox);
+			this.RedrawFunction = func;
 		}	 
 		private void InitializeComponent()
 		{
@@ -67,8 +69,7 @@ namespace FunctionBilder.Dekstop.View
 				this.pointItem.Header = color;
 				this.pointColor = color;
 			}
-		}
-		
+		}		
 		private void OpenMenu(object sender, RoutedEventArgs e)
 		{
 			((MenuItem)sender).ContextMenu.Open();
@@ -76,6 +77,7 @@ namespace FunctionBilder.Dekstop.View
 		private void AddFunction(object sender, RoutedEventArgs e)
 		{
 			this.drawer.Draw(CreateFunction);
+			this.drawer.Draw(this.RedrawFunction);
 		}
 		private void CreateFunction()
 		{
@@ -85,6 +87,7 @@ namespace FunctionBilder.Dekstop.View
 			var graphic = new Graphic(brushes, checkBox.IsChecked.Value, this.rangeBoxes.ToDouble());
 			var function = new Function(this.inputBox.Text, graphic);
 			this.functions.Add(function);
+			
 			this.Close();
 		}
 	}

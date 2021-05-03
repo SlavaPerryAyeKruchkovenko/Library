@@ -24,8 +24,9 @@ namespace FunctionBilder.Dekstop.View
 		private List<Function> functions { get; }
 		private Rect size { get; set; }
 		private CheckBox labelVisible { get; }
-		public Slider Slider { get; }
+		private Slider Slider { get; }
 		private Point lastCutrsorPosition { get; set; }
+		public string SliderValue { get; set; }
 		private bool isPressed { get; set; } = false;
 #pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		public FunctionWindow()
@@ -48,13 +49,14 @@ namespace FunctionBilder.Dekstop.View
 			this.labelVisible = this.FindControl<CheckBox>("IsNeedLabel");
 			this.Slider = this.FindControl<Slider>("SliderScale");
 			this.zoom = this.field.Scale;
+			this.SliderValue = $"Scale={this.Slider.Value}";
 
 			this.drawer = new Drawer(new object());
 
 			var label = this.FindControl<Label>("ScaleLabel");
 			label.DataContext = this;
 
-			label.GetObservable(Label.ContentProperty).Subscribe(value => value = "Scale " + value);			
+					
 		}
 		private void InitializeComponent()
 		{
@@ -89,7 +91,7 @@ namespace FunctionBilder.Dekstop.View
 		}
 		private void AddNewGraphic(object sender, RoutedEventArgs e)
 		{
-			var window = new GraphicWindow(this.functions);
+			var window = new GraphicWindow(this.functions, this.CreateGraphic);
 			window.Show();
 		}
 		private void DeleteAnyGraphic(object sender, RoutedEventArgs e)
@@ -171,20 +173,21 @@ namespace FunctionBilder.Dekstop.View
 		}
 		private void ChangeScale(short newScale)
 		{
+			var startCenter = this.field.BeginOfCountdown/this.zoom;
 			if (newScale < 0 && this.zoom > 5)
 			{
 				this.zoom -= 5;
-				this.range -= this.range * 4.2 / this.zoom;
 			}
 			else if (newScale > 0 && this.zoom < 100 || newScale < 0 && this.zoom > 1) 
 			{
-				this.zoom += newScale;
-				this.range += this.range * 1.12 / this.zoom;
-			}
+				this.zoom += newScale;	
+			}		
 			else
 			{
 				return;
 			}
+			var finishCenter = this.field.BeginOfCountdown / this.zoom;
+			this.range -= (finishCenter - startCenter) * this.zoom;
 		}
 	}
 }
