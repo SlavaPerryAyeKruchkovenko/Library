@@ -19,7 +19,8 @@ namespace FunctionBilder.Dekstop.Model
 		public Point LayoutSize { get; }
 		public Canvas Canvas { get; }
 		public DataGrid Input { get; }
-		private IFunctionDrawer functionDrawer { get; set; }
+
+		private IFunctionDrawer functionDrawer;
 		public Field(Canvas canvas,DataGrid input)
 		{
 			this.Canvas = canvas;

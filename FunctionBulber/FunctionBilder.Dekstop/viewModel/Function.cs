@@ -1,4 +1,5 @@
 ﻿using Avalonia;
+using Avalonia.Threading;
 using FunctionBilder.Dekstop.Model;
 using FunctionBulber.Logic;
 using System;
@@ -9,9 +10,10 @@ namespace FunctionBilder.Dekstop.ViewModel
 {
 	public class Function
 	{
-		private IFunctionDrawer functionDrawer { get; set; }
+		private IFunctionDrawer functionDrawer;
 		public string FunctionText { get; private set; }
-		private ReversePolandLogic RPN { get; set; }
+
+		private ReversePolandLogic RPN;
 		public Graphic Graphic { get; private set; }
 		
 		public Function(string _function,Graphic _graphic)
@@ -24,8 +26,8 @@ namespace FunctionBilder.Dekstop.ViewModel
 		}		
 		public void Render(Field field)
 		{
-			this.functionDrawer = new FunctionDrawer(field);
-			this.functionDrawer.DrawFunction(this.Graphic,this.RPN);
+			this.functionDrawer = new FunctionDrawer(field);			
+			this.functionDrawer.DrawFunction(this.Graphic, this.RPN);			
 		}
 		private static List<string> dicks = new List<string> { "dick", "член", "пиписька", "хуй", "cock", "pennis" };
 		private void ChangeGraphic()

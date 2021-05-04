@@ -13,15 +13,23 @@ namespace FunctionBilder.Dekstop.View
 {
 	public class GraphicWindow : Window
 	{
-		private TextBox inputBox { get; }
-		private TextBox[] rangeBoxes { get; }
-		private IDrawer drawer { get; }
-		private IBrush lineColor { get; set; } = Brushes.Yellow;
-		private IBrush pointColor { get; set; } = Brushes.Red;
-		private MenuItem lineItem { get; }
-		private MenuItem pointItem { get; }
-		private Instalize RedrawFunction { get; }
-		private List<Function> functions { get; }
+		private TextBox inputBox;
+
+		private TextBox[] rangeBoxes;
+
+		private IDrawer drawer;
+
+		private IBrush lineColor = Brushes.Yellow;
+
+		private IBrush pointColor = Brushes.Red;
+
+		private MenuItem lineItem;
+
+		private MenuItem pointItem;
+
+		private Instalize RedrawFunction;
+
+		private List<Function> functions;
 #pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		public GraphicWindow ()
 #pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
@@ -59,7 +67,7 @@ namespace FunctionBilder.Dekstop.View
 				return;
 			}				
 			var color = (IBrush)menu.SelectedItem;
-			if (menu.Name== "LineColorMenu")
+			if (menu.Name == "LineColorMenu") 
 			{				
 				this.lineItem.Header = color;
 				this.lineColor = color;

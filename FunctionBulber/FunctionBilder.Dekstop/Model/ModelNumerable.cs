@@ -27,9 +27,9 @@ namespace FunctionBilder.Dekstop.Model
 			this.elements = _elements;
 			this.coordinateValue = _coordinateValue;
 		}
-		Calculate calculate { get; }
-		Stack<Element> elements { get; }
-		double[] coordinateValue { get; }
+		Calculate calculate;
+		Stack<Element> elements;
+		double[] coordinateValue;
 		public IEnumerator<Point> GetEnumerator()
 		{
 			double x = coordinateValue[0];

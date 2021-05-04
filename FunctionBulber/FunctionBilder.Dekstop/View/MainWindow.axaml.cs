@@ -6,19 +6,24 @@ using Avalonia.Markup.Xaml;
 using FunctionBilder.Dekstop.Model;
 using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
-using System.Collections.Generic;
 
 namespace FunctionBilder.Dekstop.View
 {
 	public class MainWindow : Window
 	{
-		private IDrawer drawer { get; }
-		private TextBox inputBox { get; }
-		private TextBox nowBox { get; set; }
-		private TextBox[] boxes { get; }
-		private Rect size { get; set; }
-		private Field field { get; set; }
-		private Function function { get; set; }
+		private IDrawer drawer;
+
+		private TextBox inputBox;
+
+		private TextBox nowBox;
+
+		private TextBox[] boxes;
+
+		private Rect size;
+
+		private Field field;
+
+		private Function function;
 
 		public MainWindow()
 		{
@@ -26,12 +31,7 @@ namespace FunctionBilder.Dekstop.View
 #if DEBUG
 			this.AttachDevTools();
 #endif
-			this.inputBox = this.FindControl<UserControl>("InputBox").FindControl<TextBox>("FunctuionBox");
-			this.nowBox = this.inputBox;
-			this.drawer = new Drawer(this.inputBox);
-			this.boxes = FoundTextBoxs(this);
-			this.size = this.Bounds;
-			this.field = new Field(this.FindControl<Canvas>("FunctionCanvas"), this.FindControl<DataGrid>("OutputDataGrid"));
+			Initialize(this);
 		}
 		public MainWindow(Function _function)
 		{
@@ -39,12 +39,8 @@ namespace FunctionBilder.Dekstop.View
 #if DEBUG
 			this.AttachDevTools();
 #endif
-			this.inputBox = this.FindControl<UserControl>("InputBox").FindControl<TextBox>("FunctuionBox");		
-			this.nowBox = this.inputBox;
-			this.drawer = new Drawer(this.inputBox);
-			this.boxes = FoundTextBoxs(this);
-			this.size = this.Bounds;
-			this.field = new Field(this.FindControl<Canvas>("FunctionCanvas"), this.FindControl<DataGrid>("OutputDataGrid"));
+			Initialize(this);
+
 			this.function = _function;
 			this.inputBox.Text = this.function.FunctionText;
 		}
@@ -114,6 +110,15 @@ namespace FunctionBilder.Dekstop.View
 				this.function = new Function(this.inputBox.Text, graphic);			
 				this.function.Render(this.field);
 			}
+		}
+		private static void Initialize(MainWindow window)
+		{
+			window.inputBox = window.FindControl<UserControl>("InputBox").FindControl<TextBox>("FunctuionBox");
+			window.nowBox = window.inputBox;
+			window.drawer = new Drawer(window.inputBox);
+			window.boxes = FoundTextBoxs(window);
+			window.size = window.Bounds;
+			window.field = new Field(window.FindControl<Canvas>("FunctionCanvas"), window.FindControl<DataGrid>("OutputDataGrid"));
 		}
 	}
 }

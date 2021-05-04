@@ -74,12 +74,15 @@ namespace FunctionBulber.Logic
 		public override int Priority => 3;
 		public override double Count(double[] nums)
 		{
-			int fucktorial = 1;
-			for (int i = 1; i <= nums[0]; i++)
+			if (nums[0] >= 0)
 			{
-				fucktorial *= i;
+				if (nums[0] <= 0)
+					return 1;
+				else
+					return nums[0] * Count(new double[] { nums[0] - 1 });
 			}
-			return fucktorial;
+			else
+				return double.NaN;
 		}
 		public override bool Equals(Operations opp)
 		{

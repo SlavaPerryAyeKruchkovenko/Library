@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
+using Avalonia.Threading;
 using FunctionBilder.Dekstop.Model;
 using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
@@ -12,51 +13,51 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reactive.Subjects;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace FunctionBilder.Dekstop.View
 {
 	public class FunctionWindow : Window
 	{
-		private IDrawer drawer { get; }
-		private Point range { get; set; }
-		private short zoom { get; set; }
-		private Field field { get; set; }
-		private List<Function> functions { get; }
-		private Rect size { get; set; }
-		private CheckBox labelVisible { get; }
+		private IDrawer drawer;
+
+		private Point range;
+
+		private short zoom;
+
+		private Field field;
+
+		private List<Function> functions;
+
+		private Rect size;
+		private CheckBox LabelVisible { get; }
 		private Slider Slider { get; }
-		private Point lastCutrsorPosition { get; set; }
-		public string SliderValue { get; set; }
-		private bool isPressed { get; set; } = false;
+
+		private Point lastCutrsorPosition;
+
+		private bool isPressed = false;
+
+		private GraphicWindow window;
+
 #pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		public FunctionWindow()
 #pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		{
-			this.functions = new List<Function>();
-
-			InstalizeWindow(this);
-			this.drawer = new Drawer(new object());
-			this.field = new Field(this.FindControl<Canvas>("BigFunctionCanvas"), null);
+			InstalizeWindow(this);			
 		}
 		public FunctionWindow(Function _function)
 		{
-			this.functions = new List<Function>();
-			this.functions.Add(_function);		
-
 			InstalizeWindow(this);
-		
-			this.field = new Field(this.FindControl<Canvas>("BigFunctionCanvas"), null);
-			this.labelVisible = this.FindControl<CheckBox>("IsNeedLabel");
-			this.Slider = this.FindControl<Slider>("SliderScale");
-			this.zoom = this.field.Scale;
-			this.SliderValue = $"Scale={this.Slider.Value}";
 
-			this.drawer = new Drawer(new object());
+			this.functions.Add(_function);
+		
+			this.LabelVisible = this.FindControl<CheckBox>("IsNeedLabel");
+			this.Slider = this.FindControl<Slider>("SliderScale");			
+
+			this.window = new GraphicWindow(this.functions, this.CreateGraphic);
 
 			var label = this.FindControl<Label>("ScaleLabel");
-			label.DataContext = this;
-
-					
+			label.DataContext = this;					
 		}
 		private void InitializeComponent()
 		{
@@ -91,8 +92,11 @@ namespace FunctionBilder.Dekstop.View
 		}
 		private void AddNewGraphic(object sender, RoutedEventArgs e)
 		{
-			var window = new GraphicWindow(this.functions, this.CreateGraphic);
-			window.Show();
+			if(!this.window.IsVisible)
+			{
+				this.window = new GraphicWindow(this.functions, this.CreateGraphic);
+				this.window.Show();
+			}
 		}
 		private void DeleteAnyGraphic(object sender, RoutedEventArgs e)
 		{
@@ -154,8 +158,12 @@ namespace FunctionBilder.Dekstop.View
 #if DEBUG
 			window.AttachDevTools();
 #endif
+			window.functions = new List<Function>();
 			window.range = default;
 			window.size = default;
+			window.drawer = new Drawer(new object());
+			window.field = new Field(window.FindControl<Canvas>("BigFunctionCanvas"), null);
+			window.zoom = window.field.Scale;
 		}
 		private void CreateGraphic()
 		{
@@ -163,12 +171,19 @@ namespace FunctionBilder.Dekstop.View
 			this.field.Canvas.Children.Clear();
 
 			var scales = new short[] { this.field.AxisLineScale, this.zoom };
-			this.field = new Field(this.field.Canvas, this.range, scales, this.labelVisible.IsChecked.Value, null);
+			this.field = new Field(this.field.Canvas, this.range, scales, this.LabelVisible.IsChecked.Value, null);
 
 			this.field.RenderField();
 			foreach (var item in this.functions)
-			{
-				item.Render(this.field);
+			{				
+				new Thread(()=>
+				{
+					Action action = () =>
+					{
+						item.Render(this.field);
+					};
+					Dispatcher.UIThread.InvokeAsync(action);
+				}).Start();
 			}
 		}
 		private void ChangeScale(short newScale)
