@@ -220,8 +220,7 @@ namespace FunctionBulber.Logic
 					this.signs.Pop();
 					break;
 				}
-				else if (signs.Peek().Opperation.Priority >= index &&
-					this.signs.Peek().Opperation.Name != "(")
+				else if (this.signs.Peek().Opperation.Priority >= index && this.signs.Peek().Opperation.Name != "(") 
 				{
 					this.reversePolandNotation.Push(this.signs.Pop());
 				}
@@ -247,7 +246,7 @@ namespace FunctionBulber.Logic
 				}
 				else
 				{
-					result += item.Variable == null ? item.Opperation.Name : item.Variable;
+					result += item.Variable ?? item.Opperation.Name;
 				}
 				result += " ";
 			}

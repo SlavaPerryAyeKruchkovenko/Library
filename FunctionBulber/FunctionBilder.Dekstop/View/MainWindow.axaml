@@ -30,20 +30,7 @@
           <DockPanel Grid.Row="1">
               <Label Grid.Column="0" Grid.ColumnSpan="1" Content="Result:"
                      Classes="shortcut" FontSize="16" DockPanel.Dock="Left"/>
-            <DataGrid x:Name="OutputDataGrid" IsReadOnly="True"
-                      Grid.Column="1"
-                      ScrollViewer.VerticalScrollBarVisibility="Visible"
-                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                      FontWeight="Bold"
-                      FontFamily="Calibri"
-                      FontSize="16"
-                      AutoGenerateColumns="False"
-                      DockPanel.Dock="Right">              
-              <DataGrid.Columns>
-                <DataGridTextColumn Header="X" Width="*" Binding="{Binding Path= X}"/>       
-                <DataGridTextColumn Header="Y" Width="*" Binding="{Binding Path= Y}"/>
-              </DataGrid.Columns> 
-            </DataGrid>       
+             <views:MyDataGrid x:Name="Table" Grid.Column="1"/>
           </DockPanel>     
           <DockPanel Grid.Row="2">
             <views:RangePanel x:Name="GapBoxs"/>

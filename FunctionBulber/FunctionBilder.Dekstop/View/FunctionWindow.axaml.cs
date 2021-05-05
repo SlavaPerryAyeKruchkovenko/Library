@@ -92,10 +92,11 @@ namespace FunctionBilder.Dekstop.View
 		}
 		private void AddNewGraphic(object sender, RoutedEventArgs e)
 		{
-			if(!this.window.IsVisible)
+			if (!this.window.IsVisible) 
 			{
 				this.window = new GraphicWindow(this.functions, this.CreateGraphic);
 				this.window.Show();
+				this.window.Topmost = true;
 			}
 		}
 		private void DeleteAnyGraphic(object sender, RoutedEventArgs e)
@@ -189,7 +190,7 @@ namespace FunctionBilder.Dekstop.View
 		private void ChangeScale(short newScale)
 		{
 			var startCenter = this.field.BeginOfCountdown/this.zoom;
-			if (newScale < 0 && this.zoom > 5)
+			if (newScale < 0 && this.zoom > 5) 
 			{
 				this.zoom -= 5;
 			}

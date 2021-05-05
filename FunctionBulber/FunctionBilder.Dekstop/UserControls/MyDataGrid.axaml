@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FunctionBilder.Dekstop.UserControls.MyDataGrid">
+  <DataGrid x:Name="OutputDataGrid" IsReadOnly="True"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      FontWeight="Bold"
+                      FontFamily="Calibri"
+                      FontSize="16"
+                      AutoGenerateColumns="False"
+                      DockPanel.Dock="Right">
+    <DataGrid.Columns>
+      <DataGridTextColumn Header="X" Width="*" Binding="{Binding Path= X}"/>
+      <DataGridTextColumn Header="Y" Width="*" Binding="{Binding Path= Y}"/>
+    </DataGrid.Columns>
+  </DataGrid>
+</UserControl>

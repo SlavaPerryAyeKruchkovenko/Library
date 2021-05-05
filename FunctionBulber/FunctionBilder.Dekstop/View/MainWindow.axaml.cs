@@ -118,7 +118,7 @@ namespace FunctionBilder.Dekstop.View
 			window.drawer = new Drawer(window.inputBox);
 			window.boxes = FoundTextBoxs(window);
 			window.size = window.Bounds;
-			window.field = new Field(window.FindControl<Canvas>("FunctionCanvas"), window.FindControl<DataGrid>("OutputDataGrid"));
+			window.field = new Field(window.FindControl<Canvas>("FunctionCanvas"), window.FindControl<UserControl>("Table").FindControl<DataGrid>("OutputDataGrid"));
 		}
 	}
 }
