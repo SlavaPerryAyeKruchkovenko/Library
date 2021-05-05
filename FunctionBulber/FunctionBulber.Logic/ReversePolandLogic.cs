@@ -245,13 +245,9 @@ namespace FunctionBulber.Logic
 				{
 					result += item.Num;
 				}
-				else if (item.Variable == null)
-				{
-					result += item.Opperation.Name;
-				}
 				else
 				{
-					result += item.Variable;
+					result += item.Variable == null ? item.Opperation.Name : item.Variable;
 				}
 				result += " ";
 			}

@@ -5,7 +5,7 @@ namespace FunctionBulber.Logic
 {
 	public class Calculate
 	{
-		private Operations operation { get; set; }
+		private Operations operation;
 		public Calculate()
 		{
 
@@ -62,6 +62,8 @@ namespace FunctionBulber.Logic
 			{
 				case "x": return new Element(null, null, means[0]);
 				case "y": return new Element(null, null, means[1]);
+				default:
+					break;
 			}
 			return default;
 		}

@@ -30,7 +30,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 		public void DrawFunction(Graphic graphic, ReversePolandLogic RPN)
 		{
 			var coordinates = new List<Point>();
-			Point startLinePoint = default;
+			Point? startLinePoint = default;
 
 			Point canvasSize = this.field.LayoutSize / 2 + this.field.BeginOfCountdown;
 
@@ -60,17 +60,17 @@ namespace FunctionBilder.Dekstop.ViewModel
 					{
 						DrawPoint(pointNow, graphic.PointColor, this.field.Ratio * this.field.Scale);
 					}					
-					if (Math.Abs(Math.Abs(startLinePoint.X - point.X) - range * this.field.Scale) < range)
+					if (startLinePoint.HasValue)
 					{
-						double x = canvasSize.X + startLinePoint.X;
-						double y = canvasSize.Y - startLinePoint.Y;
+						double x = canvasSize.X + startLinePoint.Value.X;
+						double y = canvasSize.Y - startLinePoint.Value.Y;
 						DrawLine(new Point(x, y), pointNow, graphic.LineColor, this.field.AxisLineScale);
 					}
 					startLinePoint = point;
 				}
 				else
 				{
-					startLinePoint = default;
+					startLinePoint = null;
 				}
 			}
 			DrawAnswer(coordinates);
