@@ -34,7 +34,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 
 		private bool isPressed = false;
 
-		private GraphicWindow window;
+		private Window window;
 
 #pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		public FunctionWindow()
@@ -62,8 +62,16 @@ namespace FunctionBilder.Dekstop.ViewModel
 		}
 		protected override void OnClosing(CancelEventArgs e)
 		{
-			var window = new MainWindow(this.functions[0]);
-			window.Show();
+			Window window1;
+			if(this.functions.Count>0)
+			{
+				window1 = new MainWindow(this.functions[0]);
+			}
+			else
+			{
+				window1 = new MainWindow();
+			}
+			window1.Show();
 			this.OnClosed(e);
 		}
 		private void Canvas_SizeChanged(object sender1, AvaloniaPropertyChangedEventArgs e)
@@ -98,7 +106,12 @@ namespace FunctionBilder.Dekstop.ViewModel
 		}
 		private void DeleteAnyGraphic(object sender, RoutedEventArgs e)
 		{
-			throw new Exception("Савелий и тут Лох");
+			if (!this.window.IsVisible)
+			{
+				this.window = new FunctionListWindow(this.functions, this.CreateGraphic);
+				this.window.Show();
+				this.window.Topmost = true;
+			}
 		}
 		private void ZoomGraphick(object sender, PointerWheelEventArgs e)
 		{
