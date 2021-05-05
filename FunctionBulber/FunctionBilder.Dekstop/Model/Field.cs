@@ -44,6 +44,10 @@ namespace FunctionBilder.Dekstop.Model
 		{
 			this.Canvas.Children.Clear();			
 		}
+		public void AddChildren(Control control)
+		{
+			this.Canvas.Children.Insert(0, control);
+		}
 		public Point CountLayoutSize(Canvas canvas)
 		{
 			return new Point(canvas.Bounds.Width, canvas.Bounds.Height);

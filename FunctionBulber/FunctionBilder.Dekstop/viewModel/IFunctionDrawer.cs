@@ -17,15 +17,15 @@ namespace FunctionBilder.Dekstop.ViewModel
 
 	class FunctionDrawer : IFunctionDrawer
 	{
-		private Field field { get; }
+		private readonly Field field;
 		public FunctionDrawer(Field _field)
 		{
 			this.field = _field;
 		}
 		public void DrawLine(Point startLocation, Point finishLocation, IBrush brush, short lineScale)
 		{
-			Figure figure = new MyLine();
-			this.field.Canvas.Children.Insert(0, figure.Create(new Point[] { startLocation, finishLocation }, brush, lineScale));
+			var figure = new MyLine();
+			this.field.AddChildren(figure.Create(new Point[] { startLocation, finishLocation }, brush, lineScale));
 		}
 		public void DrawFunction(Graphic graphic, ReversePolandLogic RPN)
 		{
@@ -77,8 +77,8 @@ namespace FunctionBilder.Dekstop.ViewModel
 		}
 		public void DrawArrows(Point location, Point size,IBrush brush)
 		{
-			Figure figure = new Mypolygon();
-			this.field.Canvas.Children.Insert(0, figure.Create(new Point[] { location, size }, brush, 1));
+			var figure = new Mypolygon();
+			this.field.AddChildren(figure.Create(new Point[] { location, size }, brush, 1));
 		}
 		public void DrawLabels(Point gap, Point coordinate, bool isXLine)
 		{
@@ -86,7 +86,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 			{
 				if (i % this.field.Scale == 0)
 				{
-					MyControler controler = new MyLabel();
+					var controler = new MyLabel();
 					Point newCoordinate;
 
 					if (isXLine)
@@ -98,16 +98,16 @@ namespace FunctionBilder.Dekstop.ViewModel
 						newCoordinate = new Point(coordinate.X, coordinate.Y - i);
 					}
 					string content = (i / this.field.Scale).ToString();
-					DrawPoint(newCoordinate, this.field.AxisColor, this.field.Ratio * this.field.Scale);					
-					this.field.Canvas.Children.Insert(0, controler.Create(newCoordinate, content, this.field.Ratio * this.field.Scale));
+					DrawPoint(newCoordinate, this.field.AxisColor, this.field.Ratio * this.field.Scale);
+					this.field.AddChildren(controler.Create(newCoordinate, content, this.field.Ratio * this.field.Scale));
 				}
 
 			}
 		}
 		private void DrawPoint(Point pointNow, IBrush brush, double scale)
 		{
-			Figure figure = new MyEllipse();
-			this.field.Canvas.Children.Insert(0, figure.Create(new Point[] { pointNow }, brush, scale));
+			var figure = new MyEllipse();
+			this.field.AddChildren(figure.Create(new Point[] { pointNow }, brush, scale));
 		}
 		private void DrawAnswer(List<Point> points)
 		{

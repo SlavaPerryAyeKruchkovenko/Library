@@ -90,7 +90,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 		private void CreateFunction()
 		{
 			var checkBox = this.Find<UserControl>("PointCheckBox").Find<CheckBox>("IsNeedEllipse");
-			IBrush[] brushes = new IBrush[] { this.pointColor, this.lineColor };
+			var brushes = new IBrush[] { this.pointColor, this.lineColor };
 
 			var graphic = new Graphic(brushes, checkBox.IsChecked.Value, this.rangeBoxes.ToDouble());
 			var function = new Function(this.inputBox.Text, graphic);
