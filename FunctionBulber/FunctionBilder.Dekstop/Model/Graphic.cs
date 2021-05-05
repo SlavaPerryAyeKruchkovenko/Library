@@ -1,12 +1,9 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using Avalonia.Controls;
 using Avalonia.Media;
-using FunctionBilder.Dekstop.Model;
-using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
 using System.Collections.ObjectModel;
 
-namespace FunctionBilder.Dekstop
+namespace FunctionBilder.Dekstop.Model
 {
 	public class Graphic
 	{

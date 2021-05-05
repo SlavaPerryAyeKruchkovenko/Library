@@ -1,11 +1,8 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
-using Avalonia.Threading;
 using FunctionBilder.Dekstop.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Threading;
 
 namespace FunctionBilder.Dekstop.Model
 {
