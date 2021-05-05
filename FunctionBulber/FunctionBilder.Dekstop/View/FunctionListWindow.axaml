@@ -19,7 +19,7 @@
   <Grid RowDefinitions="4*,*">
     <DockPanel>
       <ListBox Items="{Binding functions}" Classes="functionsBox" x:Name="Functions"
-               SelectionChanged="SelectFunction">
+               SelectionChanged="SelectFunction" >
       </ListBox>
     </DockPanel>
     <Button Grid.Row="1" Classes="BigButton Purple" Content="Delete Function"

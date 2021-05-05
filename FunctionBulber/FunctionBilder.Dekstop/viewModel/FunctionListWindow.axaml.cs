@@ -11,7 +11,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 {
 	public class FunctionListWindow : Window
 	{
-		private readonly List<Function> functions;
+		public List<Function> Functions { get; }
 		private readonly Instalize RenderGraphic;
 		private short id = -1;
 		public FunctionListWindow()
@@ -20,7 +20,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 #if DEBUG
 			this.AttachDevTools();
 #endif
-			this.functions = new List<Function>();
+			this.Functions = new List<Function>();
 		}
 		public FunctionListWindow(List<Function> _functions, Instalize func)
 		{
@@ -28,8 +28,10 @@ namespace FunctionBilder.Dekstop.ViewModel
 #if DEBUG
 			this.AttachDevTools();
 #endif
-			this.functions = _functions;
-			this.FindControl<ListBox>("Functions").Items = this.functions.Select(x => x.FunctionText);
+			this.Functions = _functions;
+			var listBox = this.FindControl<ListBox>("Functions");
+			listBox.DataContext = this;
+			listBox.Items = this.Functions.Select(x => x.FunctionText);
 			this.RenderGraphic = func;
 		}
 
@@ -47,12 +49,12 @@ namespace FunctionBilder.Dekstop.ViewModel
 			}
 			else
 			{
-				this.id = (short)(item.SelectedIndex);
+				this.id = (short)item.SelectedIndex;
 			}
 		}
 		private void DeleteFunc(object sender , RoutedEventArgs e)
 		{
-			this.functions.RemoveAt(this.id);
+			this.Functions.RemoveAt(this.id);
 			this.RenderGraphic();
 		}
 	}
