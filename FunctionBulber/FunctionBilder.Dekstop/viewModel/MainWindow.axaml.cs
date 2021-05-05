@@ -4,10 +4,9 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using FunctionBilder.Dekstop.Model;
-using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
 
-namespace FunctionBilder.Dekstop.View
+namespace FunctionBilder.Dekstop.ViewModel
 {
 	public class MainWindow : Window
 	{
@@ -100,7 +99,7 @@ namespace FunctionBilder.Dekstop.View
 			if (Graphic.CanConvertBoxes(this.boxes))
 			{
 				this.field.Input.Items = null;
-				this.field.Canvas.Children.Clear();
+				this.field.ClearCanvas();
 
 				var scales = new short[] { 1, 1, 1 };
 				this.field = new Field(this.field.Canvas, default, scales, true, this.field.Input);

@@ -1,6 +1,5 @@
 ﻿using Avalonia.Controls;
 using FunctionBulber.Logic;
-using MessageBox.Avalonia;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
 using System;
@@ -9,7 +8,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 {
 	public class Drawer : IDrawer
 	{
-		private object input;
+		private readonly object input;
 		public Drawer(object _input)
 		{
 			this.input = _input;

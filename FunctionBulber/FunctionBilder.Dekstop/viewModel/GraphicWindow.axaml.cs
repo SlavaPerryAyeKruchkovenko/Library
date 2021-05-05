@@ -4,12 +4,12 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using FunctionBilder.Dekstop.Model;
-using FunctionBilder.Dekstop.ViewModel;
+using FunctionBilder.Dekstop.View;
 using FunctionBulber.Logic;
 using System.Collections.Generic;
 using static FunctionBulber.Logic.IDrawer;
 
-namespace FunctionBilder.Dekstop.View
+namespace FunctionBilder.Dekstop.ViewModel
 {
 	public class GraphicWindow : Window
 	{

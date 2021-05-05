@@ -6,16 +6,13 @@ using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using Avalonia.Threading;
 using FunctionBilder.Dekstop.Model;
-using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Reactive.Subjects;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace FunctionBilder.Dekstop.View
+namespace FunctionBilder.Dekstop.ViewModel
 {
 	public class FunctionWindow : Window
 	{
@@ -169,7 +166,7 @@ namespace FunctionBilder.Dekstop.View
 		private void CreateGraphic()
 		{
 			this.size = this.field.Canvas.Bounds;
-			this.field.Canvas.Children.Clear();
+			this.field.ClearCanvas();
 
 			var scales = new short[] { this.field.AxisLineScale, this.zoom };
 			this.field = new Field(this.field.Canvas, this.range, scales, this.LabelVisible.IsChecked.Value, null);

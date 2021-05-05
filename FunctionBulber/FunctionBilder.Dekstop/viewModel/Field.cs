@@ -1,9 +1,11 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Threading;
 using FunctionBilder.Dekstop.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace FunctionBilder.Dekstop.Model
 {
@@ -21,13 +23,13 @@ namespace FunctionBilder.Dekstop.Model
 		public DataGrid Input { get; }
 
 		private IFunctionDrawer functionDrawer;
-		public Field(Canvas canvas,DataGrid input)
+		public Field(Canvas canvas, DataGrid input)
 		{
 			this.Canvas = canvas;
 			this.LayoutSize = this.CountLayoutSize(this.Canvas);
 			this.Input = input;
 		}
-		public Field(Canvas canvas, Point newRange, short[] scales, bool isVisible,DataGrid input)
+		public Field(Canvas canvas, Point newRange, short[] scales, bool isVisible, DataGrid input)
 		{
 			this.Canvas = canvas;
 
@@ -35,11 +37,15 @@ namespace FunctionBilder.Dekstop.Model
 			this.Scale = scales[1];
 
 			this.BeginOfCountdown = newRange;
-			this.LayoutSize = this.CountLayoutSize(this.Canvas);		
+			this.LayoutSize = this.CountLayoutSize(this.Canvas);
 
 			this.IsLabelVisible = isVisible;
 
 			this.Input = input;
+		}
+		public void ClearCanvas()
+		{
+			this.Canvas.Children.Clear();			
 		}
 		public Point CountLayoutSize(Canvas canvas)
 		{
