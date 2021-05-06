@@ -1,103 +1,3 @@
-# Prerequisites
-*.d
-
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
-
-# Linker output
-*.ilk
-*.map
-*.exp
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
-
-FunctionBulber/.vs/
-
-FunctionBulber/FunctionBulber/obj/
-
-FunctionBulber/FunctionBilber.Test/obj/
-
-FunctionBulber/FunctionBulber.sln
-
-FunctionBulber/FunctionBilder.Dekstop/obj/
-
-FunctionBulber/FunctionBuilber.Console/obj/
-
-FunctionBulber/FunctionBulber/FunctionBulber/obj/
-
-FunctionBulber/FunctionBulber/FunctionBulber/bin/
-
-FunctionBulber/FunctionBulber/FunctionBulber.sln
-
-FunctionBulber/FunctionBulber/.vs/
-
-FunctionBulber/FunctionBulber/FunctionBilber.Test/obj/
-
-FunctionBulber/FunctionBulber/FunctionBilber.Test/bin/
-
-*.csproj
-
-FunctionBulber/FunctionBulber/FunctionBilder.Dekstop/icons/
-
-FunctionBulber/FunctionBulber/FunctionBilder.Dekstop/bin/
-
-*.config
-
-FunctionBulber/FunctionBulber/FunctionBilder.Dekstop/obj/
-
-FunctionBulber/FunctionBulber/FunctionBuilber.Console/obj/
-
-FunctionBulber/FunctionBulber/FunctionBuilber.Console/bin/
-
-FunctionBulber/FunctionBulber/FunctionBuilber.Console/.vs/
-
-FunctionBulber/FunctionBuilber.Console/bin/
-
-FunctionBulber/FunctionBuilber.Console/.vs/
-
-FunctionBulber/FunctionBilder.Dekstop/icons/
-
-FunctionBulber/FunctionBilder.Dekstop/bin/
 
 MegaChees/MegaCheess.Menu/obj/
 
@@ -105,33 +5,37 @@ MegaChees/MegaCheess.Menu/bin/
 
 MegaChees/MegaCheess.Menu/.vs/
 
-MegaChees/MegaCheesLogic/obj/
+MegaChees/MegaCheess.Menu/MegaCheess.Menu.csproj
 
-MegaChees/MegaCheesLogic/bin/
+MegaChees/MegaChees.Logic/bin/
 
-MegaChees/ChessAvalone/bin/
-
-MegaChees/ChessAvalone/icon/
-
-MegaChees/ChessAvalone/obj/
+MegaChees/MegaChees.Logic/MegaChess.Logic.csproj
 
 MegaChees/Chess.Test/obj/
 
 MegaChees/Chess.Test/bin/
 
-MegaChees/.vs/
-
-MegaChees/MegaChees.sln
+*.csproj
 
 MegaChees/MegaChees.Logic/obj/
 
-MegaChees/MegaChees.Logic/bin/
-
-MegaChees/Chess.Dekstop/bin/
+MegaChees/Chess.Dekstop/obj/
 
 MegaChees/Chess.Dekstop/icon/
 
-MegaChees/Chess.Dekstop/obj/
+MegaChees/Chess.Dekstop/bin/
+
+*.config
+
+MegaChees/.vs/MegaCheesLogic/v16/
+
+MegaChees/.vs/MegaCheesLogic/DesignTimeBuild/
+
+MegaChees/.vs/MegaChees/v16/
+
+MegaChees/.vs/MegaChees/DesignTimeBuild/
+
+*.sln
 
 FunctionBulber/FunctionBulber.Logic/obj/
 
@@ -139,4 +43,22 @@ FunctionBulber/FunctionBulber.Logic/bin/
 
 FunctionBulber/FunctionBulber.Logic/.vs/
 
-FunctionBulber/FunctionBulber/
+FunctionBulber/FunctionBulber/obj/
+
+FunctionBulber/FunctionBuilber.Console/obj/
+
+FunctionBulber/FunctionBuilber.Console/bin/
+
+FunctionBulber/FunctionBuilber.Console/.vs/
+
+FunctionBulber/FunctionBilder.Dekstop/obj/
+
+FunctionBulber/FunctionBilder.Dekstop/icons/
+
+FunctionBulber/FunctionBilder.Dekstop/bin/
+
+FunctionBulber/FunctionBilber.Test/obj/
+
+FunctionBulber/FunctionBilber.Test/bin/
+
+FunctionBulber/.vs/
