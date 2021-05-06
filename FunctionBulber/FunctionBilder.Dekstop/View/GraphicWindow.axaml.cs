@@ -4,12 +4,13 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Media;
 using FunctionBilder.Dekstop.Model;
-using FunctionBilder.Dekstop.View;
+using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using static FunctionBulber.Logic.IDrawer;
 
-namespace FunctionBilder.Dekstop.ViewModel
+namespace FunctionBilder.Dekstop.View
 {
 	public class GraphicWindow : Window
 	{
@@ -29,7 +30,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 
 		private Instalize RedrawFunction;
 
-		private List<Function> functions;
+		private ObservableCollection<Function> functions;
 #pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		public GraphicWindow ()
 #pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
@@ -39,7 +40,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 			this.AttachDevTools();
 #endif
 		}
-		public GraphicWindow(List<Function> _functions, Instalize func)
+		public GraphicWindow(ObservableCollection<Function> _functions, Instalize func)
 		{
 			InitializeComponent();
 #if DEBUG

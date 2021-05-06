@@ -4,22 +4,31 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         xmlns:views="clr-namespace:FunctionBilder.Dekstop.UserControls"
-        x:Class="FunctionBilder.Dekstop.ViewModel.FunctionListWindow"
+        x:Class="FunctionBilder.Dekstop.View.FunctionListWindow"
          Height="150" Width="400" MaxWidth="400" MinWidth="400"
         MaxHeight="200" MinHeight="200" Position="300,620">
   <Window.Styles>
     <Style Selector="ListBox.functionsBox">
       <Setter Property="VerticalAlignment" Value="Stretch"/>
       <Setter Property="HorizontalAlignment" Value="Stretch"/>
-      <Setter Property="FontSize" Value="18"/>
-      <Setter Property="FontFamily" Value="Calibri"/>
       <Setter Property="Background" Value="#D46AD0"/>
+    </Style>
+    <Style Selector="TextBlock.ListBoxItem">
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+      <Setter Property="FontSize" Value="16"/>
+      <Setter Property="FontFamily" Value="Calibri"/>
     </Style>
   </Window.Styles>
   <Grid RowDefinitions="4*,*">
     <DockPanel>
-      <ListBox Items="{Binding functions}" Classes="functionsBox" x:Name="Functions"
-               SelectionChanged="SelectFunction" >
+      <ListBox Classes="functionsBox" x:Name="Functions"
+               SelectionChanged="SelectFunction" Items="{Binding Functions}">
+        <ListBox.ItemTemplate>         
+          <DataTemplate>
+              <TextBlock Text="{Binding FunctionText}" Background="Black"/>        
+          </DataTemplate>
+        </ListBox.ItemTemplate>
       </ListBox>
     </DockPanel>
     <Button Grid.Row="1" Classes="BigButton Purple" Content="Delete Function"

@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:views="clr-namespace:FunctionBilder.Dekstop.UserControls"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="250"
-        x:Class="FunctionBilder.Dekstop.ViewModel.MainWindow"
+        x:Class="FunctionBilder.Dekstop.View.MainWindow"
         Title="Calculator"
         WindowState="Normal"
         WindowStartupLocation="CenterScreen"
@@ -28,9 +28,8 @@
         <Grid Grid.Row="0" RowDefinitions="3*,4*,2*">
           <views:input x:Name="InputBox"/>
           <DockPanel Grid.Row="1">
-              <Label Grid.Column="0" Grid.ColumnSpan="1" Content="Result:"
-                     Classes="shortcut" FontSize="16" DockPanel.Dock="Left"/>
-             <views:MyDataGrid x:Name="Table" Grid.Column="1"/>
+              <Label Content="  Result:" Classes="shortcut" FontSize="16" DockPanel.Dock="Left"/>
+             <views:MyDataGrid x:Name="Table" DockPanel.Dock="Right"/>
           </DockPanel>     
           <DockPanel Grid.Row="2">
             <views:RangePanel x:Name="GapBoxs"/>

@@ -4,9 +4,10 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using FunctionBilder.Dekstop.Model;
+using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
 
-namespace FunctionBilder.Dekstop.ViewModel
+namespace FunctionBilder.Dekstop.View
 {
 	public class MainWindow : Window
 	{
@@ -60,7 +61,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 		}
 		public void Canvas_SizeChanged(object sender1, AvaloniaPropertyChangedEventArgs e)
 		{
-			if (this.inputBox != null && this.size != this.Bounds)
+			if (this.inputBox != null && this.size != ((Canvas)sender1).Bounds)
 			{
 				this.drawer.Draw(CreateGraphic);
 			}

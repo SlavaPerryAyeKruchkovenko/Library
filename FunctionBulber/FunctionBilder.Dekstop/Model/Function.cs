@@ -12,7 +12,7 @@ namespace FunctionBilder.Dekstop.Model
 		private IFunctionDrawer functionDrawer;
 		public string FunctionText { get; private set; }
 
-		private ReversePolandLogic RPN;
+		private readonly ReversePolandLogic RPN;
 		public Graphic Graphic { get; private set; }
 		
 		public Function(string _function,Graphic _graphic)
@@ -53,6 +53,10 @@ namespace FunctionBilder.Dekstop.Model
 				content.Append(" Не имеет значения в данной точке" + "\n");
 			}
 			return content.ToString();
+		}
+		public override string ToString()
+		{
+			return this.FunctionText;
 		}
 	}
 }

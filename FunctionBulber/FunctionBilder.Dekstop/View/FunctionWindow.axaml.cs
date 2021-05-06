@@ -3,16 +3,17 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Media;
 using Avalonia.Threading;
 using FunctionBilder.Dekstop.Model;
+using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Threading;
 
-namespace FunctionBilder.Dekstop.ViewModel
+namespace FunctionBilder.Dekstop.View
 {
 	public class FunctionWindow : Window
 	{
@@ -24,7 +25,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 
 		private Field field;
 
-		private List<Function> functions;
+		private ObservableCollection<Function> functions;
 
 		private Rect size;
 		private CheckBox LabelVisible { get; }
@@ -42,7 +43,9 @@ namespace FunctionBilder.Dekstop.ViewModel
 		{
 			InstalizeWindow(this);			
 		}
+#pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		public FunctionWindow(Function _function)
+#pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		{
 			InstalizeWindow(this);
 
@@ -169,7 +172,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 #if DEBUG
 			window.AttachDevTools();
 #endif
-			window.functions = new List<Function>();
+			window.functions = new ObservableCollection<Function>();
 			window.range = default;
 			window.size = default;
 			window.drawer = new Drawer(new object());

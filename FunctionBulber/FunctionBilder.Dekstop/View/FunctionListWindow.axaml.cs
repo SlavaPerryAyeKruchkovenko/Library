@@ -3,15 +3,15 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using FunctionBilder.Dekstop.Model;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using static FunctionBulber.Logic.IDrawer;
 
-namespace FunctionBilder.Dekstop.ViewModel
+namespace FunctionBilder.Dekstop.View
 {
-	public class FunctionListWindow : Window
+	public class FunctionListWindow : Window, INotifyPropertyChanged
 	{
-		public List<Function> Functions { get; }
+		public ObservableCollection<Function> Functions { get; }
 		private readonly Instalize RenderGraphic;
 		private short id = -1;
 		public FunctionListWindow()
@@ -20,9 +20,9 @@ namespace FunctionBilder.Dekstop.ViewModel
 #if DEBUG
 			this.AttachDevTools();
 #endif
-			this.Functions = new List<Function>();
+			this.Functions = new ObservableCollection<Function>();
 		}
-		public FunctionListWindow(List<Function> _functions, Instalize func)
+		public FunctionListWindow(ObservableCollection<Function> _functions, Instalize func)
 		{
 			InitializeComponent();
 #if DEBUG
@@ -31,7 +31,6 @@ namespace FunctionBilder.Dekstop.ViewModel
 			this.Functions = _functions;
 			var listBox = this.FindControl<ListBox>("Functions");
 			listBox.DataContext = this;
-			listBox.Items = this.Functions.Select(x => x.FunctionText);
 			this.RenderGraphic = func;
 		}
 
