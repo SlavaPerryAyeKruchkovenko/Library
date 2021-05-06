@@ -26,7 +26,7 @@
                SelectionChanged="SelectFunction" Items="{Binding Functions}">
         <ListBox.ItemTemplate>         
           <DataTemplate>
-              <TextBlock Text="{Binding FunctionText}" Background="Black"/>        
+              <TextBlock Text="{Binding FunctionText}"/>        
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>
