@@ -1,24 +1,4 @@
-<<<<<<< HEAD
-﻿using Avalonia.Media;
-
-
-namespace FunctionBilder.Dekstop.Model
-{
-	static class Field
-	{
-		public readonly static short FontSize = 6;
-		public readonly static short NormalVizualRangeForLabel = -10;
-		public readonly static short StandartScale = 1;
-		public readonly static short BeautifulScale = 40;
-		public readonly static IBrush StandartPointColor = Brushes.Red;
-		public readonly static IBrush StandartLineColor = Brushes.Yellow;
-		public readonly static short LineScale = 5;
-		public readonly static double Ratio = 0.4;
-		public static IBrush[] StandartGraphicColor()
-		{
-			return new IBrush[] { StandartPointColor, StandartLineColor };
-=======
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using FunctionBilder.Dekstop.ViewModel;
@@ -62,7 +42,7 @@ namespace FunctionBilder.Dekstop.Model
 		}
 		public void ClearCanvas()
 		{
-			this.Canvas.Children.Clear();			
+			this.Canvas.Children.Clear();
 		}
 		public void AddChildren(Control control)
 		{
@@ -98,7 +78,7 @@ namespace FunctionBilder.Dekstop.Model
 				if (Math.Abs(rangeLocation.X) < layoutSize.X / 2)
 				{
 					this.functionDrawer.DrawLabels(points[0], points[1], false);
-				}					
+				}
 			}
 			points = new Point[]
 			{
@@ -125,7 +105,6 @@ namespace FunctionBilder.Dekstop.Model
 			this.functionDrawer.DrawArrows(points[0], new Point(10, 10), this.AxisColor);
 
 			this.functionDrawer.DrawArrows(points[1], new Point(10, -10), this.AxisColor);
->>>>>>> FunctionBuilder
 		}
 	}
 }

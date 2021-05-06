@@ -24,9 +24,9 @@
     <DockPanel>
       <ListBox Classes="functionsBox" x:Name="Functions"
                SelectionChanged="SelectFunction" Items="{Binding Functions}">
-        <ListBox.ItemTemplate>         
+        <ListBox.ItemTemplate>
           <DataTemplate>
-              <TextBlock Text="{Binding FunctionText}"/>        
+            <TextBlock Text="{Binding FunctionText}"/>
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>

@@ -12,9 +12,9 @@ namespace FunctionBilder.Dekstop.Model
 		public IBrush PointColor { get; } = Brushes.Red;
 		public IBrush LineColor { get; } = Brushes.Yellow;
 		public bool IsVisibleElipse { get; } = true;
-		public IBrush[] GraphicColor() => new IBrush[] { this.PointColor, this.LineColor};
+		public IBrush[] GraphicColor() => new IBrush[] { this.PointColor, this.LineColor };
 		public double[] gap { get; }
-		public Graphic(IBrush[] brushes , bool isVisible,double[] _gap)
+		public Graphic(IBrush[] brushes, bool isVisible, double[] _gap)
 		{
 			this.PointColor = brushes[0];
 			this.LineColor = brushes[1];

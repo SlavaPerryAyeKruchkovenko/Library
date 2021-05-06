@@ -70,7 +70,7 @@ namespace FunctionBulber.Logic
 
 		public void StackInitialization()
 		{
-			if (this.function == null || this.function == "") 
+			if (this.function == null || this.function == "")
 			{
 				string error = "Пустое выражение";
 				_ = new FormatError(error);
@@ -220,7 +220,7 @@ namespace FunctionBulber.Logic
 					this.signs.Pop();
 					break;
 				}
-				else if (this.signs.Peek().Opperation.Priority >= index && this.signs.Peek().Opperation.Name != "(") 
+				else if (this.signs.Peek().Opperation.Priority >= index && this.signs.Peek().Opperation.Name != "(")
 				{
 					this.reversePolandNotation.Push(this.signs.Pop());
 				}

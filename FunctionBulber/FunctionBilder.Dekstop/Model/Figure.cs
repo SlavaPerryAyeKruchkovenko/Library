@@ -70,19 +70,10 @@ namespace FunctionBilder.Dekstop.Model
 				Content = content,
 				FontSize = fontSize,
 				VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Stretch,
-<<<<<<< HEAD
-				HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Stretch
-			};
-			Canvas.SetLeft(myLabel, coordinate.X);
-			Canvas.SetTop(myLabel, coordinate.Y);
-			return myLabel;
-		}
-	}
-=======
 				HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,
 				Margin = new Thickness(coordinate.X, coordinate.Y)
 			};
-			
+
 			return myLabel;
 		}
 	}
@@ -96,10 +87,9 @@ namespace FunctionBilder.Dekstop.Model
 				FontSize = fontSize,
 				IsVisible = true,
 				BorderThickness = new Thickness(4),
-				Margin = new Thickness(coordinate.X,coordinate.Y)
+				Margin = new Thickness(coordinate.X, coordinate.Y)
 			};
 			return myToolTip;
 		}
 	}
->>>>>>> FunctionBuilder
 }

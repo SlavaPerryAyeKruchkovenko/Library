@@ -1,9 +1,5 @@
 ﻿using Avalonia.Controls;
 using System;
-<<<<<<< HEAD
-using System.Linq;
-=======
->>>>>>> FunctionBuilder
 
 namespace FunctionBilder.Dekstop.Model
 {
@@ -15,7 +11,7 @@ namespace FunctionBilder.Dekstop.Model
 			if (num - num2 == Math.Round(num - num2))
 				return 0;
 			string s = (num - num2).ToString();
-			return s.Length-2;
+			return s.Length - 2;
 		}
 	}
 	static class DoubleArrayExtensions
