@@ -1,9 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
-<<<<<<< HEAD
-=======
 using Avalonia.Input;
->>>>>>> FunctionBuilder
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using FunctionBilder.Dekstop.Model;
@@ -14,15 +11,6 @@ namespace FunctionBilder.Dekstop.View
 {
 	public class MainWindow : Window
 	{
-<<<<<<< HEAD
-		private IDrawer drawer { get; }
-		private Canvas drawCanvas { get; set; }
-		private DataGrid outputBox { get; }
-		private TextBox inputBox { get; }
-		private TextBox nowBox { get; set; }
-		private TextBox[] boxes { get; }
-		private Rect size { get; set; }
-=======
 		private IDrawer drawer;
 
 		private TextBox inputBox;
@@ -36,7 +24,6 @@ namespace FunctionBilder.Dekstop.View
 		private Field field;
 
 		private Function function;
->>>>>>> FunctionBuilder
 
 		public MainWindow()
 		{
@@ -44,15 +31,6 @@ namespace FunctionBilder.Dekstop.View
 #if DEBUG
 			this.AttachDevTools();
 #endif
-<<<<<<< HEAD
-			this.outputBox = this.FindControl<DataGrid>("OutputDataGrid");
-			this.inputBox = this.FindControl<TextBox>("FunctuionBox");
-			this.drawCanvas = this.FindControl<Canvas>("FunctionCanvas");
-			this.nowBox = inputBox;
-			this.drawer = new Drawer(inputBox);
-			this.boxes = FoundTextBoxs();
-			this.size = Bounds;
-=======
 			Initialize(this);
 		}
 		public MainWindow(Function _function)
@@ -65,7 +43,6 @@ namespace FunctionBilder.Dekstop.View
 
 			this.function = _function;
 			this.inputBox.Text = this.function.FunctionText;
->>>>>>> FunctionBuilder
 		}
 		private void InitializeComponent()
 		{
@@ -84,15 +61,9 @@ namespace FunctionBilder.Dekstop.View
 		}
 		public void Canvas_SizeChanged(object sender1, AvaloniaPropertyChangedEventArgs e)
 		{
-<<<<<<< HEAD
-			if (this.inputBox != null && this.inputBox.Text != null && this.size != this.Bounds)
-			{
-				drawer.Draw(CreateGraphic);
-=======
 			if (this.inputBox != null && this.size != ((Canvas)sender1).Bounds)
 			{
 				this.drawer.Draw(CreateGraphic);
->>>>>>> FunctionBuilder
 			}
 			this.size = this.Bounds;
 		}
@@ -103,39 +74,6 @@ namespace FunctionBilder.Dekstop.View
 		}
 		public void Canvas_Tap(object sender, RoutedEventArgs e)
 		{
-<<<<<<< HEAD
-			var window = new FunctionWindow(this.inputBox.Text, this.boxes.ToDouble());
-			window.Show();
-		}
-		private void CreateGraphic()
-		{
-			if (CheckOnErrors(boxes))
-			{
-				this.outputBox.Items = null;
-				this.drawCanvas.Children.Clear();
-
-				this.outputBox.Items = this.drawCanvas.GraphicRender(this.inputBox.Text, this.boxes.ToDouble(), default,
-					Field.StandartScale, Field.StandartGraphicColor());
-			}
-		}
-		private TextBox[] FoundTextBoxs()
-		{
-			var startBox = this.FindControl<TextBox>("StartNum");
-			var finishBox = this.FindControl<TextBox>("FinishNum");
-			var rangeBox = this.FindControl<TextBox>("RangeNum");
-			return new TextBox[] { startBox, finishBox, rangeBox };
-		}
-		private bool CheckOnErrors(TextBox[] textBoxes)
-		{
-			bool isDouble = default;
-			foreach (var tBox in textBoxes)
-			{
-				isDouble = NaNError.CanConvertToDouble(tBox.Text);
-			}
-			return isDouble;
-		}
-
-=======
 			var window = new FunctionWindow(this.function);
 			window.Show();
 			this.Close();
@@ -156,9 +94,9 @@ namespace FunctionBilder.Dekstop.View
 			}
 			return new TextBox[] { startBox, finishBox, rangeBox };
 		}
-		
+
 		private void CreateGraphic()
-		{			
+		{
 			if (Graphic.CanConvertBoxes(this.boxes))
 			{
 				this.field.Input.Items = null;
@@ -169,7 +107,7 @@ namespace FunctionBilder.Dekstop.View
 				this.field.RenderField();
 
 				var graphic = new Graphic(false, this.boxes.ToDouble());
-				this.function = new Function(this.inputBox.Text, graphic);			
+				this.function = new Function(this.inputBox.Text, graphic);
 				this.function.Render(this.field);
 			}
 		}
@@ -182,6 +120,5 @@ namespace FunctionBilder.Dekstop.View
 			window.size = window.Bounds;
 			window.field = new Field(window.FindControl<Canvas>("FunctionCanvas"), window.FindControl<UserControl>("Table").FindControl<DataGrid>("OutputDataGrid"));
 		}
->>>>>>> FunctionBuilder
 	}
 }

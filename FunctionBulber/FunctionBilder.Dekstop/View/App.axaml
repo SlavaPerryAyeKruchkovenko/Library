@@ -4,8 +4,6 @@
   <Application.Styles>
     <FluentTheme Mode="Light"/>
     <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
-<<<<<<< HEAD
-=======
     <Style Selector="Button.BigButton">
       <Setter Property="VerticalAlignment" Value="Stretch"/>
       <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -49,6 +47,5 @@
     <Style Selector="Button.Round">
       <Setter Property="BorderThickness" Value="10"/>
     </Style>
->>>>>>> FunctionBuilder
   </Application.Styles>
 </Application>

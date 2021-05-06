@@ -11,7 +11,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 	{
 		void DrawLine(Point startLocation, Point finishLocation, IBrush brush, short lineScale);
 		void DrawFunction(Graphic graphic, ReversePolandLogic function);
-		void DrawArrows(Point location, Point size,IBrush brush);
+		void DrawArrows(Point location, Point size, IBrush brush);
 		void DrawLabels(Point gap, Point coordinate, bool isXLine);
 	}
 
@@ -56,10 +56,10 @@ namespace FunctionBilder.Dekstop.ViewModel
 
 					Point pointNow = new Point(canvasSize.X + point.X, canvasSize.Y - point.Y);
 
-					if(graphic.IsVisibleElipse)
+					if (graphic.IsVisibleElipse)
 					{
 						DrawPoint(pointNow, graphic.PointColor, this.field.Ratio * this.field.Scale);
-					}					
+					}
 					if (startLinePoint.HasValue)
 					{
 						double x = canvasSize.X + startLinePoint.Value.X;
@@ -75,7 +75,7 @@ namespace FunctionBilder.Dekstop.ViewModel
 			}
 			DrawAnswer(coordinates);
 		}
-		public void DrawArrows(Point location, Point size,IBrush brush)
+		public void DrawArrows(Point location, Point size, IBrush brush)
 		{
 			var figure = new Mypolygon();
 			this.field.AddChildren(figure.Create(new Point[] { location, size }, brush, 1));
@@ -111,8 +111,8 @@ namespace FunctionBilder.Dekstop.ViewModel
 		}
 		private void DrawAnswer(List<Point> points)
 		{
-			if (this.field.Input != null) 
-			this.field.Input.Items = points;
+			if (this.field.Input != null)
+				this.field.Input.Items = points;
 		}
 	}
 }
