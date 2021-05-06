@@ -55,6 +55,10 @@ namespace FunctionBilder.Dekstop.View
 		{
 			this.Functions.RemoveAt(this.id);
 			this.RenderGraphic();
+			if (this.Functions.Count < 1) 
+			{
+				this.Close();
+			}
 		}
 	}
 }
