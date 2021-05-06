@@ -1,6 +1,9 @@
 ﻿using Avalonia.Controls;
 using System;
+<<<<<<< HEAD
 using System.Linq;
+=======
+>>>>>>> FunctionBuilder
 
 namespace FunctionBilder.Dekstop.Model
 {

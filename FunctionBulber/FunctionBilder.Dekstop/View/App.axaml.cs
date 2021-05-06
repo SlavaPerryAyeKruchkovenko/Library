@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using FunctionBilder.Dekstop.ViewModel;
 
 namespace FunctionBilder.Dekstop.View
 {

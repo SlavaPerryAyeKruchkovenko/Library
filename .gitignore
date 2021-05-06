@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 MegaChees/MegaCheess.Menu/obj/
 
@@ -62,3 +63,119 @@ FunctionBulber/FunctionBilber.Test/obj/
 FunctionBulber/FunctionBilber.Test/bin/
 
 FunctionBulber/.vs/
+=======
+# Prerequisites
+*.d
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
+
+FunctionBulber/FunctionBilder.Dekstop/obj/
+
+FunctionBulber/FunctionBuilber.Console/obj/
+
+FunctionBulber/.vs/
+
+FunctionBulber/FunctionBulber/obj/
+
+FunctionBulber/FunctionBilber.Test/obj/
+
+FunctionBulber/FunctionBilder.Dekstop/bin/
+
+FunctionBulber/FunctionBilder.Dekstop/icons/
+
+FunctionBulber/FunctionBuilber.Console/bin/
+
+FunctionBulber/FunctionBuilber.Console/.vs/
+
+FunctionBulber/FunctionBulber.sln
+
+FunctionBulber/FunctionBulber/FunctionBulber/obj/
+
+FunctionBulber/FunctionBulber/FunctionBulber/bin/
+
+*.csproj
+
+FunctionBulber/FunctionBulber/.vs/
+
+*.sln
+
+FunctionBulber/FunctionBulber/FunctionBilber.Test/obj/
+
+FunctionBulber/FunctionBulber/FunctionBilber.Test/bin/
+
+FunctionBulber/FunctionBulber/FunctionBuilber.Console/obj/
+
+FunctionBulber/FunctionBulber/FunctionBuilber.Console/bin/
+
+FunctionBulber/FunctionBulber/FunctionBuilber.Console/.vs/
+
+FunctionBulber/FunctionBulber/FunctionBilder.Dekstop/obj/
+
+FunctionBulber/FunctionBulber/FunctionBilder.Dekstop/icons/
+
+FunctionBulber/FunctionBulber/FunctionBilder.Dekstop/bin/
+
+*.config
+
+MegaChees/
+
+MegaCheesLogic/
+
+FunctionBulber/FunctionBulber.Logic/obj/
+
+FunctionBulber/FunctionBulber.Logic/bin/
+
+FunctionBulber/FunctionBulber.Logic/.vs/
+
+FunctionBulber/FunctionBulber/
+
+FunctionBulber/FunctionBilder.Dekstop/viewModel/CanvasExtension.cs
+>>>>>>> FunctionBuilder

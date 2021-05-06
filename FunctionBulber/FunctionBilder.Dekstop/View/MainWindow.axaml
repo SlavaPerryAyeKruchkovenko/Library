@@ -2,11 +2,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+<<<<<<< HEAD
+=======
+        xmlns:views="clr-namespace:FunctionBilder.Dekstop.UserControls"
+>>>>>>> FunctionBuilder
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="250"
         x:Class="FunctionBilder.Dekstop.View.MainWindow"
         Title="Calculator"
         WindowState="Normal"
         WindowStartupLocation="CenterScreen"
+<<<<<<< HEAD
         >
   <Grid x:Name="MainGrid" ColumnDefinitions="2*,*">
     <Grid x:Name="DekstopGrid" Grid.Column="0" RowDefinitions="3*,6*,*" Background="#F05171">  
@@ -410,10 +415,161 @@
           <Border Grid.RowSpan="6" Grid.ColumnSpan="6" 
                   BorderBrush="#FF3F3F" BorderThickness="4"/>
         </Grid>
+=======
+        Icon="/icons/Icon.ico"
+        KeyUp="PressEnter">
+  <Window.Styles>
+    <Style Selector="Button.visual">
+      <Setter Property="VerticalAlignment" Value="Stretch"/>
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="FontSize" Value="16"/>
+      <Setter Property="BorderThickness" Value="6"/>
+    </Style>
+    <Style Selector="Canvas.Purple">
+      <Setter Property="Background" Value="#D46AD0"/>
+    </Style>
+  </Window.Styles>
+  <Grid ColumnDefinitions="2*,*">
+    <Grid Grid.Column="0" RowDefinitions="3*,6*,*" Background="#F05171">  
+        <Grid Grid.Row="0" RowDefinitions="3*,4*,2*">
+          <views:input x:Name="InputBox"/>
+          <DockPanel Grid.Row="1">
+              <Label Content="  Result:" Classes="shortcut" FontSize="16" DockPanel.Dock="Left"/>
+             <views:MyDataGrid x:Name="Table" DockPanel.Dock="Right"/>
+          </DockPanel>     
+          <DockPanel Grid.Row="2">
+            <views:RangePanel x:Name="GapBoxs"/>
+          </DockPanel>
+          <Border Grid.Row="1" Classes="outline"/>
+          
+        </Grid>
+      <Grid ColumnDefinitions="*,*" Grid.Row="1">
+        <DockPanel Background="Gray">
+          <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*,*,*,*,*">
+            <Button Content="Sin" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Column="1" Content="Cos"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Column="2" Content="Tg"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="1" Content="Asin"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="1" Grid.Column="1" Content="Acos"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="1" Grid.Column="2" Content="Atg"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="2" Content="^" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="2" Grid.Column="1" Content="!"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="2" Grid.Column="2" Content="ln"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="3" Content="Log"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="3" Grid.Column="1" Content="("
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="3" Grid.Column="2" Content=")"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="4" Content="X"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="4" Grid.Column="1" Content="Y"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="4" Grid.Column="2" Content="Sqrt"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="5" Content="Pi"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="5" Grid.Column="1" Content="e"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="5" Grid.Column="2" Content=";"
+                    Classes="visual"
+                    Click="BtnCalculate_Click"/>
+          </Grid>
+        </DockPanel>
+        <DockPanel Grid.Column="2"
+                   Background="#D7D7D7">
+          <Grid ColumnDefinitions="*,*,*" RowDefinitions="*,*,*,*,*,*">
+            <Button Content="C"
+                    Classes="visual"
+                    Click="BtnClear_Click"/>
+            <Button Grid.Column="1"
+                    Content="*" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Column="2"
+                    Content="-m" Classes="visual"
+                    Click="BtnPrefex_Click"/>
+            <Button Grid.Row="1"
+                    Content="+" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="1" Grid.Column="1"
+                    Content="-" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="1" Grid.Column="2"
+                    Content="/" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button x:Name="Btn1" Grid.Row="2"
+                    Content="1" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="2" Grid.Column="1"
+                    Content="2" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="2" Grid.Column="2"
+                    Content="3" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="3"
+                    Content="4" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="3" Grid.Column="1"
+                    Content="5" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="3" Grid.Column="2"
+                    Content="6" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="4"
+                    Content="7" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="4" Grid.Column="1"
+                    Content="8" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="4" Grid.Column="2"
+                    Content="9" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="5"
+                    Content="," Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="5" Grid.Column="1"
+                    Content="0" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+            <Button Grid.Row="5" Grid.Column="2"
+                    Content="%" Classes="visual"
+                    Click="BtnCalculate_Click"/>
+          </Grid>
+        </DockPanel>
+        <Border Grid.RowSpan="6" Grid.ColumnSpan="6"
+                Classes="outline"/>
+      </Grid>
+>>>>>>> FunctionBuilder
         <Grid Grid.Row="2">
           <DockPanel Background="#9B3475" 
                      VerticalAlignment="Stretch"
                      HorizontalAlignment="Stretch">
+<<<<<<< HEAD
             <Button x:Name="InputBtn" 
                     VerticalAlignment="Stretch"
                     HorizontalAlignment="Stretch"
@@ -440,5 +596,20 @@
        </DockPanel>
       <Border BorderBrush="#B820E6" BorderThickness="4"/>
      </Grid>      
+=======
+            <Button x:Name="InputBtn" Classes="BigButton Purple"  
+                    Content="Count Function"
+                    Click="BtnCount_Click">
+            </Button>
+          </DockPanel>
+          <Border Classes="outline"/>
+        </Grid>
+     </Grid>
+      <DockPanel Grid.Column="1">
+         <Border BorderBrush="#B820E6" BorderThickness="4">
+           <Canvas x:Name="FunctionCanvas" Tapped="Canvas_Tap" PropertyChanged="Canvas_SizeChanged" Classes="Purple"/>
+         </Border>
+      </DockPanel>         
+>>>>>>> FunctionBuilder
   </Grid>
 </Window>
