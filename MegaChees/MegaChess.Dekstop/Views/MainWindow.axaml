@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MegaChess.Dekstop.Views.MainWindow"
-        Icon="/Assets/Csol.logo.png"
-        Title="MegaChess.Dekstop">
+        Icon="/Assets/Csol.logo.png">
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
