@@ -25,12 +25,11 @@ namespace FunctionBilder.Dekstop.ViewModel
 		}
 		public void DrawLine(Point startLocation, Point finishLocation, IBrush brush, short lineScale)
 		{
-			Action action = () =>
-			{
-				var figure = new MyLine();
-				this.field.AddChildren(figure.Create(new Point[] { startLocation, finishLocation }, brush, lineScale));
-			};
-			Dispatcher.UIThread.InvokeAsync(action);		
+			Dispatcher.UIThread.InvokeAsync(() => 
+			{ 
+				var figure = new MyLine(); 
+				this.field.AddChildren(figure.Create(new Point[] { startLocation, finishLocation }, brush, lineScale)); 
+			});
 		}
 		public void DrawFunction(Graphic graphic, ReversePolandLogic RPN)
 		{
@@ -82,12 +81,11 @@ namespace FunctionBilder.Dekstop.ViewModel
 		}
 		public void DrawArrows(Point location, Point size, IBrush brush)
 		{
-			Action action = () =>
+			Dispatcher.UIThread.InvokeAsync(() =>
 			{
 				var figure = new Mypolygon();
 				this.field.AddChildren(figure.Create(new Point[] { location, size }, brush, 1));
-			};
-			Dispatcher.UIThread.InvokeAsync(action);
+			});
 		}
 		public void DrawLabels(Point gap, Point coordinate, bool isXLine)
 		{
@@ -124,12 +122,11 @@ namespace FunctionBilder.Dekstop.ViewModel
 		}
 		private void DrawAnswer(List<Point> points)
 		{
-			Action action = () =>
+			Dispatcher.UIThread.InvokeAsync(() =>
 			{
 				if (this.field.Input != null)
 					this.field.Input.Items = points;
-			};
-			Dispatcher.UIThread.InvokeAsync(action);			
+			});			
 		}
 	}
 }
