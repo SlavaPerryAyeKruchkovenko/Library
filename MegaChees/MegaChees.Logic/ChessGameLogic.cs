@@ -4,10 +4,13 @@ namespace MegaChess.Logic
 {
 	public class ChessGameLogic
 	{
-		private int startX { get; }
-		private int startY { get; }
-		private IDrawer drawer { get; }
-		private Board board { get; }
+		private int startX;
+
+		private int startY;
+
+		private IDrawer drawer;
+
+		private Board board;
 		public ChessGameLogic(IDrawer _drawer, int _startX, int _startY)
 		{
 			this.drawer = _drawer;
@@ -32,7 +35,7 @@ namespace MegaChess.Logic
 		{
 			while (true)
 			{
-				drawer.PrintBoard(board.board);
+				this.drawer.PrintBoard(board.board);
 				drawer.MoveCursor(startX, startY, board.board, out int x, out int y);
 				SearchFigure(ref x, ref y, out char a, out char b);
 				drawer.MoveCursor(startX, startY, board.board, out int newX, out int newY);
