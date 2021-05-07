@@ -190,14 +190,7 @@ namespace FunctionBilder.Dekstop.View
 			this.field.RenderField();
 			foreach (var item in this.functions)
 			{
-				new Thread(() =>
-				{
-					Action action = () =>
-					{
-						item.Render(this.field);
-					};
-					Dispatcher.UIThread.InvokeAsync(action);
-				}).Start();
+				new Thread(() => item.Render(this.field)).Start();
 			}
 		}
 		private void ChangeScale(short newScale)

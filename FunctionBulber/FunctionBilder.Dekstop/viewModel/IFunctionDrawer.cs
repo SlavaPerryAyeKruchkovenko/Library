@@ -1,5 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Media;
+using Avalonia.Threading;
 using FunctionBilder.Dekstop.Model;
 using FunctionBulber.Logic;
 using System;
@@ -24,8 +25,11 @@ namespace FunctionBilder.Dekstop.ViewModel
 		}
 		public void DrawLine(Point startLocation, Point finishLocation, IBrush brush, short lineScale)
 		{
-			var figure = new MyLine();
-			this.field.AddChildren(figure.Create(new Point[] { startLocation, finishLocation }, brush, lineScale));
+			Dispatcher.UIThread.InvokeAsync(() => 
+			{ 
+				var figure = new MyLine(); 
+				this.field.AddChildren(figure.Create(new Point[] { startLocation, finishLocation }, brush, lineScale)); 
+			});
 		}
 		public void DrawFunction(Graphic graphic, ReversePolandLogic RPN)
 		{
@@ -77,8 +81,11 @@ namespace FunctionBilder.Dekstop.ViewModel
 		}
 		public void DrawArrows(Point location, Point size, IBrush brush)
 		{
-			var figure = new Mypolygon();
-			this.field.AddChildren(figure.Create(new Point[] { location, size }, brush, 1));
+			Dispatcher.UIThread.InvokeAsync(() =>
+			{
+				var figure = new Mypolygon();
+				this.field.AddChildren(figure.Create(new Point[] { location, size }, brush, 1));
+			});
 		}
 		public void DrawLabels(Point gap, Point coordinate, bool isXLine)
 		{
@@ -106,13 +113,20 @@ namespace FunctionBilder.Dekstop.ViewModel
 		}
 		private void DrawPoint(Point pointNow, IBrush brush, double scale)
 		{
-			var figure = new MyEllipse();
-			this.field.AddChildren(figure.Create(new Point[] { pointNow }, brush, scale));
+			Action action = () =>
+			{
+				var figure = new MyEllipse();
+				this.field.AddChildren(figure.Create(new Point[] { pointNow }, brush, scale));
+			};
+			Dispatcher.UIThread.InvokeAsync(action);		
 		}
 		private void DrawAnswer(List<Point> points)
 		{
-			if (this.field.Input != null)
-				this.field.Input.Items = points;
+			Dispatcher.UIThread.InvokeAsync(() =>
+			{
+				if (this.field.Input != null)
+					this.field.Input.Items = points;
+			});			
 		}
 	}
 }
