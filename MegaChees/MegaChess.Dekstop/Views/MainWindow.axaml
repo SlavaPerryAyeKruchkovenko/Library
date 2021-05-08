@@ -6,17 +6,16 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MegaChess.Dekstop.Views.MainWindow"
         Icon="/Assets/Csol.Ico.png"
-        MaxWidth="400" MaxHeight="600" MinWidth="200" MinHeight="400">
+        MaxWidth="400" MaxHeight="600" MinWidth="200" MinHeight="600">
   <Window.Styles>
     <Style Selector="Image.Logo">
       <Setter Property="MaxWidth" Value="400"/>
       <Setter Property="MaxHeight" Value="200"/>
     </Style>
     <Style Selector="ToggleButton.GameBtn">
-      <Setter Property="HorizontalAlignment" Value="Center"/>
-      <Setter Property="VerticalAlignment" Value="Center"/>
       <Setter Property="VerticalContentAlignment" Value="Center"/>
       <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="Cursor" Value="AppStarting"/>
       <Setter Property="FontSize" Value="24"/>
     </Style>
     <Style Selector="Button.ContextBtn">
@@ -30,21 +29,23 @@
       <Setter Property="VerticalContentAlignment" Value="Center"/>
       <Setter Property="HorizontalContentAlignment" Value="Center"/>
     </Style>
-    <Style Selector="Button.Center">
+    <Style Selector=":is(Button)">
+      <Setter Property="Margin" Value="0,30,0,0"/>
+      <Setter Property="Width" Value="200"/>
       <Setter Property="VerticalAlignment" Value="Center"/>
       <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
-    <Style Selector="Button.PanelMerge">
-      <Setter Property="Margin" Value="0,30,0,0"/>
+    <Style>
+      
     </Style>
   </Window.Styles>
     <Design.DataContext>
         <vm:MainWindowViewModel/>
-    </Design.DataContext>
-  <Grid>    
+    </Design.DataContext>   
     <StackPanel>
-      <Image Source="avares://MegaChess.Dekstop/Assets/Csol.logo.png" Classes="Logo"/>      
-      <ToggleButton Content="Play Game" Classes="GameBtn PanelMerge">
+      <Image Source="avares://MegaChess.Dekstop/Assets/Csol.logo.png" Classes="Logo"/>
+      <Button Content="Play vs people" Classes="Center h1 CenterContent PanelMerge"/>
+      <ToggleButton Content="With Computer" Classes="GameBtn PanelMerge">
         <ToggleButton.ContextMenu>
           <ContextMenu>
             <MenuItem>
@@ -58,6 +59,11 @@
       </ToggleButton> 
       <Button Content="Settings" Classes="Center h1 CenterContent PanelMerge"/>
       <Button Content="Rating" Classes="Center h1 CenterContent PanelMerge"/>
+      <DockPanel Margin="0,30,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                 Width="200">
+        <Label Content="Select level" DockPanel.Dock="Left"
+               Classes="Shortcut"/>   
+        <TextBox DockPanel.Dock="Right"/>
+      </DockPanel>
     </StackPanel>
-  </Grid>
 </Window>
