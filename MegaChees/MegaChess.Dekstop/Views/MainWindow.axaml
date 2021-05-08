@@ -5,13 +5,45 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MegaChess.Dekstop.Views.MainWindow"
-        Icon="/Assets/Csol.logo.png">
+        Icon="/Assets/Csol.Ico.png"
+        MaxWidth="400" MaxHeight="600" MinWidth="200" MinHeight="400">
+  <Window.Styles>
+    <Style Selector="Image.Logo">
+      <Setter Property="MaxWidth" Value="400"/>
+      <Setter Property="MaxHeight" Value="200"/>
+    </Style>
+    <Style Selector="ToggleButton.GameBtn">
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+      <Setter Property="FontSize" Value="24"/>
+    </Style>
+    <Style Selector="Button.ContextBtn">
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+      <Setter Property="VerticalAlignment" Value="Stretch"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    </Style>
+  </Window.Styles>
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
   <Grid>    
     <StackPanel>
-      
+      <Image Source="avares://MegaChess.Dekstop/Assets/Csol.logo.png" Classes="Logo"/>      
+      <ToggleButton Content="Play Game" Classes="GameBtn">
+        <ToggleButton.ContextMenu>
+          <ContextMenu>
+            <MenuItem>
+              <Button Content="NewGame" Classes="ContextBtn"/>
+            </MenuItem>
+            <MenuItem>
+              <Button Content="Continue" Classes="ContextBtn"/>
+            </MenuItem>
+          </ContextMenu>          
+        </ToggleButton.ContextMenu>
+      </ToggleButton>
     </StackPanel>
   </Grid>
 </Window>
