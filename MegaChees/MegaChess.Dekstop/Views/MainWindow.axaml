@@ -21,9 +21,21 @@
     </Style>
     <Style Selector="Button.ContextBtn">
       <Setter Property="HorizontalAlignment" Value="Stretch"/>
-      <Setter Property="VerticalAlignment" Value="Stretch"/>
+      <Setter Property="VerticalAlignment" Value="Stretch"/>     
+    </Style>
+    <Style Selector="Button.h1">
+      <Setter Property="FontSize" Value="24"/>
+    </Style>
+    <Style Selector="Button.CenterContent">
       <Setter Property="VerticalContentAlignment" Value="Center"/>
       <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Button.Center">
+      <Setter Property="VerticalAlignment" Value="Center"/>
+      <Setter Property="HorizontalAlignment" Value="Center"/>
+    </Style>
+    <Style Selector="Button.PanelMerge">
+      <Setter Property="Margin" Value="0,30,0,0"/>
     </Style>
   </Window.Styles>
     <Design.DataContext>
@@ -32,18 +44,20 @@
   <Grid>    
     <StackPanel>
       <Image Source="avares://MegaChess.Dekstop/Assets/Csol.logo.png" Classes="Logo"/>      
-      <ToggleButton Content="Play Game" Classes="GameBtn">
+      <ToggleButton Content="Play Game" Classes="GameBtn PanelMerge">
         <ToggleButton.ContextMenu>
           <ContextMenu>
             <MenuItem>
-              <Button Content="NewGame" Classes="ContextBtn"/>
+              <Button Content="NewGame" Classes="ContextBtn Center CenterContent"/>
             </MenuItem>
             <MenuItem>
-              <Button Content="Continue" Classes="ContextBtn"/>
+              <Button Content="Continue" Classes="ContextBtn Center CenterContent"/>
             </MenuItem>
           </ContextMenu>          
         </ToggleButton.ContextMenu>
-      </ToggleButton>
+      </ToggleButton> 
+      <Button Content="Settings" Classes="Center h1 CenterContent PanelMerge"/>
+      <Button Content="Rating" Classes="Center h1 CenterContent PanelMerge"/>
     </StackPanel>
   </Grid>
 </Window>
