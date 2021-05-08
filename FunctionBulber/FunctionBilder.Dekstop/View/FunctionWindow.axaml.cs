@@ -103,7 +103,7 @@ namespace FunctionBilder.Dekstop.View
 			if (!this.window.IsVisible)
 			{
 				this.window = new GraphicWindow(this.functions, this.CreateGraphic);
-				this.window.Show();
+				this.window.ShowDialog(this);
 				this.window.Topmost = true;
 			}
 		}
@@ -112,7 +112,7 @@ namespace FunctionBilder.Dekstop.View
 			if (!this.window.IsVisible)
 			{
 				this.window = new FunctionListWindow(this.functions, this.CreateGraphic);
-				this.window.Show();
+				this.window.ShowDialog(this);
 				this.window.Topmost = true;
 			}
 		}

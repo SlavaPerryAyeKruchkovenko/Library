@@ -33,7 +33,7 @@ namespace FunctionBilder.Dekstop.Model
 		{
 			if (dicks.Contains(this.FunctionText.Trim()))
 			{
-				this.Graphic = new Graphic(false, new double[] { -3, 3, 0.01 });
+				this.Graphic = new Graphic(this.Graphic.GraphicColor(), false, new double[] { -3, 3, 0.01 });
 				this.FunctionText = "Sqrt(sin(x) ^ 2) + 5 * e ^ (-x ^ 100) * cos(x)";
 			}
 		}
