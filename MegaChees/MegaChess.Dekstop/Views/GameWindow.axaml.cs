@@ -1,18 +1,16 @@
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
-using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 
 namespace MegaChess.Dekstop.Views
 {
-	public partial class MainWindow : Window
+	public partial class GameWindow : Window
 	{
-		public MainWindow()
+		public GameWindow()
 		{
 			InitializeComponent();
 #if DEBUG
-            this.AttachDevTools();
+			this.AttachDevTools();
 #endif
 		}
 

@@ -1,11 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Avalonia.Controls.Primitives;
+using Avalonia.Interactivity;
 
 namespace MegaChess.Dekstop.ViewModels
 {
 	public class MainWindowViewModel : ViewModelBase
 	{
-		public string Greeting => "Welcome to Avalonia!";
+		
 	}
 }

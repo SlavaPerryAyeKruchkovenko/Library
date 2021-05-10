@@ -12,16 +12,7 @@
       <Setter Property="MaxWidth" Value="400"/>
       <Setter Property="MaxHeight" Value="200"/>
     </Style>
-    <Style Selector="ToggleButton.GameBtn">
-      <Setter Property="VerticalContentAlignment" Value="Center"/>
-      <Setter Property="HorizontalContentAlignment" Value="Center"/>
-      <Setter Property="Cursor" Value="AppStarting"/>
-      <Setter Property="FontSize" Value="24"/>
-    </Style>
-    <Style Selector="Button.ContextBtn">
-      <Setter Property="HorizontalAlignment" Value="Stretch"/>
-      <Setter Property="VerticalAlignment" Value="Stretch"/>     
-    </Style>
+    
     <Style Selector="Button.h1">
       <Setter Property="FontSize" Value="24"/>
     </Style>
@@ -29,36 +20,36 @@
       <Setter Property="VerticalContentAlignment" Value="Center"/>
       <Setter Property="HorizontalContentAlignment" Value="Center"/>
     </Style>
-    <Style Selector=":is(Button)">
+    <Style Selector="Button.PanelMerge">
       <Setter Property="Margin" Value="0,30,0,0"/>
       <Setter Property="Width" Value="200"/>
       <Setter Property="VerticalAlignment" Value="Center"/>
       <Setter Property="HorizontalAlignment" Value="Center"/>
     </Style>
-    <Style>
-      
+    <Style Selector="Button.ContextBtn">
+      <Setter Property="VerticalAlignment" Value="Stretch"/>
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
     </Style>
   </Window.Styles>
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>   
     <StackPanel>
-      <Image Source="avares://MegaChess.Dekstop/Assets/Csol.logo.png" Classes="Logo"/>
-      <Button Content="Play vs people" Classes="Center h1 CenterContent PanelMerge"/>
-      <ToggleButton Content="With Computer" Classes="GameBtn PanelMerge">
-        <ToggleButton.ContextMenu>
-          <ContextMenu>
-            <MenuItem>
-              <Button Content="NewGame" Classes="ContextBtn Center CenterContent"/>
-            </MenuItem>
-            <MenuItem>
-              <Button Content="Continue" Classes="ContextBtn Center CenterContent"/>
-            </MenuItem>
-          </ContextMenu>          
-        </ToggleButton.ContextMenu>
-      </ToggleButton> 
-      <Button Content="Settings" Classes="Center h1 CenterContent PanelMerge"/>
-      <Button Content="Rating" Classes="Center h1 CenterContent PanelMerge"/>
+      <Image Source="avares://MegaChess.Dekstop/Assets/Csol.Ico.png" Classes="Logo"/>
+      <Button Content="Play vs people" Classes="h1 CenterContent PanelMerge"
+              />
+      <Button Content="With Computer" Classes="h1 CenterContent PanelMerge">
+        <Button.Flyout>
+          <MenuFlyout Placement="Bottom" ShowMode="TransientWithDismissOnPointerMoveAway">
+              <Button Content="NewGame" Classes="ContextBtn CenterContent"/>
+              <Button Content="Continue" Classes="ContextBtn CenterContent"/>
+          </MenuFlyout>          
+        </Button.Flyout>
+      </Button> 
+      <Button Content="Settings" Classes="h1 CenterContent PanelMerge"
+              />
+      <Button Content="Rating" Classes="h1 CenterContent PanelMerge"
+              />
       <DockPanel Margin="0,30,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"
                  Width="200">
         <Label Content="Select level" DockPanel.Dock="Left"

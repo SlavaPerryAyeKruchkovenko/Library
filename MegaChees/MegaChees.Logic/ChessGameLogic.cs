@@ -10,7 +10,7 @@ namespace MegaChess.Logic
 
 		private IDrawer drawer;
 
-		private Board board;
+		private readonly Board board;
 		public ChessGameLogic(IDrawer _drawer, int _startX, int _startY)
 		{
 			this.drawer = _drawer;
@@ -35,11 +35,11 @@ namespace MegaChess.Logic
 		{
 			while (true)
 			{
-				this.drawer.PrintBoard(board.board);
-				drawer.MoveCursor(startX, startY, board.board, out int x, out int y);
+				this.drawer.PrintBoard(board.ChessBoard);
+				this.drawer.MoveCursor(startX, startY, board.ChessBoard, out int x, out int y);
 				SearchFigure(ref x, ref y, out char a, out char b);
-				drawer.MoveCursor(startX, startY, board.board, out int newX, out int newY);
-				if (board.board[a][b].IsCorrectMove(board.board, newX - x, newY - y, a, b)
+				this.drawer.MoveCursor(startX, startY, board.ChessBoard, out int newX, out int newY);
+				if (board.ChessBoard[a][b].IsCorrectMove(board.ChessBoard, newX - x, newY - y, a, b)
 					/*&& !HaveUnrealStep(a, b)*/)
 				{
 					MakeStep(a, b, newX - x, newY - y);
@@ -49,16 +49,16 @@ namespace MegaChess.Logic
 		private void SearchFigure(ref int x, ref int y, out char a, out char b)
 		{
 			b = this.drawer.ConvertToTKeyFormat(x, y, out a);
-			if (this.board.board[a][b] != null && this.board.board[a][b].IsMyFigura)
+			if (this.board.ChessBoard[a][b] != null && this.board.ChessBoard[a][b].IsMyFigura)
 				return;
 			else
 				NewGamePlay();
 		}
 		private void MakeStep(char a, char b, int deltaX, int deltaY)
 		{
-			Figura figura = board.board[a][b];
-			board.board[(char)(a + deltaY)][(char)(b + deltaX)] = figura;
-			board.board[a][b] = null;
+			Figura figura = board.ChessBoard[a][b];
+			board.ChessBoard[(char)(a + deltaY)][(char)(b + deltaX)] = figura;
+			board.ChessBoard[a][b] = null;
 		}
 		//private bool HaveUnrealStep(char a, char b)
 		//{

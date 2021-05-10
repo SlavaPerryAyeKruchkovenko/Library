@@ -13,8 +13,8 @@ namespace MegaChess.Test
 		public void TestPawn(int dX, int dY, char a, char b)
 		{
 			Board board = new Board();
-			Assert.True(board.board[a][b].IsCorrectMove
-				(board.board, dX, dY, a, b));
+			Assert.True(board.ChessBoard[a][b].IsCorrectMove
+				(board.ChessBoard, dX, dY, a, b));
 		}
 		public static IEnumerable<object[]> PawnData()
 		{
@@ -33,8 +33,8 @@ namespace MegaChess.Test
 		public void TestKnight(int dX, int dY, char a, char b)
 		{
 			Board board = new Board();
-			Assert.True(board.board[a][b].IsCorrectMove
-				(board.board, dX, dY, a, b));
+			Assert.True(board.ChessBoard[a][b].IsCorrectMove
+				(board.ChessBoard, dX, dY, a, b));
 		}
 		[Theory]
 		[InlineData(0, 6, '1', 'H')]
@@ -42,10 +42,10 @@ namespace MegaChess.Test
 		public void TestRook(int dX, int dY, char a, char b)
 		{
 			Board board = new Board();
-			board.board['2']['H'] = null;
-			board.board['1']['G'] = null;
-			Assert.True(board.board[a][b].IsCorrectMove
-				(board.board, dX, dY, a, b));
+			board.ChessBoard['2']['H'] = null;
+			board.ChessBoard['1']['G'] = null;
+			Assert.True(board.ChessBoard[a][b].IsCorrectMove
+				(board.ChessBoard, dX, dY, a, b));
 		}
 		[Theory]
 		[InlineData(2, 2, '1', 'F')]
@@ -53,23 +53,23 @@ namespace MegaChess.Test
 		public void TestBishop(int dX, int dY, char a, char b)
 		{
 			Board board = new Board();
-			board.board['2']['G'] = null;
-			board.board['2']['E'] = null;
-			Assert.True(board.board[a][b].IsCorrectMove
-				(board.board, dX, dY, a, b));
+			board.ChessBoard['2']['G'] = null;
+			board.ChessBoard['2']['E'] = null;
+			Assert.True(board.ChessBoard[a][b].IsCorrectMove
+				(board.ChessBoard, dX, dY, a, b));
 		}
 		[Theory]
 		[MemberData(nameof(KingData))]
 		public void TestKing(int dX, int dY, char a, char b)
 		{
 			Board board = new Board();
-			board.board['2']['E'] = null;
-			board.board['2']['F'] = null;
-			board.board['2']['D'] = null;
-			board.board['1']['F'] = null;
-			board.board['1']['D'] = null;
-			Assert.True(board.board[a][b].IsCorrectMove
-				(board.board, dX, dY, a, b));
+			board.ChessBoard['2']['E'] = null;
+			board.ChessBoard['2']['F'] = null;
+			board.ChessBoard['2']['D'] = null;
+			board.ChessBoard['1']['F'] = null;
+			board.ChessBoard['1']['D'] = null;
+			Assert.True(board.ChessBoard[a][b].IsCorrectMove
+				(board.ChessBoard, dX, dY, a, b));
 		}
 		public static IEnumerable<object[]> KingData()
 		{
