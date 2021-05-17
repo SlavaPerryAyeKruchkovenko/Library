@@ -40,11 +40,11 @@ namespace MegaChess.Test
 		public void TestRook(int dX, int dY, char a, char b)
 		{
 			Board board = new Board();
-			var figura = board.GetFigure('2', 'H');
-			board.TryReplaceFigure(figura, null);
-			board.ChessBoard['1']['G'] = null;
-			Assert.True(board.ChessBoard[a][b].IsCorrectMove
-				(board.ChessBoard, dX, dY, a, b));
+			var figura1 = board.GetFigure('2', 'H');
+			board.TryReplaceFigure(figura1, new Empty(true,1));
+			var figura2 = board.GetFigure('1', 'G');
+			board.TryReplaceFigure(figura2, new Empty(true, 1));
+			Assert.True(board.GetFigure(a, b).IsCorrectMove(board, dX, dY));
 		}
 		[Theory]
 		[InlineData(2, 2, '1', 'F')]
@@ -52,24 +52,28 @@ namespace MegaChess.Test
 		public void TestBishop(int dX, int dY, char a, char b)
 		{
 			Board board = new Board();
-			board.ChessBoard['2']['G'] = null;
-			board.ChessBoard['2']['E'] = null;
-			Assert.True(board.ChessBoard[a][b].IsCorrectMove
-				(board.ChessBoard, dX, dY, a, b));
+			var figura1 = board.GetFigure('2', 'G');
+			board.TryReplaceFigure(figura1, new Empty(true, 1));
+			var figura2 = board.GetFigure('2', 'E');
+			board.TryReplaceFigure(figura2, new Empty(true, 1));
+			Assert.True(board.GetFigure(a, b).IsCorrectMove(board, dX, dY));
 		}
 		[Theory]
 		[MemberData(nameof(KingData))]
 		public void TestKing(int dX, int dY, char a, char b)
 		{
 			Board board = new Board();
-
-			board.ChessBoard['2']['E'] = null;
-			board.ChessBoard['2']['F'] = null;
-			board.ChessBoard['2']['D'] = null;
-			board.ChessBoard['1']['F'] = null;
-			board.ChessBoard['1']['D'] = null;
-			Assert.True(board.ChessBoard[a][b].IsCorrectMove
-				(board.ChessBoard, dX, dY, a, b));
+			var figura1 = board.GetFigure('2', 'E');
+			board.TryReplaceFigure(figura1, new Empty(true, 1));
+			var figura2 = board.GetFigure('2', 'F');
+			board.TryReplaceFigure(figura2, new Empty(true, 1));
+			var figura3 = board.GetFigure('2', 'D');
+			board.TryReplaceFigure(figura3, new Empty(true, 1));
+			var figura4 = board.GetFigure('1', 'F');
+			board.TryReplaceFigure(figura4, new Empty(true, 1));
+			var figura5 = board.GetFigure('1', 'D');
+			board.TryReplaceFigure(figura5, new Empty(true, 1));
+			Assert.True(board.GetFigure(a, b).IsCorrectMove(board, dX, dY));
 		}
 		public static IEnumerable<object[]> KingData()
 		{

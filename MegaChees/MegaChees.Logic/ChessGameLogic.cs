@@ -1,6 +1,4 @@
-﻿
-
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace MegaChess.Logic
 {
@@ -42,7 +40,7 @@ namespace MegaChess.Logic
 				var secondFigura = this.drawer.MoveCursor(startX, startY, board);
 
 				Point lengh = CountLengh(firstFigura, secondFigura);
-				if (firstFigura.IsCorrectMove(board, lengh.X, lengh.Y))
+				if (firstFigura.IsCorrectMove(this.board, lengh.X, lengh.Y))
 				{
 					MakeStep(firstFigura, secondFigura);
 				}
@@ -51,17 +49,18 @@ namespace MegaChess.Logic
 		private Point CountLengh(Figura figura1 , Figura figura2)
 		{
 			var firstCoordinate = Figura.FoundFigureCoordinate(this.board, figura1);
-			var secondCoordinate = Figura.FoundFigureCoordinate(this.board, figura1);
-			int x = secondCoordinate[0] - firstCoordinate[0];
-			int y = secondCoordinate[1] - firstCoordinate[1];
+			var secondCoordinate = Figura.FoundFigureCoordinate(this.board, figura2);
+			int y = secondCoordinate[0] - firstCoordinate[0];
+			int x = secondCoordinate[1] - firstCoordinate[1];
 			return new Point(x, y);
 		}
 		private void MakeStep(Figura firstFigura, Figura secondFigura)
 		{
+			//ToDo в этом методе Косяк;
+			var figura = secondFigura;
 			this.board.TryReplaceFigure(firstFigura, secondFigura);
-			this.board.TryReplaceFigure(null, firstFigura);
+			this.board.TryReplaceFigure(secondFigura, firstFigura);
 		}
-
 
 		private void LoadGamePlay()
 		{

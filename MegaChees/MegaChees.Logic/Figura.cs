@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace MegaChess.Logic
 {
@@ -31,13 +30,18 @@ namespace MegaChess.Logic
 			{
 				for (char j = 'A'; j <= 'H'; j++)
 				{
-					if (board.GetFigure(i, j).Equals(figura)) 
+					var newFigura = board.GetFigure(i, j);
+					if (newFigura.Equals(figura))
 					{
 						return new char[] { i, j };
 					}					
 				}
 			}
 			return default;
+		}
+		public override string ToString()
+		{
+			return this.ShorName.ToString();
 		}
 	}
 	public class Pawn : Figura
@@ -93,19 +97,18 @@ namespace MegaChess.Logic
 			else
 				return false;
 		}
-		private bool HaveEnemyOnPosition(char a, char b, int step1, int step2,
-			Board board, bool equal)
+		private bool HaveEnemyOnPosition(char a, char b, int step1, int step2, Board board, bool equal)
 		{
 			if (!equal)
 				if (this.IsMyFigura)
-					return board.GetFigure((char)(a + step1),(char)(b + step2)) != null;
+					return !(board.GetFigure((char)(a + step1),(char)(b + step2)) is Empty);
 				else
-					return board.GetFigure((char)(a - step1),(char)(b + step2)) != null;
+					return !(board.GetFigure((char)(a - step1),(char)(b + step2)) is Empty);
 			else
 				if (this.IsMyFigura)
-				return board.GetFigure((char)(a + step1),(char)(b + step2)) == null;
+				return board.GetFigure((char)(a + step1),(char)(b + step2)) is Empty;
 			else
-				return board.GetFigure((char)(a - step1),(char)(b + step2)) == null;
+				return board.GetFigure((char)(a - step1),(char)(b + step2)) is Empty;
 		}
 		public override bool Equals(object obj)
 		{
@@ -170,20 +173,20 @@ namespace MegaChess.Logic
 				{
 					if (dCoordinate > 0)
 					{
-						if (board.GetFigure((char)(a + i), b) != null)
+						if (!(board.GetFigure((char)(a + i), b) is Empty))
 							canDoStep = false;
 					}
-					else if (board.GetFigure((char)(a - i), b) != null) 
+					else if (!(board.GetFigure((char)(a - i), b) is Empty)) 
 						canDoStep = false;
 				}
 				else
 				{
 					if (dCoordinate > 0)
 					{
-						if (board.GetFigure(a, (char)(b + i)) != null)
+						if (!(board.GetFigure(a, (char)(b + i)) is Empty))
 							canDoStep = false;
 					}
-					else if (board.GetFigure(a, (char)(b - i)) != null) 
+					else if (!(board.GetFigure(a, (char)(b - i)) is Empty)) 
 						canDoStep = false;
 				}
 			}
@@ -191,7 +194,7 @@ namespace MegaChess.Logic
 		}
 		private static bool CanDoStep(Board board, char a, char b, int step1, int step2)
 		{
-			return board.GetFigure((char)(a + step1), (char)(b + step2)) == null
+			return board.GetFigure((char)(a + step1), (char)(b + step2)) is Empty
 				|| board.GetFigure((char)(a + step1), (char)(b + step2)).IsMyFigura
 				!= board.GetFigure(a, b).IsMyFigura;
 		}
@@ -229,7 +232,7 @@ namespace MegaChess.Logic
 		{
 			if (Math.Abs(dX) == Math.Abs(dY))
 				if (CheckObstacles(board, point[0], point[1], dX, dY))
-					return board.GetFigure((char)(point[0] + dY), (char)(point[1] + dX)) == null ||
+					return board.GetFigure((char)(point[0] + dY), (char)(point[1] + dX)) is Empty ||
 						board.GetFigure((char)(point[0] + dY), (char)(point[1] + dX)).IsMyFigura != board.GetFigure(point[0], point[1]).IsMyFigura;
 			return false;
 		}
@@ -239,19 +242,19 @@ namespace MegaChess.Logic
 			for (int i = 1; i < Math.Abs(lengthX); i++)
 			{
 				if (lengthX > 0 && lengthY > 0)
-					if (board.GetFigure((char)(a + i), (char)(b + i)) != null)
+					if (!(board.GetFigure((char)(a + i), (char)(b + i)) is Empty))
 						canDoStep = default;
 
 				else if (lengthX > 0 && lengthY < 0)
-					if (board.GetFigure((char)(a - i), (char)(b + i)) != null)
+					if (!(board.GetFigure((char)(a - i), (char)(b + i)) is Empty))
 						canDoStep = default;
 
 				else if (lengthX < 0 && lengthY > 0)
-					if (board.GetFigure((char)(a + i), (char)(b - i)) != null)
+					if (!(board.GetFigure((char)(a + i), (char)(b - i)) is Empty))
 						canDoStep = default;
 
 				else if (lengthX < 0 && lengthY < 0)
-					if (board.GetFigure((char)(a - i), (char)(b - i)) != null) 
+					if (!(board.GetFigure((char)(a - i), (char)(b - i)) is Empty)) 
 						canDoStep = default;
 			}
 
@@ -286,7 +289,7 @@ namespace MegaChess.Logic
 		{
 			var kingCoordinate = FoundFigureCoordinate(board, this);
 			if (Math.Abs(dY) <= 1 && Math.Abs(dX) <= 1)
-				return board.GetFigure((char)(kingCoordinate[0] + dY),(char)(kingCoordinate[1] + dX)) == null ||
+				return board.GetFigure((char)(kingCoordinate[0] + dY), (char)(kingCoordinate[1] + dX)) is Empty ||
 					board.GetFigure((char)(kingCoordinate[0] + dY),(char)(kingCoordinate[1] + dX)).IsMyFigura !=
 					board.GetFigure(kingCoordinate[0], kingCoordinate[1]).IsMyFigura;
 
@@ -373,6 +376,36 @@ namespace MegaChess.Logic
 				return false;
 			}
 			var figure = (Knight)obj;
+			return figure.IsMyFigura == this.IsMyFigura && figure.Number == this.Number;
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(IsMyFigura, Number);
+		}
+	}
+	public class Empty : Figura
+	{
+		public override bool IsMyFigura { get; protected set; }
+		public override short Number { get; protected set; }
+		public Empty(bool figura, short num) : base(figura, num)
+		{
+			this.IsMyFigura = figura;
+			this.Number = num;
+		}
+		public override char ShorName => ' ';
+
+		public override bool IsCorrectMove(Board board, int dX, int dY)
+		{
+			return false;
+		}
+		public override bool Equals(object obj)
+		{
+			if (!(obj is Empty))
+			{
+				return false;
+			}
+			var figure = (Empty)obj;
 			return figure.IsMyFigura == this.IsMyFigura && figure.Number == this.Number;
 		}
 
