@@ -1,4 +1,3 @@
-using System;
 using Xunit;
 
 namespace MegaChess.Test
@@ -13,8 +12,7 @@ namespace MegaChess.Test
 		public void TestPawn(int dX, int dY, char a, char b)
 		{
 			Board board = new Board();
-			Assert.True(board.ChessBoard[a][b].IsCorrectMove
-				(board.ChessBoard, dX, dY, a, b));
+			Assert.True(board.GetFigure(a,b).IsCorrectMove(board, dX, dY));
 		}
 		public static IEnumerable<object[]> PawnData()
 		{
@@ -33,8 +31,8 @@ namespace MegaChess.Test
 		public void TestKnight(int dX, int dY, char a, char b)
 		{
 			Board board = new Board();
-			Assert.True(board.ChessBoard[a][b].IsCorrectMove
-				(board.ChessBoard, dX, dY, a, b));
+			Assert.True(board.GetFigure(a, b).IsCorrectMove
+				(board, dX, dY));
 		}
 		[Theory]
 		[InlineData(0, 6, '1', 'H')]
@@ -42,7 +40,8 @@ namespace MegaChess.Test
 		public void TestRook(int dX, int dY, char a, char b)
 		{
 			Board board = new Board();
-			board.ChessBoard['2']['H'] = null;
+			var figura = board.GetFigure('2', 'H');
+			board.TryReplaceFigure(figura, null);
 			board.ChessBoard['1']['G'] = null;
 			Assert.True(board.ChessBoard[a][b].IsCorrectMove
 				(board.ChessBoard, dX, dY, a, b));
@@ -63,6 +62,7 @@ namespace MegaChess.Test
 		public void TestKing(int dX, int dY, char a, char b)
 		{
 			Board board = new Board();
+
 			board.ChessBoard['2']['E'] = null;
 			board.ChessBoard['2']['F'] = null;
 			board.ChessBoard['2']['D'] = null;

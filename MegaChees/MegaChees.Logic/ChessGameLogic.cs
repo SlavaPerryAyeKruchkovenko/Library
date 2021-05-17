@@ -1,5 +1,7 @@
 ﻿
 
+using System.Drawing;
+
 namespace MegaChess.Logic
 {
 	public class ChessGameLogic
@@ -35,54 +37,31 @@ namespace MegaChess.Logic
 		{
 			while (true)
 			{
-				this.drawer.PrintBoard(board.ChessBoard);
-				this.drawer.MoveCursor(startX, startY, board.ChessBoard, out int x, out int y);
-				SearchFigure(ref x, ref y, out char a, out char b);
-				this.drawer.MoveCursor(startX, startY, board.ChessBoard, out int newX, out int newY);
-				if (board.ChessBoard[a][b].IsCorrectMove(board.ChessBoard, newX - x, newY - y, a, b)
-					/*&& !HaveUnrealStep(a, b)*/)
+				this.drawer.PrintBoard(this.board);
+				var firstFigura = this.drawer.MoveCursor(startX, startY, board);
+				var secondFigura = this.drawer.MoveCursor(startX, startY, board);
+
+				Point lengh = CountLengh(firstFigura, secondFigura);
+				if (firstFigura.IsCorrectMove(board, lengh.X, lengh.Y))
 				{
-					MakeStep(a, b, newX - x, newY - y);
+					MakeStep(firstFigura, secondFigura);
 				}
 			}
 		}
-		private void SearchFigure(ref int x, ref int y, out char a, out char b)
+		private Point CountLengh(Figura figura1 , Figura figura2)
 		{
-			b = this.drawer.ConvertToTKeyFormat(x, y, out a);
-			if (this.board.ChessBoard[a][b] != null && this.board.ChessBoard[a][b].IsMyFigura)
-				return;
-			else
-				NewGamePlay();
+			var firstCoordinate = Figura.FoundFigureCoordinate(this.board, figura1);
+			var secondCoordinate = Figura.FoundFigureCoordinate(this.board, figura1);
+			int x = secondCoordinate[0] - firstCoordinate[0];
+			int y = secondCoordinate[1] - firstCoordinate[1];
+			return new Point(x, y);
 		}
-		private void MakeStep(char a, char b, int deltaX, int deltaY)
+		private void MakeStep(Figura firstFigura, Figura secondFigura)
 		{
-			Figura figura = board.ChessBoard[a][b];
-			board.ChessBoard[(char)(a + deltaY)][(char)(b + deltaX)] = figura;
-			board.ChessBoard[a][b] = null;
+			this.board.TryReplaceFigure(firstFigura, secondFigura);
+			this.board.TryReplaceFigure(null, firstFigura);
 		}
-		//private bool HaveUnrealStep(char a, char b)
-		//{
-		//	Figura figura = board.board[a][b];
-		//	board.board[a][b] = null;
-		//	int finishX = King.myKing[0];
-		//	int finishY = King.myKing[1];
 
-		//	bool unrealStep = default;
-		//	for (char i = '1'; i <= '8'; i++)
-		//	{
-		//		for (char j = 'A'; j <= 'H'; j++)
-		//		{
-		//			if (board.board[i][j] != null && !unrealStep && !board.board[i][j].IsMyFigura)
-		//			{
-		//				int x = drawer.ConvertToLocationFormat(i, j, out int y);
-		//				unrealStep = board.board[i][j].IsCorrectMove(
-		//					board.board, x / 4, y / 2, finishX / 4, finishY / 2, i, j);
-		//			}
-		//		}
-		//	}
-		//	board.board[a][b] = figura;
-		//	return unrealStep;
-		//}
 
 		private void LoadGamePlay()
 		{
