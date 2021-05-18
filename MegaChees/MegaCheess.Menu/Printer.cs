@@ -243,7 +243,7 @@ namespace MegaCheess.Menu
 		}
 		private static ConsoleColor ConvertToFigura(Figura figura)
 		{
-			if (figura.IsMyFigura)
+			if (figura.IsMyFigura == true)
 				return ConsoleColor.Red;
 			else
 				return ConsoleColor.DarkGray;

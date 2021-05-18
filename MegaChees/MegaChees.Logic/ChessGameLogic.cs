@@ -33,17 +33,19 @@ namespace MegaChess.Logic
 		}
 		private void NewGamePlay()
 		{
+			bool whiteSteep = true;
 			while (true)
 			{
 				this.drawer.PrintBoard(this.board);
 				var firstFigura = this.drawer.MoveCursor(startX, startY, board);
 				var secondFigura = this.drawer.MoveCursor(startX, startY, board);
-
+				
 				Point lengh = CountLengh(firstFigura, secondFigura);
-				if (firstFigura.IsCorrectMove(this.board, lengh.X, lengh.Y))
+				if (firstFigura.IsCorrectMove(this.board, lengh.X, lengh.Y) && firstFigura.IsMyFigura == whiteSteep)
 				{
 					MakeStep(firstFigura, secondFigura);
 				}
+				whiteSteep = !whiteSteep;
 			}
 		}
 		private Point CountLengh(Figura figura1 , Figura figura2)
@@ -56,10 +58,7 @@ namespace MegaChess.Logic
 		}
 		private void MakeStep(Figura firstFigura, Figura secondFigura)
 		{
-			//ToDo в этом методе Косяк;
-			var figura = secondFigura;
 			this.board.TryReplaceFigure(firstFigura, secondFigura);
-			this.board.TryReplaceFigure(secondFigura, firstFigura);
 		}
 
 		private void LoadGamePlay()
