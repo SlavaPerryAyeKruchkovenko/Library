@@ -56,9 +56,9 @@ namespace MegaChess.Test
 		{
 			Board board = new Board();
 			var figura1 = board.GetFigure('2', 'G');
-			board.TryReplaceFigure(figura1, new Empty(null, 1));
+			board.TryReplaceFigure(figura1, new Empty(null, 33));
 			var figura2 = board.GetFigure('2', 'E');
-			board.TryReplaceFigure(figura2, new Empty(null, 1));
+			board.TryReplaceFigure(figura2, new Empty(null, 34));
 			Assert.True(board.GetFigure(a, b).IsCorrectMove(board, dX, dY));
 		}
 		[Theory]
@@ -67,15 +67,15 @@ namespace MegaChess.Test
 		{
 			Board board = new Board();
 			var figura1 = board.GetFigure('2', 'E');
-			board.TryReplaceFigure(figura1, new Empty(null, 1));
+			board.TryReplaceFigure(figura1, new Empty(null, 33));
 			var figura2 = board.GetFigure('2', 'F');
-			board.TryReplaceFigure(figura2, new Empty(null, 1));
+			board.TryReplaceFigure(figura2, new Empty(null, 34));
 			var figura3 = board.GetFigure('2', 'D');
-			board.TryReplaceFigure(figura3, new Empty(null, 1));
+			board.TryReplaceFigure(figura3, new Empty(null, 35));
 			var figura4 = board.GetFigure('1', 'F');
-			board.TryReplaceFigure(figura4, new Empty(null, 1));
+			board.TryReplaceFigure(figura4, new Empty(null, 36));
 			var figura5 = board.GetFigure('1', 'D');
-			board.TryReplaceFigure(figura5, new Empty(null, 1));
+			board.TryReplaceFigure(figura5, new Empty(null, 37));
 			Assert.True(board.GetFigure(a, b).IsCorrectMove(board, dX, dY));
 		}
 		public static IEnumerable<object[]> KingData()

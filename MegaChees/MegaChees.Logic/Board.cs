@@ -8,6 +8,8 @@ namespace MegaChess.Logic
 		private Dictionary<char, Dictionary<char, Figura>> ChessBoard { get; }
 		public Dictionary<short, Dictionary<short, Figura>> DeadBlackFigures { get; }
 		public Dictionary<short, Dictionary<short, Figura>> DeadWhitekFigures { get; }
+
+		private short CountEmptyFigure = 32;
 		public Board()
 		{
 			this.ChessBoard = new Dictionary<char, Dictionary<char, Figura>>()
@@ -48,6 +50,22 @@ namespace MegaChess.Logic
 			catch (Exception)
 			{
 				throw new EntryPointNotFoundException("Не пытайтесь сломать игру");
+			}
+		}
+		public void KillFigure(Figura killer, Figura died)
+		{
+			try
+			{
+				this.CountEmptyFigure++;
+				var coordinate1 = Figura.FoundFigureCoordinate(this, killer);
+				var coordinate2 = Figura.FoundFigureCoordinate(this, died);				
+				this.ChessBoard[coordinate2[0]][coordinate2[1]] = killer;
+				this.ChessBoard[coordinate1[0]][coordinate1[1]] = new Empty(null , this.CountEmptyFigure);
+			}
+			catch (Exception)
+			{
+				this.CountEmptyFigure--;
+				throw new EntryPointNotFoundException("Нельзя рубить своего");
 			}
 		}
 	}
