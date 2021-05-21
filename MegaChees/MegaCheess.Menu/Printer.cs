@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -96,7 +95,7 @@ namespace MegaCheess.Menu
 		}
 		public Point ConvertToLocationFormat(char i, char j)
 		{
-			int y = (Convert.ToInt32(i.ToString()) - 1) * 2 + 8;
+			int y = 30 - ((Convert.ToInt32(i.ToString()) - 1) * 2 + 8);
 			int x = (j - 'A') * 4 + 10;
 			return new Point(x, y);
 		}
@@ -119,6 +118,8 @@ namespace MegaCheess.Menu
 					newX -= 4;
 				else if (key.Key == ConsoleKey.RightArrow && newX + 4 < 40)
 					newX += 4;
+				else if (key.Key == ConsoleKey.Escape)
+					Environment.Exit(0);
 			}
 			newX = (newX-2)/4 - 1;
 			newY = 8-((newY-8)/2);
@@ -247,6 +248,12 @@ namespace MegaCheess.Menu
 				return ConsoleColor.Red;
 			else
 				return ConsoleColor.DarkGray;
+		}
+
+		public void PrintError(string ex)
+		{
+			Console.WriteLine(ex);
+			Thread.Sleep(300);
 		}
 	}
 }

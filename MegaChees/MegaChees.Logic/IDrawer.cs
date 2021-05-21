@@ -11,5 +11,6 @@ namespace MegaChess.Logic
 		char[] ConvertToTKeyFormat(int x, int y);
 		void CursorVisible(bool visible);
 		Point ConvertToLocationFormat(char i, char j);
+		void PrintError(string ex);
 	}
 }

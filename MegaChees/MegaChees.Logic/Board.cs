@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace MegaChess.Logic
 {
 	public class Board
 	{
 		private Dictionary<char, Dictionary<char, Figura>> ChessBoard { get; }
-		public Dictionary<short, Dictionary<short, Figura>> DeadBlackFigures { get; }
-		public Dictionary<short, Dictionary<short, Figura>> DeadWhitekFigures { get; }
+		public Dictionary<char, Dictionary<char, Figura>> DeadBlackFigures { get; }
+		public Dictionary<char, Dictionary<char, Figura>> DeadWhitekFigures { get; }
 
 		private short CountEmptyFigure = 32;
 		public Board()
@@ -23,16 +24,16 @@ namespace MegaChess.Logic
 				{ '2', new Dictionary<char, Figura> { { 'A', new Pawn(true,1) }, { 'B', new Pawn(true,2) }, { 'C', new Pawn(true,3) }, { 'D',new Pawn(true,4) }, { 'E', new Pawn(true,5) }, { 'F', new Pawn(true,6) }, { 'G', new Pawn(true,7) }, { 'H',new Pawn(true,8) } } },
 				{ '1', new Dictionary<char, Figura> { { 'A', new Rook(true,1)  }, { 'B', new Knight(true,1) }, { 'C', new Bishop(true,1)}, { 'D', new Queen(true,1) }, { 'E', new King(true,1) }, { 'F', new Bishop(true,2) }, { 'G', new Knight(true,2) }, { 'H', new Rook(true,2)} } }
 			};
-			var deadFigures = new Dictionary<short, Dictionary<short, Figura>>()
+			var deadFigures = new Dictionary<char, Dictionary<char, Figura>>()
 			{
-				{ 1,new Dictionary<short, Figura> { { 1, null }, { 2, null } } },
-				{ 2,new Dictionary<short, Figura> { { 1, null }, { 2, null } } },
-				{ 3,new Dictionary<short, Figura> { { 1, null }, { 2, null } } },
-				{ 4,new Dictionary<short, Figura> { { 1, null }, { 2, null } } },
-				{ 5,new Dictionary<short, Figura> { { 1, null }, { 2, null } } },
-				{ 6,new Dictionary<short, Figura> { { 1, null }, { 2, null } } },
-				{ 7,new Dictionary<short, Figura> { { 1, null }, { 2, null } } },
-				{ 8,new Dictionary<short, Figura> { { 1, null }, { 2, null } } }
+				{ '1',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '2',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '3',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '4',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '5',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '6',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '7',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '8',new Dictionary<char, Figura> { { '1', null }, { '2', null } } }
 			};
 			this.DeadBlackFigures = deadFigures;
 			this.DeadWhitekFigures = deadFigures;
@@ -66,6 +67,24 @@ namespace MegaChess.Logic
 			{
 				this.CountEmptyFigure--;
 				throw new EntryPointNotFoundException("Нельзя рубить своего");
+			}
+		}
+		public Point CountLengh(Figura figura1, Figura figura2)
+		{
+			var firstCoordinate = Figura.FoundFigureCoordinate(this, figura1);
+			var secondCoordinate = Figura.FoundFigureCoordinate(this, figura2);
+			int y = secondCoordinate[0] - firstCoordinate[0];
+			int x = secondCoordinate[1] - firstCoordinate[1];
+			return new Point(x, y);
+		}
+		public IEnumerable<Figura> GetFiguras()
+		{
+			for (char i = '1'; i <= '8'; i++)
+			{
+				for (char j = 'A'; j <= 'H'; j++)
+				{
+					yield return this.ChessBoard[i][j];
+				}
 			}
 		}
 	}

@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace MegaChess.Logic
 {
@@ -36,34 +37,40 @@ namespace MegaChess.Logic
 			bool whiteSteep = true;
 			while (true)
 			{
-				this.drawer.PrintBoard(this.board);
-				var firstFigura = this.drawer.MoveCursor(startX, startY, board);
-				var secondFigura = this.drawer.MoveCursor(startX, startY, board);
-				
-				Point lengh = CountLengh(firstFigura, secondFigura);
-				if (firstFigura.IsCorrectMove(this.board, lengh.X, lengh.Y) && firstFigura.IsMyFigura == whiteSteep)
-				{
-					MakeStep(firstFigura, secondFigura);
-				}
-				whiteSteep = !whiteSteep;
+					this.drawer.PrintBoard(this.board);
+					var firstFigura = this.drawer.MoveCursor(startX, startY, this.board);
+					ChangeStartLocation(firstFigura);
+
+					var secondFigura = this.drawer.MoveCursor(startX, startY, this.board);
+
+					Point lengh = this.board.CountLengh(firstFigura, secondFigura);
+					if (!firstFigura.HaveUnrealSteep(this.board, lengh) && firstFigura.IsMyFigura == whiteSteep)
+					{
+						ChangeStartLocation(secondFigura);
+						MakeStep(firstFigura, secondFigura);
+						whiteSteep = !whiteSteep;
+					}
 			}
 		}
-		private Point CountLengh(Figura figura1 , Figura figura2)
+		private void ChangeStartLocation(Figura figura)
 		{
-			var firstCoordinate = Figura.FoundFigureCoordinate(this.board, figura1);
-			var secondCoordinate = Figura.FoundFigureCoordinate(this.board, figura2);
-			int y = secondCoordinate[0] - firstCoordinate[0];
-			int x = secondCoordinate[1] - firstCoordinate[1];
-			return new Point(x, y);
+			char[] coordinate = Figura.FoundFigureCoordinate(this.board, figura);
+			Point point = this.drawer.ConvertToLocationFormat(coordinate[0], coordinate[1]);
+			this.startX = point.X;
+			this.startY = point.Y;
 		}
+		
 		private void MakeStep(Figura firstFigura, Figura secondFigura)
 		{
-			this.board.TryReplaceFigure(firstFigura, secondFigura);
+			if (secondFigura.IsMyFigura == null || secondFigura.IsMyFigura == firstFigura.IsMyFigura)
+				this.board.TryReplaceFigure(firstFigura, secondFigura);
+			else
+				this.board.KillFigure(firstFigura, secondFigura);
 		}
 
 		private void LoadGamePlay()
 		{
-
+			
 		}
 	}
 }
