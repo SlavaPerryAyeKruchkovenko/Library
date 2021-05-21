@@ -26,7 +26,7 @@ namespace MegaChess.Logic
 				{
 					if(item.IsMyFigura != this.IsMyFigura && !(item is Empty))
 					{
-						Point lenght = board.CountLengh(new King(this.IsMyFigura.Value, 1), item);
+						Point lenght = board.CountLengh(item, new King(this.IsMyFigura.Value, 1));
 						if(item.IsCorrectMove(board, lenght))
 						{
 							throw new AccessViolationException("Impossible move!");
@@ -56,7 +56,7 @@ namespace MegaChess.Logic
 			if (board.GetFigure(point[0], point[1]).IsMyFigura.Value)
 				return Empty.IsEmpty(board, point, location);
 			else
-				return Empty.IsEmpty(board, point, new Point(-location.X, location.Y));
+				return Empty.IsEmpty(board, point, new Point(location.X, -location.Y));
 		}
 		protected static bool IsCorrectCoordinate(char a, char b) => a <= '8' && a >= '1' && b <= 'H' && b >= 'A';
 		public override string ToString()
@@ -85,7 +85,7 @@ namespace MegaChess.Logic
 				{
 					for (int j = 1; j <= Math.Abs(lenght.Y); j++)
 					{
-						bool canDoStep = HaventEnemyOnPosition(pawnCoordinate, new Point(j, 0), board);
+						bool canDoStep = HaventEnemyOnPosition(pawnCoordinate, new Point(0, j), board);
 						if (!canDoStep)
 						{
 							return false;
@@ -96,12 +96,13 @@ namespace MegaChess.Logic
 				}
 				else if (CheckCorrectMoveForDifferent(lenght.Y, 1))
 				{
-					return HaventEnemyOnPosition(pawnCoordinate, new Point(1, 0), board);
+					return HaventEnemyOnPosition(pawnCoordinate, new Point(0, 1), board);
 				}
 			}
 			else if (CheckCorrectMoveForDifferent(lenght.Y, 1) && Math.Abs(lenght.X) == 1)
 			{
-				return CanDestroy(pawnCoordinate, lenght.X, board);
+				//проверка что в конечной точке не стоит враг
+				return this.IsMyFigura != board.GetFigure((char)(pawnCoordinate[0] + lenght.Y), (char)(pawnCoordinate[1] + lenght.X)).IsMyFigura;
 			}				
 			return false;
 		}
@@ -179,11 +180,11 @@ namespace MegaChess.Logic
 			{
 				if (moveOnY)
 				{
-					canDoStep = HaventEnemyOnPosition(point, new Point(i, 0), board);
+					canDoStep = HaventEnemyOnPosition(point, new Point(0, i), board);
 				}
 				else
 				{
-					canDoStep = HaventEnemyOnPosition(point, new Point(0, i), board);
+					canDoStep = HaventEnemyOnPosition(point, new Point(i, 0), board);
 				}
 				if (!canDoStep)
 				{
@@ -239,23 +240,36 @@ namespace MegaChess.Logic
 		{
 			for (int i = 1; i < Math.Abs(lengthX); i++)
 			{
-				if (lengthX > 0 && lengthY > 0) 
+				if (lengthX > 0 && lengthY > 0)
+				{
 					if (!Empty.IsEmpty(board, point, new Point(i, i)))
+					{
 						return false;
-
+					}
+						
+				}					
 				else if (lengthX > 0 && lengthY < 0)
-					if (!Empty.IsEmpty(board, point, new Point(-i, i)))
-						return false;
-
-				else if (lengthX < 0 && lengthY > 0)
+				{
 					if (!Empty.IsEmpty(board, point, new Point(i, -i)))
+					{
 						return false;
-
+					}						
+				}
+				else if (lengthX < 0 && lengthY > 0)
+				{
+					if (!Empty.IsEmpty(board, point, new Point(-i, i)))
+					{
+						return false;
+					}
+				}	
 				else if (lengthX < 0 && lengthY < 0)
-					if (!Empty.IsEmpty(board, point, new Point(-i, -i))) 
+				{
+					if (!Empty.IsEmpty(board, point, new Point(-i, -i)))
+					{
 						return false;
+					}
+				}				
 			}
-
 			return true;
 		}
 		public override bool Equals(object obj)
@@ -408,7 +422,7 @@ namespace MegaChess.Logic
 		}
 		protected internal static bool IsEmpty(Board board , char[] point , Point gap)
 		{
-			return board.GetFigure((char)(point[0] + gap.X), (char)(point[1] + gap.Y)) is Empty;
+			return board.GetFigure((char)(point[0] + gap.Y), (char)(point[1] + gap.X)) is Empty;
 		}
 		public override int GetHashCode()
 		{

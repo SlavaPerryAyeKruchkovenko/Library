@@ -35,7 +35,7 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>   
     <StackPanel>
-      <Image Source="avares://MegaChess.Dekstop/Assets/Csol.Ico.png" Classes="Logo"/>
+      <Image Source="avares://MegaChess.Dekstop/Assets/Megachess-logo.png" Classes="Logo"/>
       <Button Content="Play vs people" Classes="h1 CenterContent PanelMerge"
               />
       <Button Content="With Computer" Classes="h1 CenterContent PanelMerge">
