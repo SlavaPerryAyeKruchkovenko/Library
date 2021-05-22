@@ -22,6 +22,7 @@ namespace MegaChess.Logic
 			}
 			else
 			{
+				board.HideFigure(this);
 				foreach (var item in board.GetFiguras())
 				{
 					if(item.IsMyFigura != this.IsMyFigura && !(item is Empty))
@@ -29,28 +30,15 @@ namespace MegaChess.Logic
 						Point lenght = board.CountLengh(item, new King(this.IsMyFigura.Value, 1));
 						if(item.IsCorrectMove(board, lenght))
 						{
+							board.SeekFigure(this);
 							throw new AccessViolationException("Impossible move!");
 						}
 					}
 				}
+				board.SeekFigure(this);
 			}		
 			return false;
-		}
-		public static char[] FoundFigureCoordinate(Board board , Figura figura)
-		{
-			for (char i = '1'; i <= '8'; i++)
-			{
-				for (char j = 'A'; j <= 'H'; j++)
-				{
-					var newFigura = board.GetFigure(i, j);
-					if (newFigura.Equals(figura))
-					{
-						return new char[] { i, j };
-					}					
-				}
-			}
-			throw new ArgumentException("Такой фигуры нет");
-		}
+		}		
 		protected static bool HaventEnemyOnPosition(char[] point, Point location, Board board)
 		{
 			if (board.GetFigure(point[0], point[1]).IsMyFigura.Value)
@@ -78,7 +66,7 @@ namespace MegaChess.Logic
 
 		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			var pawnCoordinate = FoundFigureCoordinate(board, this);
+			var pawnCoordinate = board.FoundFigureCoordinate(this);
 			if (lenght.X == 0)
 			{
 				if (this.isFirstStep && CheckCorrectMoveForDifferent(lenght.Y, 2))
@@ -116,16 +104,6 @@ namespace MegaChess.Logic
 			else
 				return false;
 		}
-		private bool CanDestroy(char[] point, int step, Board board)
-		{
-			if (!HaventEnemyOnPosition(point, new Point(1, step), board))
-				if (this.IsMyFigura.Value)
-					return board.GetFigure((char)(point[0] + 1), (char)(point[1] + step)).IsMyFigura != board.GetFigure(point[0], point[1]).IsMyFigura;
-				else
-					return board.GetFigure((char)(point[0] - 1), (char)(point[1] + step)).IsMyFigura != board.GetFigure(point[0], point[1]).IsMyFigura;
-			else
-				return false;
-		}
 		public override bool Equals(object obj)
 		{
 			if (!(obj is Pawn))
@@ -153,7 +131,7 @@ namespace MegaChess.Logic
 		public override char ShorName => 'R';
 		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			var rookCoordinate = FoundFigureCoordinate(board, this);
+			var rookCoordinate = board.FoundFigureCoordinate(this);
 			return IsCorrectMove2(board, lenght, rookCoordinate);
 		}
 		internal static bool IsCorrectMove2(Board board, Point lenght, char[] point)
@@ -226,7 +204,7 @@ namespace MegaChess.Logic
 		public override char ShorName => 'B';
 		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			var bishopCoordinate = FoundFigureCoordinate(board, this);
+			var bishopCoordinate = board.FoundFigureCoordinate(this);
 			return IsCorrectMove2(board, lenght, bishopCoordinate);
 		}
 		internal static bool IsCorrectMove2(Board board, Point lenght , char[] point)
@@ -299,7 +277,7 @@ namespace MegaChess.Logic
 		public override char ShorName => 'K';
 		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			var kingCoordinate = FoundFigureCoordinate(board, this);
+			var kingCoordinate = board.FoundFigureCoordinate(this);
 			char a = (char)(kingCoordinate[0] + lenght.Y);
 			char b = (char)(kingCoordinate[1] + lenght.X);
 			if (Math.Abs(lenght.Y) <= 1 && Math.Abs(lenght.X) <= 1 && IsCorrectCoordinate(a, b)) 
@@ -334,7 +312,7 @@ namespace MegaChess.Logic
 		public override char ShorName => 'Q';
 		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			var queenCoordinate = FoundFigureCoordinate(board, this);
+			var queenCoordinate = board.FoundFigureCoordinate(this);
 			if (lenght.X == 0 ||lenght.X == 0)
 			{
 				return Rook.IsCorrectMove2(board, lenght, queenCoordinate);
@@ -372,7 +350,7 @@ namespace MegaChess.Logic
 		public override char ShorName => 'H';
 		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			var khigthCoordinate = FoundFigureCoordinate(board, this);
+			var khigthCoordinate = board.FoundFigureCoordinate(this);
 			int dx = Math.Abs(lenght.X);
 			int dy = Math.Abs(lenght.Y);
 			char a = (char)(khigthCoordinate[0] + lenght.Y);
@@ -420,7 +398,7 @@ namespace MegaChess.Logic
 			var figure = (Empty)obj;
 			return figure.IsMyFigura == this.IsMyFigura && figure.Number == this.Number;
 		}
-		protected internal static bool IsEmpty(Board board , char[] point , Point gap)
+		public static bool IsEmpty(Board board , char[] point , Point gap)
 		{
 			return board.GetFigure((char)(point[0] + gap.Y), (char)(point[1] + gap.X)) is Empty;
 		}

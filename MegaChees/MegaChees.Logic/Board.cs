@@ -43,8 +43,8 @@ namespace MegaChess.Logic
 		{
 			try
 			{
-				var coordinate1 = Figura.FoundFigureCoordinate(this, selectFigure);
-				var coordinate2 = Figura.FoundFigureCoordinate(this, replaceFigura);
+				var coordinate1 = FoundFigureCoordinate(selectFigure);
+				var coordinate2 = FoundFigureCoordinate(replaceFigura);
 				this.ChessBoard[coordinate1[0]][coordinate1[1]] = replaceFigura;
 				this.ChessBoard[coordinate2[0]][coordinate2[1]] = selectFigure;
 			}
@@ -58,8 +58,8 @@ namespace MegaChess.Logic
 			try
 			{
 				this.CountEmptyFigure++;
-				var coordinate1 = Figura.FoundFigureCoordinate(this, killer);
-				var coordinate2 = Figura.FoundFigureCoordinate(this, died);				
+				var coordinate1 = FoundFigureCoordinate(killer);
+				var coordinate2 = FoundFigureCoordinate(died);				
 				this.ChessBoard[coordinate2[0]][coordinate2[1]] = killer;
 				this.ChessBoard[coordinate1[0]][coordinate1[1]] = new Empty(null , this.CountEmptyFigure);
 			}
@@ -71,8 +71,8 @@ namespace MegaChess.Logic
 		}
 		public Point CountLengh(Figura figura1, Figura figura2)
 		{
-			var firstCoordinate = Figura.FoundFigureCoordinate(this, figura1);
-			var secondCoordinate = Figura.FoundFigureCoordinate(this, figura2);
+			var firstCoordinate = FoundFigureCoordinate(figura1);
+			var secondCoordinate = FoundFigureCoordinate(figura2);
 			int y = secondCoordinate[0] - firstCoordinate[0];
 			int x = secondCoordinate[1] - firstCoordinate[1];
 			return new Point(x, y);
@@ -86,6 +86,31 @@ namespace MegaChess.Logic
 					yield return this.ChessBoard[i][j];
 				}
 			}
+		}
+		public void HideFigure(Figura figura)
+		{
+			char[] coordinate = FoundFigureCoordinate(figura);
+			this.ChessBoard[coordinate[0]][coordinate[1]] = new Empty(null, 0);
+		}
+		public void SeekFigure(Figura figura)
+		{
+			char[] coordinate = FoundFigureCoordinate(new Empty(null, 0));
+			this.ChessBoard[coordinate[0]][coordinate[1]] = figura;
+		}
+		public char[] FoundFigureCoordinate(Figura figura)
+		{
+			for (char i = '1'; i <= '8'; i++)
+			{
+				for (char j = 'A'; j <= 'H'; j++)
+				{
+					var newFigura = this.GetFigure(i, j);
+					if (newFigura.Equals(figura))
+					{
+						return new char[] { i, j };
+					}
+				}
+			}
+			throw new ArgumentException("Такой фигуры нет");
 		}
 	}
 }

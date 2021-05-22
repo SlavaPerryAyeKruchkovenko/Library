@@ -54,7 +54,7 @@ namespace MegaChess.Logic
 		}
 		private void ChangeStartLocation(Figura figura)
 		{
-			char[] coordinate = Figura.FoundFigureCoordinate(this.board, figura);
+			char[] coordinate = this.board.FoundFigureCoordinate(figura);
 			Point point = this.drawer.ConvertToLocationFormat(coordinate[0], coordinate[1]);
 			this.startX = point.X;
 			this.startY = point.Y;
