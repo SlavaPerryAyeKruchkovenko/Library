@@ -35,6 +35,7 @@ namespace MegaCheess.Menu
 		}
 		public void PrintBoard(Board board)
 		{
+			Console.Clear();
 			int step = 2;
 			PrintOpenBar();
 			for (char i = '8'; i >= '1'; i--)
@@ -252,6 +253,7 @@ namespace MegaCheess.Menu
 
 		public void PrintError(string ex)
 		{
+			Console.SetCursorPosition(0, 0);
 			Console.WriteLine(ex);
 			Thread.Sleep(300);
 		}

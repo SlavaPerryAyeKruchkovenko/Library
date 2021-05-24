@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace MegaChess.Logic
 {
@@ -11,7 +13,7 @@ namespace MegaChess.Logic
 
 		private IDrawer drawer;
 
-		private readonly Board board;
+		private Board board;
 		public ChessGameLogic(IDrawer _drawer, int _startX, int _startY)
 		{
 			this.drawer = _drawer;
@@ -34,9 +36,10 @@ namespace MegaChess.Logic
 		}
 		private void NewGamePlay()
 		{
-			bool whiteSteep = true;
-			while (true)
-			{
+			while (IsGameFinish(this.board))
+			{				
+				try
+				{
 					this.drawer.PrintBoard(this.board);
 					var firstFigura = this.drawer.MoveCursor(startX, startY, this.board);
 					ChangeStartLocation(firstFigura);
@@ -44,13 +47,35 @@ namespace MegaChess.Logic
 					var secondFigura = this.drawer.MoveCursor(startX, startY, this.board);
 
 					Point lengh = this.board.CountLengh(firstFigura, secondFigura);
-					if (!firstFigura.HaveUnrealSteep(this.board, lengh) && firstFigura.IsMyFigura == whiteSteep)
+					if (!firstFigura.HaveUnrealSteep(this.board, lengh) && firstFigura.IsMyFigura == board.IsWhiteMove)
 					{
 						ChangeStartLocation(secondFigura);
-						MakeStep(firstFigura, secondFigura);
-						whiteSteep = !whiteSteep;
+						this.board.MakeStep(firstFigura, secondFigura , false);
+						this.board.ChangeSideMode();
+						CheckOnCheck(this.board, firstFigura);
 					}
+				}
+				catch(Exception ex)
+				{
+					this.drawer.PrintError(ex.Message);
+				}
+				SaveGame(this.board);
 			}
+		}
+		private static bool CheckOnCheck(Board board , Figura figure)
+		{
+			foreach (var item in board.GetFiguras())
+			{
+				if(item.IsMyFigura == figure.IsMyFigura)
+				{
+					Point lenght = board.CountLengh(item, new King(!item.IsMyFigura.Value, 1));
+					if(item.IsCorrectMove(board,lenght))
+					{
+						throw new Exception("Шах");
+					}
+				}
+			}
+			return false;
 		}
 		private void ChangeStartLocation(Figura figura)
 		{
@@ -59,18 +84,53 @@ namespace MegaChess.Logic
 			this.startX = point.X;
 			this.startY = point.Y;
 		}
-		
-		private void MakeStep(Figura firstFigura, Figura secondFigura)
+		private bool IsGameFinish(Board board)
 		{
-			if (secondFigura.IsMyFigura == null || secondFigura.IsMyFigura == firstFigura.IsMyFigura)
-				this.board.TryReplaceFigure(firstFigura, secondFigura);
+			string figureColor = null;
+			if(board.WhiteImposibleMove == 3)
+			{
+				figureColor = "Black";
+			}
+			else if(board.BlackImposibleMove == 3)
+			{
+				figureColor = "White";
+			}				
 			else
-				this.board.KillFigure(firstFigura, secondFigura);
+			{
+				return true;
+			}
+			throw new Exception($"{figureColor} win!!!");
 		}
-
 		private void LoadGamePlay()
 		{
-			
+			string path = Environment.CurrentDirectory + "\\save.json";
+			try
+			{
+				string json = File.ReadAllText(path);
+				var saves = JsonConvert.DeserializeObject<Board>(json);
+				this.board = saves ?? throw new Exception("Empty File");
+			}
+			catch
+			{
+				CreateFile(path);
+			}
+			NewGamePlay();
+		}
+		private static void SaveGame(Board board)
+		{
+			string path = Environment.CurrentDirectory + "\\save.json";			
+			SaveBoard(path, board);
+		}
+		private static void SaveBoard(string path, Board board)
+		{
+			string content = JsonConvert.SerializeObject(board);			
+			File.Delete(path);
+			CreateFile(path);
+			File.WriteAllText(path, content);
+		}
+		private static void CreateFile(string path)
+		{
+			File.Create(path).DisposeAsync();
 		}
 	}
 }

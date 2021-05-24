@@ -22,23 +22,30 @@ namespace MegaChess.Logic
 			}
 			else
 			{
-				board.HideFigure(this);
+				char[] coordinates = board.FoundFigureCoordinate(this);
+				Figura figura = board.GetFigure((char)(coordinates[0] + coordinate.Y), (char)(coordinates[1] + coordinate.X));
+				board.MakeStep(this, figura, false);
 				foreach (var item in board.GetFiguras())
 				{
-					if(item.IsMyFigura != this.IsMyFigura && !(item is Empty))
+					if (!SingleColorsFigures(this, item) && !(item is Empty)) 
 					{
 						Point lenght = board.CountLengh(item, new King(this.IsMyFigura.Value, 1));
 						if(item.IsCorrectMove(board, lenght))
 						{
-							board.SeekFigure(this);
+							board.TryAddImposibleMove(this.IsMyFigura.Value);
+							board.MakeStep(this, figura, true);
 							throw new AccessViolationException("Impossible move!");
 						}
 					}
 				}
-				board.SeekFigure(this);
+				board.MakeStep(this, figura, true);
 			}		
 			return false;
-		}		
+		}
+		protected static bool SingleColorsFigures(Figura figura1, Figura figura2)
+		{
+			return figura1.IsMyFigura == figura2.IsMyFigura;
+		}
 		protected static bool HaventEnemyOnPosition(char[] point, Point location, Board board)
 		{
 			if (board.GetFigure(point[0], point[1]).IsMyFigura.Value)
@@ -47,10 +54,7 @@ namespace MegaChess.Logic
 				return Empty.IsEmpty(board, point, new Point(location.X, -location.Y));
 		}
 		protected static bool IsCorrectCoordinate(char a, char b) => a <= '8' && a >= '1' && b <= 'H' && b >= 'A';
-		public override string ToString()
-		{
-			return this.ShorName.ToString();
-		}
+		public override string ToString() => this.ShorName.ToString();
 	}
 	public class Pawn : Figura
 	{
@@ -90,7 +94,7 @@ namespace MegaChess.Logic
 			else if (CheckCorrectMoveForDifferent(lenght.Y, 1) && Math.Abs(lenght.X) == 1)
 			{
 				//проверка что в конечной точке не стоит враг
-				return this.IsMyFigura != board.GetFigure((char)(pawnCoordinate[0] + lenght.Y), (char)(pawnCoordinate[1] + lenght.X)).IsMyFigura;
+				return !SingleColorsFigures(this, board.GetFigure((char)(pawnCoordinate[0] + lenght.Y), (char)(pawnCoordinate[1] + lenght.X)));
 			}				
 			return false;
 		}
@@ -103,7 +107,7 @@ namespace MegaChess.Logic
 					return dY < 0;
 			else
 				return false;
-		}
+		}		
 		public override bool Equals(object obj)
 		{
 			if (!(obj is Pawn))
@@ -111,7 +115,7 @@ namespace MegaChess.Logic
 				return false;
 			}
 			var figure = (Pawn)obj;
-			return figure.IsMyFigura == this.IsMyFigura && figure.Number == this.Number;
+			return SingleColorsFigures(this,figure) && figure.Number == this.Number;
 		}
 
 		public override int GetHashCode()
@@ -173,9 +177,9 @@ namespace MegaChess.Logic
 		}
 		private static bool CanDoStep(Board board, char a, char b, int step1, int step2)
 		{
-			return board.GetFigure((char)(a + step1), (char)(b + step2)) is Empty
-				|| board.GetFigure((char)(a + step1), (char)(b + step2)).IsMyFigura
-				!= board.GetFigure(a, b).IsMyFigura;
+			Figura figura1 = board.GetFigure((char)(a + step1), (char)(b + step2));
+			Figura figura2 = board.GetFigure(a, b);
+			return figura1 is Empty || !SingleColorsFigures(figura1, figura2);
 		}
 		public override bool Equals(object obj)
 		{
@@ -184,7 +188,7 @@ namespace MegaChess.Logic
 				return false;
 			}
 			var figure = (Rook)obj;
-			return figure.IsMyFigura == this.IsMyFigura && figure.Number == this.Number;
+			return SingleColorsFigures(figure, this) && figure.Number == this.Number;
 		}
 
 		public override int GetHashCode()
@@ -209,9 +213,9 @@ namespace MegaChess.Logic
 		}
 		internal static bool IsCorrectMove2(Board board, Point lenght , char[] point)
 		{
-			if (Math.Abs(lenght.X) == Math.Abs(lenght.Y) && IsCorrectCoordinate(point[0],point[1]))
+			if (Math.Abs(lenght.X) == Math.Abs(lenght.Y) && IsCorrectCoordinate(point[0], point[1]))
 				if (CheckObstacles(board, point, lenght.X, lenght.Y))
-					return board.GetFigure((char)(point[0] + lenght.Y), (char)(point[1] + lenght.X)).IsMyFigura != board.GetFigure(point[0], point[1]).IsMyFigura;
+					return !SingleColorsFigures(board.GetFigure((char)(point[0] + lenght.Y), (char)(point[1] + lenght.X)), board.GetFigure(point[0], point[1]));
 			return false;
 		}
 		private static bool CheckObstacles(Board board, char[] point, int lengthX, int lengthY)
@@ -257,7 +261,7 @@ namespace MegaChess.Logic
 				return false;
 			}
 			var figure = (Bishop)obj;
-			return figure.IsMyFigura == this.IsMyFigura && figure.Number == this.Number;
+			return SingleColorsFigures(figure , this) && figure.Number == this.Number;
 		}
 
 		public override int GetHashCode()
@@ -280,8 +284,8 @@ namespace MegaChess.Logic
 			var kingCoordinate = board.FoundFigureCoordinate(this);
 			char a = (char)(kingCoordinate[0] + lenght.Y);
 			char b = (char)(kingCoordinate[1] + lenght.X);
-			if (Math.Abs(lenght.Y) <= 1 && Math.Abs(lenght.X) <= 1 && IsCorrectCoordinate(a, b)) 
-				return board.GetFigure(a, b).IsMyFigura != board.GetFigure(kingCoordinate[0], kingCoordinate[1]).IsMyFigura;
+			if (Math.Abs(lenght.Y) <= 1 && Math.Abs(lenght.X) <= 1 && IsCorrectCoordinate(a, b))
+				return !SingleColorsFigures(board.GetFigure(a, b), board.GetFigure(kingCoordinate[0], kingCoordinate[1]));
 
 			return false;
 		}
@@ -292,7 +296,7 @@ namespace MegaChess.Logic
 				return false;
 			}
 			var figure = (King)obj;
-			return figure.IsMyFigura == this.IsMyFigura && figure.Number == this.Number;
+			return SingleColorsFigures(figure, this) && figure.Number == this.Number;
 		}
 
 		public override int GetHashCode()
@@ -330,7 +334,7 @@ namespace MegaChess.Logic
 				return false;
 			}
 			var figure = (Queen)obj;
-			return figure.IsMyFigura == this.IsMyFigura && figure.Number == this.Number;
+			return SingleColorsFigures(figure, this) && figure.Number == this.Number;
 		}
 
 		public override int GetHashCode()
@@ -355,8 +359,8 @@ namespace MegaChess.Logic
 			int dy = Math.Abs(lenght.Y);
 			char a = (char)(khigthCoordinate[0] + lenght.Y);
 			char b = (char)(khigthCoordinate[1] + lenght.X);
-			if (dx + dy == 3 && dx * dy == 2 && IsCorrectCoordinate(a, b)) 
-				return board.GetFigure(a, b).IsMyFigura != board.GetFigure(khigthCoordinate[0], khigthCoordinate[1]).IsMyFigura;
+			if (dx + dy == 3 && dx * dy == 2 && IsCorrectCoordinate(a, b))
+				return !SingleColorsFigures(board.GetFigure(a, b), board.GetFigure(khigthCoordinate[0], khigthCoordinate[1]));
 			return false;
 		}
 		public override bool Equals(object obj)
@@ -366,7 +370,7 @@ namespace MegaChess.Logic
 				return false;
 			}
 			var figure = (Knight)obj;
-			return figure.IsMyFigura == this.IsMyFigura && figure.Number == this.Number;
+			return SingleColorsFigures(figure, this) && figure.Number == this.Number;
 		}
 
 		public override int GetHashCode()
@@ -396,7 +400,7 @@ namespace MegaChess.Logic
 				return false;
 			}
 			var figure = (Empty)obj;
-			return figure.IsMyFigura == this.IsMyFigura && figure.Number == this.Number;
+			return SingleColorsFigures(figure, this) && figure.Number == this.Number;
 		}
 		public static bool IsEmpty(Board board , char[] point , Point gap)
 		{

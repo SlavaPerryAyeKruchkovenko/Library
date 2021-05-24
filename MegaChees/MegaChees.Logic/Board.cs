@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -6,9 +7,13 @@ namespace MegaChess.Logic
 {
 	public class Board
 	{
+		[JsonProperty("ChessBoard")]
 		private Dictionary<char, Dictionary<char, Figura>> ChessBoard { get; }
 		public Dictionary<char, Dictionary<char, Figura>> DeadBlackFigures { get; }
 		public Dictionary<char, Dictionary<char, Figura>> DeadWhitekFigures { get; }
+		public bool IsWhiteMove { get; private set; } = true;
+		public short WhiteImposibleMove { get; private set; } = 0;
+		public short BlackImposibleMove { get; private set; } = 0;
 
 		private short CountEmptyFigure = 32;
 		public Board()
@@ -38,8 +43,22 @@ namespace MegaChess.Logic
 			this.DeadBlackFigures = deadFigures;
 			this.DeadWhitekFigures = deadFigures;
 		}
+		public void ChangeSideMode() => this.IsWhiteMove = !this.IsWhiteMove;
 		public Figura GetFigure(char a, char b) => this.ChessBoard[a][b];
-		public void TryReplaceFigure(Figura selectFigure, Figura replaceFigura)
+		protected internal void TryAddImposibleMove(bool isWhite)
+		{
+			_ = isWhite ? this.WhiteImposibleMove++ : this.BlackImposibleMove++;
+		}
+		public void MakeStep(Figura firstFigura, Figura secondFigura, bool isReverseStep)//Сделать ход
+		{
+			if (secondFigura is Empty || secondFigura.IsMyFigura == firstFigura.IsMyFigura)
+				TrySwitchFigure(firstFigura, secondFigura);
+			else if (!isReverseStep)
+				TryKillFigure(firstFigura, secondFigura);
+			else
+				TryReplaceFigure(firstFigura, secondFigura);
+		}		
+		private void TrySwitchFigure(Figura selectFigure, Figura replaceFigura)
 		{
 			try
 			{
@@ -53,7 +72,7 @@ namespace MegaChess.Logic
 				throw new EntryPointNotFoundException("Не пытайтесь сломать игру");
 			}
 		}
-		public void KillFigure(Figura killer, Figura died)
+		private void TryKillFigure(Figura killer, Figura died)// рубим фигуру
 		{
 			try
 			{
@@ -62,6 +81,7 @@ namespace MegaChess.Logic
 				var coordinate2 = FoundFigureCoordinate(died);				
 				this.ChessBoard[coordinate2[0]][coordinate2[1]] = killer;
 				this.ChessBoard[coordinate1[0]][coordinate1[1]] = new Empty(null , this.CountEmptyFigure);
+				AddDiedFigure(died);
 			}
 			catch (Exception)
 			{
@@ -69,7 +89,71 @@ namespace MegaChess.Logic
 				throw new EntryPointNotFoundException("Нельзя рубить своего");
 			}
 		}
-		public Point CountLengh(Figura figura1, Figura figura2)
+		private void TryReplaceFigure(Figura killer,Figura died)// возращаем мертвую фигуру
+		{
+			try
+			{
+				var coordinate1 = FoundFigureCoordinate(killer);
+				var coordinate2 = FoundFigureCoordinate(new Empty(null, this.CountEmptyFigure));
+
+				this.ChessBoard[coordinate1[0]][coordinate1[1]] = died;
+				this.ChessBoard[coordinate2[0]][coordinate2[1]] = killer;			
+				this.CountEmptyFigure--;
+				DeleteDiedFigure(died);
+			}
+			catch (Exception)
+			{
+				throw new EntryPointNotFoundException("Фигуру нельзя востановить");
+			}
+		}
+		private void AddDiedFigure(Figura died)// добовялем срубленную фигуру в правлеьный словарь
+		{
+			if(died.IsMyFigura.Value)
+			{
+				AddFigure(this.DeadWhitekFigures, died);
+			}
+			else
+			{
+				AddFigure(this.DeadWhitekFigures, died);
+			}
+		}
+		private void DeleteDiedFigure(Figura died)// удаляем срубленную фигуру
+		{
+			Dictionary<char, Dictionary<char, Figura>> board;
+			if (died.IsMyFigura.Value)
+				board = this.DeadWhitekFigures;
+			else
+				board = this.DeadBlackFigures;
+
+			for (char i = '1'; i <= '8'; i++)
+			{
+				for (char j = '1'; j <= '2'; j++)
+				{
+					if (board[i][j].Equals(died))
+					{
+						board[i][j] = null;
+						return;
+					}
+				}
+			}
+			throw new Exception("Нельзя востановить данную фигуру");
+		}
+		private static void AddFigure(Dictionary<char, Dictionary<char, Figura>> board , Figura figura)// добовляет фигуру в словарь
+		{
+			for (char i = '1'; i <= '8'; i++)
+			{
+				for (char j = '1'; j <= '2'; j++)
+				{
+					if (board[i][j] == null)
+					{
+						board[i][j] = figura;
+						return;
+					}
+				}
+			}
+			throw new Exception("Вы не можите срубить больше");
+		}
+		public Point CountLengh(Figura figura1, Figura figura2)// считает растояние между фигурами
 		{
 			var firstCoordinate = FoundFigureCoordinate(figura1);
 			var secondCoordinate = FoundFigureCoordinate(figura2);
@@ -77,7 +161,7 @@ namespace MegaChess.Logic
 			int x = secondCoordinate[1] - firstCoordinate[1];
 			return new Point(x, y);
 		}
-		public IEnumerable<Figura> GetFiguras()
+		public IEnumerable<Figura> GetFiguras()//возращает доску
 		{
 			for (char i = '1'; i <= '8'; i++)
 			{
@@ -86,17 +170,7 @@ namespace MegaChess.Logic
 					yield return this.ChessBoard[i][j];
 				}
 			}
-		}
-		public void HideFigure(Figura figura)
-		{
-			char[] coordinate = FoundFigureCoordinate(figura);
-			this.ChessBoard[coordinate[0]][coordinate[1]] = new Empty(null, 0);
-		}
-		public void SeekFigure(Figura figura)
-		{
-			char[] coordinate = FoundFigureCoordinate(new Empty(null, 0));
-			this.ChessBoard[coordinate[0]][coordinate[1]] = figura;
-		}
+		}		
 		public char[] FoundFigureCoordinate(Figura figura)
 		{
 			for (char i = '1'; i <= '8'; i++)
