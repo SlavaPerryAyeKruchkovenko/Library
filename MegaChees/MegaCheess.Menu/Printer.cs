@@ -67,31 +67,30 @@ namespace MegaCheess.Menu
 		}
 		public char[] ConvertToTKeyFormat(int x,int y)
 		{
-			char key1,key2;
-			switch(y)
+			var key1 = y switch
 			{
-				case 1: key1 = '1'; break;
-				case 2: key1 = '2'; break;
-				case 3: key1 = '3'; break;
-				case 4: key1 = '4'; break;
-				case 5: key1 = '5'; break;
-				case 6: key1 = '6'; break;
-				case 7: key1 = '7'; break;
-				case 8: key1 = '8'; break;
-				default: key1 = ' '; break;
-			}
-			switch (x)
+				1 => '1',
+				2 => '2',
+				3 => '3',
+				4 => '4',
+				5 => '5',
+				6 => '6',
+				7 => '7',
+				8 => '8',
+				_ => ' ',
+			};
+			var key2 = x switch
 			{
-				case 1: key2 = 'A'; break;
-				case 2: key2 = 'B'; break;
-				case 3: key2 = 'C'; break;
-				case 4: key2 = 'D'; break;
-				case 5: key2 = 'E'; break;
-				case 6: key2 = 'F'; break;
-				case 7: key2 = 'G'; break;
-				case 8: key2 = 'H'; break;
-				default: key2 = ' '; break;
-			}
+				1 => 'A',
+				2 => 'B',
+				3 => 'C',
+				4 => 'D',
+				5 => 'E',
+				6 => 'F',
+				7 => 'G',
+				8 => 'H',
+				_ => ' ',
+			};
 			return new char[] { key1, key2 };
 		}
 		public Point ConvertToLocationFormat(char i, char j)

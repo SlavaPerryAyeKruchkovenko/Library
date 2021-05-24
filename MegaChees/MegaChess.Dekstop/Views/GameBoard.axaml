@@ -2,12 +2,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="using:MegaChess.Dekstop.ViewModels"
+             xmlns:converter="clr-namespace:MegaChess.Dekstop.Converter"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="MegaChess.Dekstop.Views.GameBoard">
+             x:Class="MegaChess.Dekstop.Views.GameBoard"> 
+  <Design.DataContext>
+    <vm:GameWindowViewModel/>
+  </Design.DataContext>
+  <UserControl.Resources>
+    <converter:ImageConverter x:Key="ImageConverter" />
+  </UserControl.Resources>
   <DockPanel>
-    <Canvas>
-      <Border>
-        
+    <Canvas PropertyChanged="ChangeSize" x:Name="Holst">
+      <Border Background="{Binding GameBoard[0].Color, Converter={StaticResource ImageConverter}}"
+              Tapped="SelectFigure">
+        <Border.BorderBrush>
+          <ImageBrush Source="{Binding GameBoard[0].Image, Converter={StaticResource ImageConverter}}"/>
+        </Border.BorderBrush>
+      </Border>
+      <Border Background="{Binding GameBoard[1].Color, Converter={StaticResource ImageConverter}}"
+              Tapped="SelectFigure">
+        <Border.BorderBrush>
+          <ImageBrush Source="{Binding GameBoard[1].Image, Converter={StaticResource ImageConverter}}"/>
+        </Border.BorderBrush>
       </Border>
     </Canvas>
   </DockPanel>

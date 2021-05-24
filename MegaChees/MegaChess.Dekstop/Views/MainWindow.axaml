@@ -41,8 +41,8 @@
       <Button Content="With Computer" Classes="h1 CenterContent PanelMerge">
         <Button.Flyout>
           <MenuFlyout Placement="Bottom" ShowMode="TransientWithDismissOnPointerMoveAway">
-              <Button Content="NewGame" Classes="ContextBtn CenterContent"/>
-              <Button Content="Continue" Classes="ContextBtn CenterContent"/>
+              <Button Content="NewGame" Classes="ContextBtn CenterContent" Tapped="OpenGame"/>
+              <Button Content="Continue" Classes="ContextBtn CenterContent" Tapped="OpenGame"/>
           </MenuFlyout>          
         </Button.Flyout>
       </Button> 

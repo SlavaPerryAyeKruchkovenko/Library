@@ -2,15 +2,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:MegaChess.Dekstop.ViewModels"
+        xmlns:views="clr-namespace:MegaChess.Dekstop.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MegaChess.Dekstop.Views.GameWindow"
         Icon="avares://MegaChess.Dekstop/Assets/_chess.ico">
-  <Grid ColumnDefinitions="*,3*,*" ShowGridLines="True">
+  <Design.DataContext>
+    <vm:GameWindowViewModel/>
+  </Design.DataContext>
+    <Grid ColumnDefinitions="*,3*,*" ShowGridLines="True">
     
     <DockPanel Grid.Column="1">
-      <Canvas>
-        
-      </Canvas>
+      <views:GameBoard/>
     </DockPanel>
     <DockPanel Grid.Column="2">
 
