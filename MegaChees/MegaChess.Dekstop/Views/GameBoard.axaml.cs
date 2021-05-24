@@ -11,12 +11,10 @@ namespace MegaChess.Dekstop.Views
 	{
 		private Rect size;
 		private Canvas canvas;
-		private GameWindowViewModel gameWindow;
 		public GameBoard()
 		{
 			InitializeComponent();
 			this.canvas = this.FindControl<Canvas>("Holst");
-			this.gameWindow = new GameWindowViewModel();
 		}
 		private void InitializeComponent()
 		{
@@ -45,10 +43,6 @@ namespace MegaChess.Dekstop.Views
 				}
 			}
 			this.size = this.canvas.Bounds;
-		}
-		private void SelectFigure(object sender , RoutedEventArgs e)
-		{
-
 		}
 	}
 }

@@ -15,13 +15,13 @@
   <DockPanel>
     <Canvas PropertyChanged="ChangeSize" x:Name="Holst">
       <Border Background="{Binding GameBoard[0].Color, Converter={StaticResource ImageConverter}}"
-              Tapped="SelectFigure">
-        <Border.BorderBrush>
+              Command="{Binding Func}" CommandParameter="Binding GameBoard[0].FiguraNow">
+              <Border.BorderBrush>
           <ImageBrush Source="{Binding GameBoard[0].Image, Converter={StaticResource ImageConverter}}"/>
         </Border.BorderBrush>
       </Border>
       <Border Background="{Binding GameBoard[1].Color, Converter={StaticResource ImageConverter}}"
-              Tapped="SelectFigure">
+              Command="{Binding Func}" CommandParameter="Binding GameBoard[1].FiguraNow">
         <Border.BorderBrush>
           <ImageBrush Source="{Binding GameBoard[1].Image, Converter={StaticResource ImageConverter}}"/>
         </Border.BorderBrush>

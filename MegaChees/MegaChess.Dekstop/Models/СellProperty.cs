@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Media;
+using MegaChess.Logic;
 
 namespace MegaChess.Dekstop.Models
 {
-	public class FiguraProperty: BaseModel
+	public class СellProperty : BaseModel
 	{
 		private string _image;
 		public string Image
@@ -22,6 +23,11 @@ namespace MegaChess.Dekstop.Models
 			get => _color;
 			set => this.RaiseAndSetIfChanged(ref _color, value);
 		}
-
+		private Figura _figura;
+		public Figura FiguraNow
+		{
+			get => _figura;
+			set => this.RaiseAndSetIfChanged(ref _figura, value);
+		}
 	}
 }

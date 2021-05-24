@@ -11,12 +11,11 @@ namespace MegaChess.Dekstop.Converter
 {
 	class Drawer : IDrawer
 	{
-		public Drawer(ObservableCollection<FiguraProperty> _figuraProperties)
+		public Drawer(ObservableCollection<СellProperty > _figuraProperties)
 		{
 			this.figuraProperties = _figuraProperties;
 		}
-			
-		private ObservableCollection<FiguraProperty> figuraProperties;
+		private ObservableCollection<СellProperty > figuraProperties;
 		public void Clear()
 		{
 			
@@ -24,7 +23,7 @@ namespace MegaChess.Dekstop.Converter
 
 		public Point ConvertToLocationFormat(char i, char j)
 		{
-			throw new NotImplementedException();
+			return new Point(1, 1);
 		}
 
 		public char[] ConvertToTKeyFormat(int x, int y)
@@ -63,17 +62,16 @@ namespace MegaChess.Dekstop.Converter
 
 		public Figura MoveCursor(int x, int y, Board board)
 		{
-			throw new NotImplementedException();
-		}
-
+			
+		}		
 		public void PrintBoard(Board board)
 		{
-			this.figuraProperties = new ObservableCollection<FiguraProperty>();
+			this.figuraProperties = new ObservableCollection<СellProperty >();
 			bool IsWhiteFigure = true;
 
 			foreach (var item in board.GetFiguras())
 			{
-				var figuraProperty = new FiguraProperty();
+				var figuraProperty = new СellProperty ();
 
 				if (item.IsMyFigura == true)
 				{
@@ -102,6 +100,7 @@ namespace MegaChess.Dekstop.Converter
 					};
 				}
 				figuraProperty.Color = IsWhiteFigure ? SettingWindowViewModel.FirstColor : SettingWindowViewModel.SecondColor;
+				figuraProperty.FiguraNow = item;
 				this.figuraProperties.Add(figuraProperty);
 
 				IsWhiteFigure = !IsWhiteFigure;
