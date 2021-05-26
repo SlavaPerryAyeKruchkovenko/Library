@@ -6,6 +6,7 @@ using MessageBox.Avalonia.Enums;
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Threading;
 
 namespace MegaChess.Dekstop.Converter
 {
@@ -62,7 +63,12 @@ namespace MegaChess.Dekstop.Converter
 
 		public Figura MoveCursor(int x, int y, Board board)
 		{
-			
+			var figura = GameWindowViewModel.SelectedFigura;
+			while(figura == GameWindowViewModel.SelectedFigura)
+			{
+				Thread.Sleep(1);
+			}
+			return GameWindowViewModel.SelectedFigura;
 		}		
 		public void PrintBoard(Board board)
 		{

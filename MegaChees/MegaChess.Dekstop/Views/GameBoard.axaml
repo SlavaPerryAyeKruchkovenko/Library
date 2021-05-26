@@ -5,20 +5,18 @@
              xmlns:vm="using:MegaChess.Dekstop.ViewModels"
              xmlns:converter="clr-namespace:MegaChess.Dekstop.Converter"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="MegaChess.Dekstop.Views.GameBoard"> 
+             x:Class="MegaChess.Dekstop.Views.GameBoard">
+  <UserControl.Resources>
+    <converter:ImageConverter x:Key="ImageConverter"/>
+  </UserControl.Resources>
   <Design.DataContext>
     <vm:GameWindowViewModel/>
-  </Design.DataContext>
-  <UserControl.Resources>
-    <converter:ImageConverter x:Key="ImageConverter" />
-  </UserControl.Resources>
+  </Design.DataContext>  
   <DockPanel>
     <Canvas PropertyChanged="ChangeSize" x:Name="Holst">
-      <Border Background="{Binding GameBoard[0].Color, Converter={StaticResource ImageConverter}}"
+      <Border Background="{Binding GameBoard[0].Color, Converter={StaticResource ImageConverter}}" 
               Command="{Binding Func}" CommandParameter="Binding GameBoard[0].FiguraNow">
-              <Border.BorderBrush>
-          <ImageBrush Source="{Binding GameBoard[0].Image, Converter={StaticResource ImageConverter}}"/>
-        </Border.BorderBrush>
+         <Image Source="{Binding GameBoard[0].Image, Converter={StaticResource ImageConverter}}"/>
       </Border>
       <Border Background="{Binding GameBoard[1].Color, Converter={StaticResource ImageConverter}}"
               Command="{Binding Func}" CommandParameter="Binding GameBoard[1].FiguraNow">
