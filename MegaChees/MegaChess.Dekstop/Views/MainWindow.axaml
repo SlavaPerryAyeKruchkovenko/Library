@@ -11,8 +11,7 @@
     <Style Selector="Image.Logo">
       <Setter Property="MaxWidth" Value="400"/>
       <Setter Property="MaxHeight" Value="200"/>
-    </Style>
-    
+    </Style>    
     <Style Selector="Button.h1">
       <Setter Property="FontSize" Value="24"/>
     </Style>
@@ -46,10 +45,8 @@
           </MenuFlyout>          
         </Button.Flyout>
       </Button> 
-      <Button Content="Settings" Classes="h1 CenterContent PanelMerge"
-              />
-      <Button Content="Rating" Classes="h1 CenterContent PanelMerge"
-              />
+      <Button Content="Settings" Classes="h1 CenterContent PanelMerge"/>
+      <Button Content="Rating" Classes="h1 CenterContent PanelMerge"/>
       <DockPanel Margin="0,30,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"
                  Width="200">
         <Label Content="Select level" DockPanel.Dock="Left"

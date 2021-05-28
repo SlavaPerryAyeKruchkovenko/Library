@@ -1,10 +1,4 @@
 ﻿using MegaChess.Logic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace MegaChess.Dekstop.Models
 {
@@ -18,7 +12,7 @@ namespace MegaChess.Dekstop.Models
 		public void StartGame()
 		{
 			ChessGameLogic game = new ChessGameLogic(this.drawer,0,0);
-			new Thread(() => game.ChessLogic(true)).Start();
+			game.ChessLogic(true);
 		}
 	}
 }

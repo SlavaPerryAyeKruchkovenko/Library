@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Drawing;
 
 namespace MegaChess.Logic
 {
 	public abstract class Figura
 	{
+		[JsonProperty]
 		public abstract bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
 		public abstract short Number { get; protected set; }
 		public Figura(bool? figura, short num)
 		{
@@ -58,7 +61,9 @@ namespace MegaChess.Logic
 	}
 	public class Pawn : Figura
 	{
+		[JsonProperty]
 		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
 		public override short Number { get; protected set; }
 		public Pawn(bool? figura, short num):base(figura,num)
 		{
@@ -125,7 +130,9 @@ namespace MegaChess.Logic
 	}
 	public class Rook : Figura
 	{
+		[JsonProperty]
 		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
 		public override short Number { get; protected set; }
 		public Rook(bool? figura, short num) : base(figura, num)
 		{
@@ -198,7 +205,9 @@ namespace MegaChess.Logic
 	}
 	public class Bishop : Figura
 	{
+		[JsonProperty]
 		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
 		public override short Number { get; protected set; }
 		public Bishop(bool? figura, short num) : base(figura, num)
 		{
@@ -271,7 +280,9 @@ namespace MegaChess.Logic
 	}
 	public class King : Figura
 	{
+		[JsonProperty]
 		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
 		public override short Number { get; protected set; }
 		public King(bool? figura, short num) : base(figura, num)
 		{
@@ -306,7 +317,9 @@ namespace MegaChess.Logic
 	}
 	public class Queen : Figura
 	{
+		[JsonProperty]
 		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
 		public override short Number { get; protected set; }
 		public Queen(bool? figura, short num) : base(figura, num)
 		{
@@ -344,7 +357,9 @@ namespace MegaChess.Logic
 	}
 	public class Knight : Figura
 	{
+		[JsonProperty]
 		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
 		public override short Number { get; protected set; }
 		public Knight(bool? figura, short num) : base(figura, num)
 		{
@@ -380,7 +395,9 @@ namespace MegaChess.Logic
 	}
 	public class Empty : Figura
 	{
+		[JsonProperty]
 		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
 		public override short Number { get; protected set; }
 		public Empty(bool? figura, short num) : base(figura, num)
 		{

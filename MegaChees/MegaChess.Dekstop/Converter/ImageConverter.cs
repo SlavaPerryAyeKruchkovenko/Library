@@ -1,6 +1,6 @@
 ﻿using Avalonia.Data.Converters;
+using Avalonia.Media.Imaging;
 using System;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 
@@ -12,14 +12,13 @@ namespace MegaChess.Dekstop.Converter
 		{
             if (value != null)
             {
-
                 var name = value as string;
-                if (name != null && File.Exists(name))
+                var path = "C:\\Users\\Slava\\Desktop\\visual\\ClassLibrary\\Library\\MegaChees\\MegaChess.Dekstop\\Assets\\";
+                if (name != null && File.Exists(path + name)) 
                 {
-                    var image = new Bitmap(name);
+                    var image = new Bitmap(path + name);
                     return image;
                 }
-
                 else
                 {
                     return null;

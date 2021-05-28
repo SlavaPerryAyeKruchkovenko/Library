@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace MegaChess.Logic
@@ -22,17 +23,21 @@ namespace MegaChess.Logic
 			this.startY = _startY;
 		}
 
-		public void ChessLogic(bool isNewGame)
+		async public void ChessLogic(bool isNewGame)
 		{
-			this.drawer.CursorVisible(true);
-			if (isNewGame)
+			await Task.Run(()=>
 			{
-				NewGamePlay();
-			}
-			else
-			{
-				LoadGamePlay();
-			}
+				this.drawer.CursorVisible(true);
+				if (isNewGame)
+				{
+					NewGamePlay();
+				}
+				else
+				{
+					LoadGamePlay();
+				}
+			});
+			throw new Exception("Game Finish");
 		}
 		private void NewGamePlay()
 		{
@@ -86,8 +91,8 @@ namespace MegaChess.Logic
 		}
 		private bool IsGameFinish(Board board)
 		{
-			string figureColor = null;
-			if(board.WhiteImposibleMove == 3)
+			string figureColor;
+			if (board.WhiteImposibleMove == 3)
 			{
 				figureColor = "Black";
 			}
@@ -107,13 +112,16 @@ namespace MegaChess.Logic
 			try
 			{
 				string json = File.ReadAllText(path);
-				var saves = JsonConvert.DeserializeObject<Board>(json);
+				var saves = JsonConvert.DeserializeObject<Board>(json, new JsonSerializerSettings()
+				{
+					TypeNameHandling = TypeNameHandling.All
+				});
 				this.board = saves ?? throw new Exception("Empty File");
 			}
 			catch
 			{
 				CreateFile(path);
-			}
+			}			
 			NewGamePlay();
 		}
 		private static void SaveGame(Board board)
@@ -123,7 +131,10 @@ namespace MegaChess.Logic
 		}
 		private static void SaveBoard(string path, Board board)
 		{
-			string content = JsonConvert.SerializeObject(board);			
+			string content = JsonConvert.SerializeObject(board, Formatting.Indented, new JsonSerializerSettings()
+			{
+				TypeNameHandling = TypeNameHandling.All,
+			});			
 			File.Delete(path);
 			CreateFile(path);
 			File.WriteAllText(path, content);

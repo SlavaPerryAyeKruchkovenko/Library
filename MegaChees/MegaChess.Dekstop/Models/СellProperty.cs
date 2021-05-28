@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia.Media;
 using MegaChess.Logic;
+using Avalonia.Media.Imaging;
+using MegaChess.Dekstop.Converter;
 
 namespace MegaChess.Dekstop.Models
 {
@@ -14,11 +16,11 @@ namespace MegaChess.Dekstop.Models
 		private string _image;
 		public string Image
 		{
-			get => _image;
+			get => this._image;
 			set => this.RaiseAndSetIfChanged(ref _image, value);
 		}
-		private Brush _color;
-		public Brush Color
+		private IBrush _color;
+		public IBrush Color
 		{
 			get => _color;
 			set => this.RaiseAndSetIfChanged(ref _color, value);

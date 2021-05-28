@@ -1,4 +1,8 @@
-﻿using MegaChess.Dekstop.Models;
+﻿using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Threading;
+using MegaChess.Dekstop.Models;
 using MegaChess.Dekstop.ViewModels;
 using MegaChess.Logic;
 using MessageBox.Avalonia.DTO;
@@ -6,17 +10,18 @@ using MessageBox.Avalonia.Enums;
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
-using System.Threading;
 
 namespace MegaChess.Dekstop.Converter
 {
 	class Drawer : IDrawer
 	{
-		public Drawer(ObservableCollection<СellProperty > _figuraProperties)
+		public Drawer(ObservableCollection<Border> _borders)
 		{
-			this.figuraProperties = _figuraProperties;
+			this.Borders = _borders;
+			
 		}
-		private ObservableCollection<СellProperty > figuraProperties;
+		private ObservableCollection<Border> Borders;
+	
 		public void Clear()
 		{
 			
@@ -66,29 +71,28 @@ namespace MegaChess.Dekstop.Converter
 			var figura = GameWindowViewModel.SelectedFigura;
 			while(figura == GameWindowViewModel.SelectedFigura)
 			{
-				Thread.Sleep(1);
+				
 			}
 			return GameWindowViewModel.SelectedFigura;
 		}		
 		public void PrintBoard(Board board)
 		{
-			this.figuraProperties = new ObservableCollection<СellProperty >();
-			bool IsWhiteFigure = true;
-
+			int count = 0;
 			foreach (var item in board.GetFiguras())
 			{
+				
 				var figuraProperty = new СellProperty ();
 
 				if (item.IsMyFigura == true)
 				{
 					figuraProperty.Image = item.ToString().ToUpper() switch
 					{
-						"P" => "avares://MegaChess.Dekstop/Assets/Megachess-logo.png",
-						"R" => "avares://MegaChess.Dekstop/Assets/Megachess-logo.png",
-						"H" => "avares://MegaChess.Dekstop/Assets/Megachess-logo.png",
-						"B" => "avares://MegaChess.Dekstop/Assets/Megachess-logo.png",
-						"Q" => "avares://MegaChess.Dekstop/Assets/Megachess-logo.png",
-						"K" => "avares://MegaChess.Dekstop/Assets/Megachess-logo.png",
+						"P" => "Megachess-logo.png",
+						"R" => "Megachess-logo.png",
+						"H" => "Megachess-logo.png",
+						"B" => "Megachess-logo.png",
+						"Q" => "Megachess-logo.png",
+						"K" => "Megachess-logo.png",
 						_ => "",
 					};
 				}
@@ -96,34 +100,49 @@ namespace MegaChess.Dekstop.Converter
 				{
 					figuraProperty.Image = item.ToString().ToUpper() switch
 					{
-						"P" => "avares://MegaChess.Dekstop/Assets/Megachess-logo.png",
-						"R" => "avares://MegaChess.Dekstop/Assets/Megachess-logo.png",
-						"H" => "avares://MegaChess.Dekstop/Assets/Megachess-logo.png",
-						"B" => "avares://MegaChess.Dekstop/Assets/Megachess-logo.png",
-						"Q" => "avares://MegaChess.Dekstop/Assets/Megachess-logo.png",
-						"K" => "avares://MegaChess.Dekstop/Assets/Megachess-logo.png",
+						"P" => "Megachess-logo.png",
+						"R" => "Megachess-logo.png",
+						"H" => "Megachess-logo.png",
+						"B" => "Megachess-logo.png",
+						"Q" => "Megachess-logo.png",
+						"K" => "Megachess-logo.png",
 						_ => "",
 					};
-				}
-				figuraProperty.Color = IsWhiteFigure ? SettingWindowViewModel.FirstColor : SettingWindowViewModel.SecondColor;
+				}				
+				figuraProperty.Color = count%2==0 ? Avalonia.Media.Brushes.White : Avalonia.Media.Brushes.Black;
 				figuraProperty.FiguraNow = item;
-				this.figuraProperties.Add(figuraProperty);
+				this.Borders[count] = ChangeBorderProperty(this.Borders[count], figuraProperty);	
 
-				IsWhiteFigure = !IsWhiteFigure;
 			}
 		}
-
+		private Border ChangeBorderProperty(Border border , СellProperty property)
+		{
+			border.Background = property.Color;
+			border.BorderBrush = new ImageBrush()
+			{
+				Source = (Avalonia.Media.Imaging.Bitmap)new ImageConverter().Convert(property.Image, null, null, null)
+			};
+			border.Child = new ContentControl()
+			{
+				Content = property.FiguraNow
+			};			
+			return border;
+		}
 		public void PrintError(string ex)
 		{
-			var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
-			.GetMessageBoxStandardWindow(new MessageBoxStandardParams
+			Action action = () =>
 			{
-				ButtonDefinitions = ButtonEnum.OkAbort,
-				ContentMessage = ex,
-				Icon = MessageBox.Avalonia.Enums.Icon.Plus,
-				Style = Style.UbuntuLinux
-			});
-			msBoxStandardWindow.Show();
+				var msBoxStandardWindow = MessageBox.Avalonia.MessageBoxManager
+				.GetMessageBoxStandardWindow(new MessageBoxStandardParams
+				{
+					ButtonDefinitions = ButtonEnum.OkAbort,
+					ContentMessage = ex,
+					Icon = MessageBox.Avalonia.Enums.Icon.Plus,
+					Style = Style.UbuntuLinux
+				});
+				msBoxStandardWindow.Show();
+			};
+			Dispatcher.UIThread.InvokeAsync(action);			
 		}
 	}
 }

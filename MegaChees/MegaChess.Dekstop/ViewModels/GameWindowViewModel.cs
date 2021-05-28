@@ -1,13 +1,14 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Media;
-using MegaChess.Logic;
+﻿using MegaChess.Logic;
 using System.Collections.ObjectModel;
 using MegaChess.Dekstop.Models;
 using MegaChess.Dekstop.Converter;
 using ReactiveUI;
 using System.Reactive;
 using System;
+using Avalonia.Controls;
+using Avalonia;
+using Avalonia.Media;
+using Avalonia.Interactivity;
 
 namespace MegaChess.Dekstop.ViewModels
 {
@@ -15,21 +16,39 @@ namespace MegaChess.Dekstop.ViewModels
 	{
 		public GameWindowViewModel()
 		{
-			this.game = new Game(new Drawer(this.GameBoard));
+			this.Borders = CreateBorders();
+			this.game = new Game(new Drawer(this.Borders));
+			//this.SelectFigura = ReactiveCommand.Create(new Action<Figura>((x) =>
+			//{
+			//	SelectedFigura = x;
+			//}));
 			this.game.StartGame();
-			this.SelectFigura = ReactiveCommand.Create(new Action<Figura>((x) =>
-			{
-				SelectedFigura = x;
-			}));
+
 		}
-		public ObservableCollection<СellProperty > GameBoard { get; }
-		public ReactiveCommand<Figura, Unit> SelectFigura { get; }
+		public ObservableCollection<Border> Borders { get; }
+		private ObservableCollection<Border> CreateBorders()
+		{
+			var borders = new ObservableCollection<Border>();
+			for (int i = 0; i < 64; i++)
+			{
+				var border = new Border();
+				var image = new ImageBrush();				
+				border.BorderBrush = image;
+				border.BorderThickness = new Thickness(2);
+				border.Tapped += SelectFigura;
+				borders.Add(border);
+			}
+			return borders;
+		}
+		private void SelectFigura(object sender, RoutedEventArgs e)
+		{
+			var border = sender as Border;
+			border.Background = Brushes.Blue;
+		}
+		
+		//public ReactiveCommand<Figura, Unit> SelectFigura { get; }
 		public static Figura SelectedFigura { get; private set; }
 
 		private readonly Game game;
-
-		
-		
-		
-    }
+	}
 }

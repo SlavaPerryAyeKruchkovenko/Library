@@ -2,47 +2,56 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Media.Immutable;
+using MegaChess.Dekstop.Converter;
 using MegaChess.Dekstop.ViewModels;
-using System.Linq;
+using System.Collections.ObjectModel;
+using System.Reactive.Subjects;
+using System.Threading;
 
 namespace MegaChess.Dekstop.Views
 {
 	public partial class GameBoard : UserControl
 	{
 		private Rect size;
-		private Canvas canvas;
 		public GameBoard()
 		{
 			InitializeComponent();
-			this.canvas = this.FindControl<Canvas>("Holst");
-		}
+		}		
 		private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
 		}
-		
 		private void ChangeSize(object sender , AvaloniaPropertyChangedEventArgs e)
 		{
-			if(this.size != this.canvas.Bounds)
+			var canvas = sender as Canvas;
+			
+			if (this.size != canvas.Bounds && canvas.Children.Count != 0)
 			{
 				double horisontal = 0;
 				double vertical = 0;
 				short count = 0;
-				foreach (var item in this.canvas.Children)
+				foreach (var item in canvas.Children)
 				{
-					count++;
-					((Border)item).Width = this.canvas.Bounds.Width / 8;
-					((Border)item).Height = this.canvas.Bounds.Height / 8;
-					((Border)item).Margin = new Thickness(horisontal, vertical);
-					horisontal += this.canvas.Bounds.Width / 8;
-					if(count % 8 == 0)
+					if (item is Border border)
 					{
-						vertical+= this.canvas.Bounds.Height / 8;
-						horisontal = 0;
+						
+						count++;
+						border.Width = canvas.Bounds.Width / 8;
+						border.Height = canvas.Bounds.Height / 8;
+						border.Margin = new Thickness(horisontal, vertical);
+						horisontal += canvas.Bounds.Width / 8;
+						if (count % 8 == 0)
+						{
+							vertical += canvas.Bounds.Height / 8;
+							horisontal = 0;
+						}
 					}
 				}
 			}
-			this.size = this.canvas.Bounds;
-		}
+			this.size = canvas.Bounds;
+		}	
 	}
 }

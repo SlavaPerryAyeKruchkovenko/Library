@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MegaChess.Dekstop.ViewModels
 {
-	class SettingWindowViewModel
+	class SettingWindowViewModel : ViewModelBase
 	{
 		public static Brush FirstColor { get; private set; } = (Brush)Brushes.Black;
 		public static Brush SecondColor { get; private set; } = (Brush)Brushes.White;

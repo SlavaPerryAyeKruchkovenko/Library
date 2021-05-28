@@ -7,14 +7,20 @@ namespace MegaChess.Logic
 {
 	public class Board
 	{
-		[JsonProperty("ChessBoard")]
+		[JsonProperty]
 		private Dictionary<char, Dictionary<char, Figura>> ChessBoard { get; }
-		public Dictionary<char, Dictionary<char, Figura>> DeadBlackFigures { get; }
-		public Dictionary<char, Dictionary<char, Figura>> DeadWhitekFigures { get; }
+		[JsonProperty]
+		private Dictionary<char, Dictionary<char, Figura>> DeadBlackFigures { get; }
+		[JsonProperty]
+		private Dictionary<char, Dictionary<char, Figura>> DeadWhitekFigures { get; }
+		[JsonProperty]
 		public bool IsWhiteMove { get; private set; } = true;
+		[JsonProperty]
 		public short WhiteImposibleMove { get; private set; } = 0;
+		[JsonProperty]
 		public short BlackImposibleMove { get; private set; } = 0;
 
+		[JsonProperty]
 		private short CountEmptyFigure = 32;
 		public Board()
 		{
