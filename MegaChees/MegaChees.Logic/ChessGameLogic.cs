@@ -43,8 +43,6 @@ namespace MegaChess.Logic
 		{
 			while (IsGameFinish(this.board))
 			{				
-				try
-				{
 					this.drawer.PrintBoard(this.board);
 					var firstFigura = this.drawer.MoveCursor(startX, startY, this.board);
 					ChangeStartLocation(firstFigura);
@@ -59,11 +57,7 @@ namespace MegaChess.Logic
 						this.board.ChangeSideMode();
 						CheckOnCheck(this.board, firstFigura);
 					}
-				}
-				catch(Exception ex)
-				{
-					this.drawer.PrintError(ex.Message);
-				}
+					
 				SaveGame(this.board);
 			}
 		}

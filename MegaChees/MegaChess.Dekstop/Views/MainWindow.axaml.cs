@@ -13,6 +13,7 @@ namespace MegaChess.Dekstop.Views
 #if DEBUG
             this.AttachDevTools();
 #endif
+			
 		}
 
 		private void InitializeComponent()
@@ -21,7 +22,12 @@ namespace MegaChess.Dekstop.Views
 		}
 		private void OpenGame(object sender , RoutedEventArgs e)
 		{
+			ShowGameWindow();			
+		}
+		private void ShowGameWindow()
+		{
 			var game = new GameWindow();
+			//game.Topmost = true;
 			game.Show();
 		}
 	}

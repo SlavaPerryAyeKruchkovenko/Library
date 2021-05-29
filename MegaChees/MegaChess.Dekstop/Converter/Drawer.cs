@@ -10,18 +10,19 @@ using MessageBox.Avalonia.Enums;
 using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Reactive.Subjects;
 
 namespace MegaChess.Dekstop.Converter
 {
 	class Drawer : IDrawer
 	{
-		public Drawer(ObservableCollection<Border> _borders)
+		public Drawer(ObservableCollection<Border> _borders , Figura _figura)
 		{
-			this.Borders = _borders;
-			
+			this.borders = _borders;
+			this.figura = _figura;
 		}
-		private ObservableCollection<Border> Borders;
-	
+		private ObservableCollection<Border> borders;
+		private Figura figura;
 		public void Clear()
 		{
 			
@@ -68,16 +69,17 @@ namespace MegaChess.Dekstop.Converter
 
 		public Figura MoveCursor(int x, int y, Board board)
 		{
-			var figura = GameWindowViewModel.SelectedFigura;
-			while(figura == GameWindowViewModel.SelectedFigura)
+			Figura figura = this.figura;
+			while(figura == this.figura)
 			{
 				
 			}
-			return GameWindowViewModel.SelectedFigura;
+			return this.figura;
 		}		
 		public void PrintBoard(Board board)
 		{
-			int count = 0;
+			
+				int count = 0;
 			foreach (var item in board.GetFiguras())
 			{
 				
@@ -111,9 +113,16 @@ namespace MegaChess.Dekstop.Converter
 				}				
 				figuraProperty.Color = count%2==0 ? Avalonia.Media.Brushes.White : Avalonia.Media.Brushes.Black;
 				figuraProperty.FiguraNow = item;
-				this.Borders[count] = ChangeBorderProperty(this.Borders[count], figuraProperty);	
 
+				Action action = () =>
+				{
+					if (count<64)
+				this.borders[count] = ChangeBorderProperty(this.borders[count], figuraProperty);
+				};
+				Dispatcher.UIThread.InvokeAsync(action);
+				count++;
 			}
+			
 		}
 		private Border ChangeBorderProperty(Border border , СellProperty property)
 		{
@@ -122,10 +131,7 @@ namespace MegaChess.Dekstop.Converter
 			{
 				Source = (Avalonia.Media.Imaging.Bitmap)new ImageConverter().Convert(property.Image, null, null, null)
 			};
-			border.Child = new ContentControl()
-			{
-				Content = property.FiguraNow
-			};			
+			border.DataContext = property.FiguraNow;
 			return border;
 		}
 		public void PrintError(string ex)

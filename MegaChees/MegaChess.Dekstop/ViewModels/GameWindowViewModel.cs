@@ -9,6 +9,7 @@ using Avalonia.Controls;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Interactivity;
+using System.Reactive.Subjects;
 
 namespace MegaChess.Dekstop.ViewModels
 {
@@ -17,7 +18,7 @@ namespace MegaChess.Dekstop.ViewModels
 		public GameWindowViewModel()
 		{
 			this.Borders = CreateBorders();
-			this.game = new Game(new Drawer(this.Borders));
+			this.game = new Game(new Drawer(this.Borders , this.Figura));
 			//this.SelectFigura = ReactiveCommand.Create(new Action<Figura>((x) =>
 			//{
 			//	SelectedFigura = x;
@@ -25,6 +26,9 @@ namespace MegaChess.Dekstop.ViewModels
 			this.game.StartGame();
 
 		}
+		private Figura Figura;
+
+		private readonly Game game;
 		public ObservableCollection<Border> Borders { get; }
 		private ObservableCollection<Border> CreateBorders()
 		{
@@ -43,12 +47,11 @@ namespace MegaChess.Dekstop.ViewModels
 		private void SelectFigura(object sender, RoutedEventArgs e)
 		{
 			var border = sender as Border;
+			this.Figura = (Figura)border.DataContext;
 			border.Background = Brushes.Blue;
 		}
-		
-		//public ReactiveCommand<Figura, Unit> SelectFigura { get; }
-		public static Figura SelectedFigura { get; private set; }
 
-		private readonly Game game;
+		//public ReactiveCommand<Figura, Unit> SelectFigura { get; }
+		
 	}
 }

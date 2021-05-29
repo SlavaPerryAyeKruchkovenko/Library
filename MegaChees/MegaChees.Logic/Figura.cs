@@ -1,10 +1,11 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.ComponentModel;
 using System.Drawing;
 
 namespace MegaChess.Logic
 {
-	public abstract class Figura
+	public abstract class Figura: INotifyPropertyChanged
 	{
 		[JsonProperty]
 		public abstract bool? IsMyFigura { get; protected set; }
@@ -16,6 +17,9 @@ namespace MegaChess.Logic
 			this.Number = num;
 		}
 		public abstract char ShorName { get; }
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
 		public abstract bool IsCorrectMove(Board board, Point lenght);
 		public bool HaveUnrealSteep(Board board, Point coordinate)
 		{

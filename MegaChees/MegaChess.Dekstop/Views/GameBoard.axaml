@@ -10,7 +10,12 @@
         <vm:GameWindowViewModel/>
     </Design.DataContext> 
   <DockPanel>
-    <Canvas PropertyChanged="ChangeSize" x:Name="Holst">        
-    </Canvas>
+    <ItemsControl x:Name="Cells">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <Canvas PropertyChanged="ChangeSize"/> 
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+    </ItemsControl>
   </DockPanel>
 </UserControl>
