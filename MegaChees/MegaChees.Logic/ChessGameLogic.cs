@@ -24,19 +24,16 @@ namespace MegaChess.Logic
 		}
 
 		async public void ChessLogic(bool isNewGame)
-		{
-			await Task.Run(()=>
+		{		
+			this.drawer.CursorVisible(true);
+			if (isNewGame)
 			{
-				this.drawer.CursorVisible(true);
-				if (isNewGame)
-				{
-					NewGamePlay();
-				}
-				else
-				{
-					LoadGamePlay();
-				}
-			});
+				NewGamePlay();
+			}
+			else
+			{
+				LoadGamePlay();
+			}		
 			throw new Exception("Game Finish");
 		}
 		private void NewGamePlay()

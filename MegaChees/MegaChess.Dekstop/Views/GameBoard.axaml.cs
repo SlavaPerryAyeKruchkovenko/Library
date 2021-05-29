@@ -32,7 +32,7 @@ namespace MegaChess.Dekstop.Views
 				foreach (var item in canvas.Children)
 				{
 					if (item is Border border)
-					{							
+					{
 						count++;
 						border.Width = canvas.Bounds.Width / 8;
 						border.Height = canvas.Bounds.Height / 8;

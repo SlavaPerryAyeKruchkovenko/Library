@@ -11,6 +11,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Reactive.Subjects;
+using System.Threading;
 
 namespace MegaChess.Dekstop.Converter
 {
@@ -69,12 +70,10 @@ namespace MegaChess.Dekstop.Converter
 
 		public Figura MoveCursor(int x, int y, Board board)
 		{
-			Figura figura = this.figura;
-			while(figura == this.figura)
+			while(true)
 			{
-				
+
 			}
-			return this.figura;
 		}		
 		public void PrintBoard(Board board)
 		{
@@ -119,7 +118,8 @@ namespace MegaChess.Dekstop.Converter
 					if (count<64)
 				this.borders[count] = ChangeBorderProperty(this.borders[count], figuraProperty);
 				};
-				Dispatcher.UIThread.InvokeAsync(action);
+				Dispatcher.UIThread.InvokeAsync(action).Wait();
+				
 				count++;
 			}
 			
