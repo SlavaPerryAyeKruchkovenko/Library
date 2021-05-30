@@ -26,7 +26,12 @@ namespace MegaChess.Dekstop.ViewModels
 			this.game.StartGame();
 
 		}
-		private Figura Figura;
+		private Figura figura1;
+		public Figura Figura
+		{
+			get => figura1;
+			set => this.RaiseAndSetIfChanged(ref figura1, value);
+		}
 
 		private readonly Game game;
 		public ObservableCollection<Border> Borders { get; }
@@ -36,10 +41,8 @@ namespace MegaChess.Dekstop.ViewModels
 			for (int i = 0; i < 64; i++)
 			{
 				var border = new Border();
-				var image = new ImageBrush();				
-				border.BorderBrush = image;
-				border.BorderThickness = new Thickness(2);
 				border.Tapped += SelectFigura;
+				border.BorderThickness = new Thickness(5);
 				borders.Add(border);
 			}
 			return borders;
@@ -48,7 +51,7 @@ namespace MegaChess.Dekstop.ViewModels
 		{
 			var border = sender as Border;
 			this.Figura = (Figura)border.DataContext;
-			border.Background = Brushes.Blue;
+			border.BorderBrush = Brushes.Yellow;
 		}
 
 		//public ReactiveCommand<Figura, Unit> SelectFigura { get; }

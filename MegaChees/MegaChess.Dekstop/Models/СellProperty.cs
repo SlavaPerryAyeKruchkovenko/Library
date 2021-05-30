@@ -1,13 +1,8 @@
 ﻿using System;
 using ReactiveUI;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Avalonia.Media;
 using MegaChess.Logic;
-using Avalonia.Media.Imaging;
-using MegaChess.Dekstop.Converter;
+
 
 namespace MegaChess.Dekstop.Models
 {
