@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace MegaChess.Logic
 {
-	public class ChessGameLogic
+	public class Game
 	{
 		private int startX;
 
@@ -15,7 +15,7 @@ namespace MegaChess.Logic
 		private IDrawer drawer;
 
 		private Board board;
-		public ChessGameLogic(IDrawer _drawer, int _startX, int _startY)
+		public Game(IDrawer _drawer, int _startX, int _startY)
 		{
 			this.drawer = _drawer;
 			this.board = new Board();
@@ -24,38 +24,51 @@ namespace MegaChess.Logic
 		}
 
 		async public void ChessLogic(bool isNewGame)
-		{		
-			this.drawer.CursorVisible(true);
-			if (isNewGame)
+		{
+			try
 			{
-				NewGamePlay();
+				this.drawer.CursorVisible(true);
+				if (isNewGame)
+				{
+					NewGamePlay();
+				}
+				else
+				{
+					LoadGamePlay();
+				}
 			}
-			else
+			catch (Exception ex)
 			{
-				LoadGamePlay();
-			}		
-			throw new Exception("Game Finish");
+				this.drawer.PrintError(ex.Message);
+				this.drawer.Clear();
+			}
 		}
 		private void NewGamePlay()
 		{
 			while (IsGameFinish(this.board))
-			{				
+			{
+				try
+				{
 					this.drawer.PrintBoard(this.board);
+
 					var firstFigura = this.drawer.MoveCursor(startX, startY, this.board);
 					ChangeStartLocation(firstFigura);
-
 					var secondFigura = this.drawer.MoveCursor(startX, startY, this.board);
 
 					Point lengh = this.board.CountLengh(firstFigura, secondFigura);
-					if (!firstFigura.HaveUnrealSteep(this.board, lengh) && firstFigura.IsMyFigura == board.IsWhiteMove)
+					if (!firstFigura.HaveUnrealSteep(this.board, lengh))
 					{
 						ChangeStartLocation(secondFigura);
-						this.board.MakeStep(firstFigura, secondFigura , false);
+						this.board.MakeStep(firstFigura, secondFigura, false);
 						this.board.ChangeSideMode();
 						CheckOnCheck(this.board, firstFigura);
 					}
-					
-				SaveGame(this.board);
+				}
+				catch (Exception ex)
+				{
+					this.drawer.PrintError(ex.Message);
+				}
+			SaveGame(this.board);
 			}
 		}
 		private static bool CheckOnCheck(Board board , Figura figure)

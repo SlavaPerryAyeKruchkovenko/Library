@@ -8,31 +8,33 @@ using MegaChess.Dekstop.ViewModels;
 using MegaChess.Logic;
 using MessageBox.Avalonia.DTO;
 using MessageBox.Avalonia.Enums;
-using System;
+
 using System.Collections.ObjectModel;
 using ReactiveUI;
+using System.Reactive.Subjects;
+using System;
+using System.Threading;
 
 namespace MegaChess.Dekstop.Converter
 {
 	class Drawer : BaseModel, IDrawer
 	{
-		public Drawer(ObservableCollection<Border> _borders , Figura _figura)
-		{
+		public Drawer(ObservableCollection<Border> _borders , IObservable<Figura> _figura)
+		{		
 			this.borders = _borders;
-			this.figura1 = _figura;
+
+			_figura.Subscribe<Figura>(ChangeFigura);		
 		}
-		private ObservableCollection<Border> borders;
+		private readonly ObservableCollection<Border> borders;
 		private Figura figura1;
-		public Figura FiguraNow
-		{
-			get => figura1;
-			set => this.RaiseAndSetIfChanged(ref figura1, value);
-		}
 		public void Clear()
 		{
 			this.borders.Clear();
 		}
-
+		private void ChangeFigura(Figura figura)
+		{
+			this.figura1 = figura;
+		}
 		public System.Drawing.Point ConvertToLocationFormat(char i, char j)
 		{
 			return new System.Drawing.Point(1, 1);
@@ -73,14 +75,13 @@ namespace MegaChess.Dekstop.Converter
 		}
 
 		public Figura MoveCursor(int x, int y, Board board)
-		{
+		{			
 			var figura = this.figura1;
-			while(this.FiguraNow == figura)
+			while(this.figura1 == figura)
 			{
-
+				
 			}
-			return this.FiguraNow;
-
+			return this.figura1;
 		}		
 		public void PrintBoard(Board board)
 		{			

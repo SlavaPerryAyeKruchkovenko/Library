@@ -78,7 +78,7 @@ namespace MegaCheess.Menu
 		{
 			Console.Beep(200, 250);
 			Printer printer = new Printer();
-			ChessGameLogic chess = new ChessGameLogic(new Printer(), 18, 20);
+			Game chess = new Game(new Printer(), 18, 20);
 
 			if (MenuDataBase.NewGameSpaceColor == MenuDataBase.HighlightColor)
 			{

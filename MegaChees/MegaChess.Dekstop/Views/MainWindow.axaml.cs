@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using MegaChess.Dekstop.ViewModels;
 
 namespace MegaChess.Dekstop.Views
 {
@@ -12,8 +13,7 @@ namespace MegaChess.Dekstop.Views
 			InitializeComponent();
 #if DEBUG
             this.AttachDevTools();
-#endif
-			
+#endif			
 		}
 
 		private void InitializeComponent()
@@ -22,13 +22,13 @@ namespace MegaChess.Dekstop.Views
 		}
 		private void OpenGame(object sender , RoutedEventArgs e)
 		{
-			ShowGameWindow();			
+			ShowGameWindow(false, false);			
 		}
-		private void ShowGameWindow()
+		private void ShowGameWindow(bool vsComputer , bool isLoadGame)
 		{
-			var game = new GameWindow();
-			//game.Topmost = true;
-			game.Show();
+			
+			this.DataContext = new MainWindowViewModel(new bool[] { vsComputer , isLoadGame});
+			this.Close();
 		}
 	}
 }

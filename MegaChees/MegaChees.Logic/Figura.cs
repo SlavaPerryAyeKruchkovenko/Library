@@ -23,9 +23,13 @@ namespace MegaChess.Logic
 		public abstract bool IsCorrectMove(Board board, Point lenght);
 		public bool HaveUnrealSteep(Board board, Point coordinate)
 		{
-			if(!this.IsCorrectMove(board,coordinate))
+			if (board.IsWhiteMove != this.IsMyFigura) 
 			{
-				return true;
+				throw new Exception("Не ваш ход");
+			}
+			else if(!this.IsCorrectMove(board, coordinate))
+			{
+				throw ThrowUnrealStep();
 			}
 			else
 			{
@@ -46,6 +50,10 @@ namespace MegaChess.Logic
 					}
 				}
 				board.MakeStep(this, figura, true);
+				if(this is Pawn pawn)
+				{
+					pawn.isFirstStep = false;
+				}			
 			}		
 			return false;
 		}
@@ -62,6 +70,7 @@ namespace MegaChess.Logic
 		}
 		protected static bool IsCorrectCoordinate(char a, char b) => a <= '8' && a >= '1' && b <= 'H' && b >= 'A';
 		public override string ToString() => this.ShorName.ToString();
+		protected Exception ThrowUnrealStep() => new Exception("Невозможный ход");
 	}
 	public class Pawn : Figura
 	{
@@ -92,7 +101,7 @@ namespace MegaChess.Logic
 							return false;
 						}							
 					}
-					this.isFirstStep = false;
+					
 					return true;
 				}
 				else if (CheckCorrectMoveForDifferent(lenght.Y, 1))
@@ -104,7 +113,7 @@ namespace MegaChess.Logic
 			{
 				//проверка что в конечной точке не стоит враг
 				return !SingleColorsFigures(this, board.GetFigure((char)(pawnCoordinate[0] + lenght.Y), (char)(pawnCoordinate[1] + lenght.X)));
-			}				
+			}
 			return false;
 		}
 		private bool CheckCorrectMoveForDifferent(int dY, int distance)

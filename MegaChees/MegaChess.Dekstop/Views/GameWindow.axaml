@@ -13,7 +13,9 @@
     <Grid ColumnDefinitions="*,3*,*" ShowGridLines="True">
     
     <DockPanel Grid.Column="1">
-      <views:GameBoard/>
+      <Grid RowDefinitions="*,28*,*">
+        <views:GameBoard Grid.Row="1"/>
+      </Grid>
     </DockPanel>
     <DockPanel Grid.Column="2">
 
