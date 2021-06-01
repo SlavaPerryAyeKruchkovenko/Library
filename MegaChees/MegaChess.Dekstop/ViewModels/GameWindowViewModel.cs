@@ -9,6 +9,7 @@ using Avalonia.Interactivity;
 using System.Reactive.Subjects;
 using System.Linq;
 using Avalonia.Layout;
+using System.Collections.Generic;
 
 namespace MegaChess.Dekstop.ViewModels
 {
@@ -16,14 +17,20 @@ namespace MegaChess.Dekstop.ViewModels
 	{
 		public GameWindowViewModel()
 		{
-			this.Borders = CreateBorders();
-			this.Labels = CreatePanel('A', 'H');
-			this.Nums = CreatePanel('1', '8');
+			var board = new Board();
+			this.GameBorders = CreateBorders(board);
+			this.WhiteDiedBorders = CreateDiedFigures(board, true);
+			this.BlackDiedBorders = CreateDiedFigures(board, false);
 
-			this.figura = new Subject<Figura>();
-			
+			this.figura = new Subject<Figura>();			
 			this.figura.OnNext(new Empty(null,34));
-			this.game = new DekstopGameLogic(new Drawer(this.Borders , this.figura));
+
+			board = null;
+			ObservableCollection<Border>[] bordersArray =
+			{
+				GameBorders,BlackDiedBorders,WhiteDiedBorders
+			};
+			this.game = new DekstopGameLogic(new Drawer(bordersArray , this.figura));
 			//this.SelectFigura = ReactiveCommand.Create(new Action<Figura>((x) =>
 			//{
 			//	SelectedFigura = x;
@@ -34,12 +41,11 @@ namespace MegaChess.Dekstop.ViewModels
 		private Subject<Figura> figura;
 
 		private readonly DekstopGameLogic game;
-		private ObservableCollection<Border> Borders { get; }
-		private ReadOnlyObservableCollection<Label> Labels { get; }
-		private ReadOnlyObservableCollection<Label> Nums { get; }
-		private ObservableCollection<Border> CreateBorders()
-		{
-			var board = new Board();
+		private ObservableCollection<Border> GameBorders { get; }
+		private ObservableCollection<Border> BlackDiedBorders { get; }
+		private ObservableCollection<Border> WhiteDiedBorders { get; }
+		private ObservableCollection<Border> CreateBorders(Board board)
+		{		
 			var borders = new ObservableCollection<Border>();
 			foreach (var item in board.GetFiguras())
 			{
@@ -51,9 +57,21 @@ namespace MegaChess.Dekstop.ViewModels
 			}		
 			return borders;
 		}
-		private void SelectFigura(object sender, RoutedEventArgs e)
+		private ObservableCollection<Border> CreateDiedFigures(Board board, bool isWhite)
 		{
-			
+			var borders = new ObservableCollection<Border>();
+			foreach (var item in board.GetDiedFiguras(isWhite))
+			{
+				var border = new Border
+				{
+					Background = Field.GetNoReferenceColor(isWhite)
+				};
+				borders.Add(border);
+			}
+			return borders;
+		}
+		private void SelectFigura(object sender, RoutedEventArgs e)
+		{		
 			var border = sender as Border;
 			var figura = (Figura)border.DataContext;
 			this.figura.OnNext(figura);
@@ -61,7 +79,7 @@ namespace MegaChess.Dekstop.ViewModels
 			if (figura.IsMyFigura != null)
 				border.BorderBrush = Brushes.Yellow;
 		}
-		private ReadOnlyObservableCollection<Label> CreatePanel(char a , char b)
+		public ReadOnlyObservableCollection<Label> CreatePanel(char a , char b)
 		{
 			var collection = new ObservableCollection<Label>();
 			for (char i = a; i <= b; i++)

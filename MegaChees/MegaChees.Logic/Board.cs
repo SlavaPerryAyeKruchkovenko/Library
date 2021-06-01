@@ -176,7 +176,24 @@ namespace MegaChess.Logic
 					yield return this.ChessBoard[i][j];
 				}
 			}
-		}		
+		}
+		public IEnumerable<Figura> GetDiedFiguras(bool isWhite)//возращает доску
+		{
+			for (char i = '1'; i <= '8'; i++)
+			{
+				for (char j = '1'; j <= '2'; j++)
+				{
+					if(isWhite)
+					{
+						yield return this.DeadWhitekFigures[i][j];
+					}						
+					else
+					{
+						yield return this.DeadBlackFigures[i][j];
+					}					
+				}
+			}
+		}
 		public char[] FoundFigureCoordinate(Figura figura)
 		{
 			for (char i = '1'; i <= '8'; i++)

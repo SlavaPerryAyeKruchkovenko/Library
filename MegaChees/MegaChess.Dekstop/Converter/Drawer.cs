@@ -19,9 +19,9 @@ namespace MegaChess.Dekstop.Converter
 {
 	class Drawer : BaseModel, IDrawer
 	{
-		public Drawer(ObservableCollection<Border> _borders , IObservable<Figura> _figura)
+		public Drawer(ObservableCollection<Border>[] _borders , IObservable<Figura> _figura)
 		{		
-			this.borders = _borders;
+			this.borders = _borders[0];
 
 			_figura.Subscribe<Figura>(ChangeFigura);		
 		}
@@ -115,49 +115,58 @@ namespace MegaChess.Dekstop.Converter
 		public void PrintBoard(Board board)
 		{
 			this.board = board;
+			PrintGameBoard(board);
+		}
+		private void PrintGameBoard(Board board)
+		{			
 			int count = 0;
 			foreach (var item in board.GetFiguras())
-			{				
-				var figuraProperty = new СellProperty ();
-
-				if (item.IsMyFigura == true)
+			{
+				var figuraProperty = new СellProperty
 				{
-					figuraProperty.Image = item.ToString().ToUpper() switch
-					{
-						"P" => "White_Pawn.png",
-						"R" => "White_Rook.png",
-						"H" => "White_Knight.png",
-						"B" => "White_Elefant.png",
-						"Q" => "White_Queen.png",
-						"K" => "White_King.png",
-						_ => "",
-					};
-				}
-				else if (item.IsMyFigura == false)
-				{
-					figuraProperty.Image = item.ToString().ToUpper() switch
-					{
-						"P" => "Black_pawn.png",
-						"R" => "Black_Rook.png",
-						"H" => "Black_knight.png",
-						"B" => "Black_elefant.png",
-						"Q" => "Black_Queen.png",
-						"K" => "Black_King.png",
-						_ => "",
-					};
-				}
-				figuraProperty.Color = Field.GetColor(item,board);
-				figuraProperty.FiguraNow = item;
+					Image = SelectImageRef(item),
+					Color = Field.GetColor(item, board),
+					FiguraNow = item
+				};
 
 				Dispatcher.UIThread.InvokeAsync(() =>
 				{
 					if (count < 64)
 						this.borders[count] = ChangeBorderProperty(this.borders[count], figuraProperty);
 				}).Wait();
-				
+
 				count++;
 			}
-			
+		}
+		private static string SelectImageRef(Figura figura)
+		{
+			if (figura.IsMyFigura == true)
+			{
+				return figura.ToString().ToUpper() switch
+				{
+					"P" => "White_Pawn.png",
+					"R" => "White_Rook.png",
+					"H" => "White_Knight.png",
+					"B" => "White_Elefant.png",
+					"Q" => "White_Queen.png",
+					"K" => "White_King.png",
+					_ => "",
+				};
+			}
+			else if (figura.IsMyFigura == false)
+			{
+				return figura.ToString().ToUpper() switch
+				{
+					"P" => "Black_pawn.png",
+					"R" => "Black_Rook.png",
+					"H" => "Black_knight.png",
+					"B" => "Black_elefant.png",
+					"Q" => "Black_Queen.png",
+					"K" => "Black_King.png",
+					_ => "",
+				};
+			}
+			return null;
 		}
 		private static Border ChangeBorderProperty(Border border , СellProperty property)
 		{			

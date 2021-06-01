@@ -18,14 +18,20 @@
   </Design.DataContext>
     <Grid ColumnDefinitions="*,3*,*" ShowGridLines="True">
     
-    <DockPanel Grid.Column="1">
-      <Grid ColumnDefinitions="*,28*,*">
+    <DockPanel Grid.Column="1">    
         <Grid RowDefinitions="*,28*,*" Grid.Column="1">
-          <views:WordPanel x:Name="WordPanel" Classes="maxSize"/>
-          <views:GameBoard x:Name="ChessBoard" Grid.Row="1" Classes="maxSize"/>
-          <views:WordPanel x:Name="WordPanel2" Classes="maxSize"/>
-        </Grid>
-      </Grid>
+          <Grid ColumnDefinitions="*,28*,*">
+            <views:WordPanel x:Name="WordPanel" Classes="maxSize" Grid.Column="1"/>
+          </Grid>         
+          <Grid ColumnDefinitions="*,28*,*" Grid.Row="1">
+            <views:NumsPanel x:Name="NumsPanel"/>
+            <views:GameBoard x:Name="ChessBoard" Grid.Column="1" Classes="maxSize"/>
+            <views:NumsPanel x:Name="NumsPanel2" Grid.Column="2"/>
+          </Grid>
+          <Grid ColumnDefinitions="*,28*,*" Grid.Row="2">
+            <views:WordPanel x:Name="WordPanel2" Classes="maxSize" Grid.Column="1"/>
+          </Grid>
+        </Grid>     
     </DockPanel>
     <DockPanel Grid.Column="2">
 

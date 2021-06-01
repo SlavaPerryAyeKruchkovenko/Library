@@ -6,11 +6,8 @@
              xmlns:converter="clr-namespace:MegaChess.Dekstop.Converter"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="MegaChess.Dekstop.Views.GameBoard">
-  <Design.DataContext>
-        <vm:GameWindowViewModel/>
-    </Design.DataContext> 
   <DockPanel>
-    <ItemsControl x:Name="Cells" Items="{Binding Borders}">
+    <ItemsControl x:Name="Cells" Items="{Binding GameBorders}">
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
           <Canvas PropertyChanged="ChangeSize"/> 
