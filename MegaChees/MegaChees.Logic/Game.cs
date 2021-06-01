@@ -73,7 +73,7 @@ namespace MegaChess.Logic
 				{
 					this.drawer.PrintError(ex.Message);
 					if(ex.Message== "Impossible move!")
-						this.board.TryAddImposibleMove(board.IsWhiteMove);
+						this.board.TryAddImposibleMove(this.board.IsWhiteMove);
 				}
 			SaveGame(this.board);
 			}

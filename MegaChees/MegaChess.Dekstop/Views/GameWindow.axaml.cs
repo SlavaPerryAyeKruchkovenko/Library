@@ -16,7 +16,7 @@ namespace MegaChess.Dekstop.Views
 			var gameWindow = new GameWindowViewModel();
 			this.FindControl<UserControl>("ChessBoard").DataContext = gameWindow;
 			this.FindControl<UserControl>("WordPanel").DataContext = gameWindow;
-			//this.FindControl<UserControl>("WordPanel2").DataContext = gameWindow;
+			this.FindControl<UserControl>("WordPanel2").DataContext = gameWindow;
 		}
 
 		private void InitializeComponent()

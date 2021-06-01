@@ -23,7 +23,7 @@
         <Grid RowDefinitions="*,28*,*" Grid.Column="1">
           <views:WordPanel x:Name="WordPanel" Classes="maxSize"/>
           <views:GameBoard x:Name="ChessBoard" Grid.Row="1" Classes="maxSize"/>
-          
+          <views:WordPanel x:Name="WordPanel2" Classes="maxSize"/>
         </Grid>
       </Grid>
     </DockPanel>
