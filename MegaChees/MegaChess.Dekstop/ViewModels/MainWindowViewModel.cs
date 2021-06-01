@@ -13,10 +13,9 @@ namespace MegaChess.Dekstop.ViewModels
 		{
 			
 		}
-		private void OpenGameWindow(bool vsCompute , bool isLoadGame)
+		private static void OpenGameWindow(bool vsCompute , bool isLoadGame)
 		{
 			var game = new GameWindow();
-			game.Topmost = true;
 			game.Show();
 		}
 	}

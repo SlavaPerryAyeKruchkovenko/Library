@@ -62,11 +62,18 @@ namespace MegaChess.Logic
 						this.board.MakeStep(firstFigura, secondFigura, false);
 						this.board.ChangeSideMode();
 						CheckOnCheck(this.board, firstFigura);
+
+						if (firstFigura is Pawn pawn)
+						{
+							pawn.isFirstStep = false;
+						}
 					}
 				}
 				catch (Exception ex)
 				{
 					this.drawer.PrintError(ex.Message);
+					if(ex.Message== "Impossible move!")
+						this.board.TryAddImposibleMove(board.IsWhiteMove);
 				}
 			SaveGame(this.board);
 			}

@@ -2,14 +2,13 @@
 using System.Collections.ObjectModel;
 using MegaChess.Dekstop.Models;
 using MegaChess.Dekstop.Converter;
-using ReactiveUI;
-using System.Reactive;
-using System;
 using Avalonia.Controls;
 using Avalonia;
 using Avalonia.Media;
 using Avalonia.Interactivity;
 using System.Reactive.Subjects;
+using System.Linq;
+using Avalonia.Layout;
 
 namespace MegaChess.Dekstop.ViewModels
 {
@@ -18,6 +17,9 @@ namespace MegaChess.Dekstop.ViewModels
 		public GameWindowViewModel()
 		{
 			this.Borders = CreateBorders();
+			this.Labels = CreatePanel('A', 'H');
+			this.Nums = CreatePanel('1', '8');
+
 			this.figura = new Subject<Figura>();
 			
 			this.figura.OnNext(new Empty(null,34));
@@ -32,26 +34,51 @@ namespace MegaChess.Dekstop.ViewModels
 		private Subject<Figura> figura;
 
 		private readonly DekstopGameLogic game;
-		public ObservableCollection<Border> Borders { get; }
+		private ObservableCollection<Border> Borders { get; }
+		private ReadOnlyObservableCollection<Label> Labels { get; }
+		private ReadOnlyObservableCollection<Label> Nums { get; }
 		private ObservableCollection<Border> CreateBorders()
 		{
+			var board = new Board();
 			var borders = new ObservableCollection<Border>();
-			for (int i = 0; i < 64; i++)
+			foreach (var item in board.GetFiguras())
 			{
 				var border = new Border();
 				border.Tapped += SelectFigura;
 				border.BorderThickness = new Thickness(5);
+				border.Background = Field.GetColor(item, board);
 				borders.Add(border);
-			}
+			}		
 			return borders;
 		}
 		private void SelectFigura(object sender, RoutedEventArgs e)
 		{
+			
 			var border = sender as Border;
-			this.figura.OnNext((Figura)border.DataContext);
-			border.BorderBrush = Brushes.Yellow;
-		}
+			var figura = (Figura)border.DataContext;
+			this.figura.OnNext(figura);
 
+			if (figura.IsMyFigura != null)
+				border.BorderBrush = Brushes.Yellow;
+		}
+		private ReadOnlyObservableCollection<Label> CreatePanel(char a , char b)
+		{
+			var collection = new ObservableCollection<Label>();
+			for (char i = a; i <= b; i++)
+			{
+				var label = new Label()
+				{
+					Background = Brushes.Transparent,
+					Content = i.ToString(),
+					VerticalAlignment = VerticalAlignment.Stretch,
+					HorizontalAlignment = HorizontalAlignment.Stretch,
+					VerticalContentAlignment = VerticalAlignment.Center,
+					HorizontalContentAlignment = HorizontalAlignment.Center
+				};
+				collection.Add(label);
+			}
+			return new ReadOnlyObservableCollection<Label>(collection);
+		}
 		//public ReactiveCommand<Figura, Unit> SelectFigura { get; }
 		
 	}

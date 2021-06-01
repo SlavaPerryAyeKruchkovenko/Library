@@ -7,14 +7,24 @@
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MegaChess.Dekstop.Views.GameWindow"
         Icon="avares://MegaChess.Dekstop/Assets/_chess.ico">
+  <Window.Styles>
+    <Style Selector="UserControl.maxSize">
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+      <Setter Property="VerticalAlignment" Value="Stretch"/>
+    </Style>
+  </Window.Styles>
   <Design.DataContext>
     <vm:GameWindowViewModel/>
   </Design.DataContext>
     <Grid ColumnDefinitions="*,3*,*" ShowGridLines="True">
     
     <DockPanel Grid.Column="1">
-      <Grid RowDefinitions="*,28*,*">
-        <views:GameBoard Grid.Row="1"/>
+      <Grid ColumnDefinitions="*,28*,*">
+        <Grid RowDefinitions="*,28*,*" Grid.Column="1">
+          <views:WordPanel x:Name="WordPanel" Classes="maxSize"/>
+          <views:GameBoard x:Name="ChessBoard" Grid.Row="1" Classes="maxSize"/>
+          
+        </Grid>
       </Grid>
     </DockPanel>
     <DockPanel Grid.Column="2">

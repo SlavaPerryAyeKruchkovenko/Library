@@ -10,12 +10,10 @@ namespace MegaChess.Dekstop.Views
 	public partial class GameBoard : UserControl
 	{
 		private Rect size;
-		private readonly GameWindowViewModel GameWindow;
 		public GameBoard()
 		{
 			InitializeComponent();
-			this.GameWindow = new GameWindowViewModel();
-			this.FindControl<ItemsControl>("Cells").Items = this.GameWindow.Borders;
+			
 		}		
 		private void InitializeComponent()
 		{

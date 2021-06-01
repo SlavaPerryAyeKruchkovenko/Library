@@ -25,8 +25,7 @@ namespace MegaChess.Dekstop.Views
 			ShowGameWindow(false, false);			
 		}
 		private void ShowGameWindow(bool vsComputer , bool isLoadGame)
-		{
-			
+		{			
 			this.DataContext = new MainWindowViewModel(new bool[] { vsComputer , isLoadGame});
 			this.Close();
 		}

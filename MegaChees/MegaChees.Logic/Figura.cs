@@ -42,18 +42,13 @@ namespace MegaChess.Logic
 					{
 						Point lenght = board.CountLengh(item, new King(this.IsMyFigura.Value, 1));
 						if(item.IsCorrectMove(board, lenght))
-						{
-							board.TryAddImposibleMove(this.IsMyFigura.Value);
+						{							
 							board.MakeStep(this, figura, true);
 							throw new AccessViolationException("Impossible move!");
 						}
 					}
 				}
-				board.MakeStep(this, figura, true);
-				if(this is Pawn pawn)
-				{
-					pawn.isFirstStep = false;
-				}			
+				board.MakeStep(this, figura, true);					
 			}		
 			return false;
 		}
@@ -63,10 +58,7 @@ namespace MegaChess.Logic
 		}
 		protected static bool HaventEnemyOnPosition(char[] point, Point location, Board board)
 		{
-			if (board.GetFigure(point[0], point[1]).IsMyFigura.Value)
 				return Empty.IsEmpty(board, point, location);
-			else
-				return Empty.IsEmpty(board, point, new Point(location.X, -location.Y));
 		}
 		protected static bool IsCorrectCoordinate(char a, char b) => a <= '8' && a >= '1' && b <= 'H' && b >= 'A';
 		public override string ToString() => this.ShorName.ToString();
@@ -95,7 +87,8 @@ namespace MegaChess.Logic
 				{
 					for (int j = 1; j <= Math.Abs(lenght.Y); j++)
 					{
-						bool canDoStep = HaventEnemyOnPosition(pawnCoordinate, new Point(0, j), board);
+						int step = j * lenght.Y / Math.Abs(lenght.Y);
+						bool canDoStep = HaventEnemyOnPosition(pawnCoordinate, new Point(0, step), board);
 						if (!canDoStep)
 						{
 							return false;
@@ -106,13 +99,15 @@ namespace MegaChess.Logic
 				}
 				else if (CheckCorrectMoveForDifferent(lenght.Y, 1))
 				{
-					return HaventEnemyOnPosition(pawnCoordinate, new Point(0, 1), board);
+					int step = lenght.Y / Math.Abs(lenght.Y);
+					return HaventEnemyOnPosition(pawnCoordinate, new Point(0, step), board);
 				}
 			}
 			else if (CheckCorrectMoveForDifferent(lenght.Y, 1) && Math.Abs(lenght.X) == 1)
 			{
-				//проверка что в конечной точке не стоит враг
-				return !SingleColorsFigures(this, board.GetFigure((char)(pawnCoordinate[0] + lenght.Y), (char)(pawnCoordinate[1] + lenght.X)));
+				//проверка что в конечной точке стоит враг
+				var figura = board.GetFigure((char)(pawnCoordinate[0] + lenght.Y), (char)(pawnCoordinate[1] + lenght.X));
+				return !SingleColorsFigures(this, figura) && !(figura is Empty);
 			}
 			return false;
 		}
@@ -180,13 +175,14 @@ namespace MegaChess.Logic
 			bool canDoStep = true;
 			for (int i = 1; i < Math.Abs(dCoordinate); i++)
 			{
+				int step = i * dCoordinate / Math.Abs(dCoordinate);
 				if (moveOnY)
 				{
-					canDoStep = HaventEnemyOnPosition(point, new Point(0, i), board);
+					canDoStep = HaventEnemyOnPosition(point, new Point(0, step), board);
 				}
 				else
 				{
-					canDoStep = HaventEnemyOnPosition(point, new Point(i, 0), board);
+					canDoStep = HaventEnemyOnPosition(point, new Point(step, 0), board);
 				}
 				if (!canDoStep)
 				{
@@ -343,7 +339,7 @@ namespace MegaChess.Logic
 		public override bool IsCorrectMove(Board board, Point lenght)
 		{
 			var queenCoordinate = board.FoundFigureCoordinate(this);
-			if (lenght.X == 0 ||lenght.X == 0)
+			if (lenght.X == 0 ||lenght.Y == 0)
 			{
 				return Rook.IsCorrectMove2(board, lenght, queenCoordinate);
 			}

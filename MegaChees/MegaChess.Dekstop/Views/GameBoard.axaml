@@ -10,7 +10,7 @@
         <vm:GameWindowViewModel/>
     </Design.DataContext> 
   <DockPanel>
-    <ItemsControl x:Name="Cells">
+    <ItemsControl x:Name="Cells" Items="{Binding Borders}">
       <ItemsControl.ItemsPanel>
         <ItemsPanelTemplate>
           <Canvas PropertyChanged="ChangeSize"/> 

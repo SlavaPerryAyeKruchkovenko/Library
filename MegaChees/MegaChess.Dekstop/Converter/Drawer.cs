@@ -27,6 +27,8 @@ namespace MegaChess.Dekstop.Converter
 		}
 		private readonly ObservableCollection<Border> borders;
 		private Figura figura1;
+		private Board board;
+		private bool isFirstMove = true;
 		public void Clear()
 		{
 			this.borders.Clear();
@@ -81,10 +83,38 @@ namespace MegaChess.Dekstop.Converter
 			{
 				
 			}
+			if(this.isFirstMove)
+			{
+				if (this.figura1 is Empty)
+				{
+					return MoveCursor(x, y, board);
+				}				
+				CircleCorectCell(this.figura1, this.borders, this.board);
+			}
+			this.isFirstMove = !this.isFirstMove;
 			return this.figura1;
-		}		
+		}	
+		public static void CircleCorectCell(Figura figura , ObservableCollection<Border> borders , Board board)
+		{
+			foreach (var item in borders)
+			{
+				Dispatcher.UIThread.InvokeAsync(() =>
+				{
+					var lenght = board.CountLengh(figura, (Figura)item.DataContext);
+					try
+					{
+						if (!figura.HaveUnrealSteep(board, lenght))
+						{
+							item.BorderBrush = Field.GetBorderBrushesColor();
+						}
+					}
+					catch (Exception) { }
+				}).Wait();					
+			}
+		}
 		public void PrintBoard(Board board)
-		{			
+		{
+			this.board = board;
 			int count = 0;
 			foreach (var item in board.GetFiguras())
 			{				
@@ -116,8 +146,7 @@ namespace MegaChess.Dekstop.Converter
 						_ => "",
 					};
 				}
-				var lenght = board.FoundFigureCoordinate(item);
-				figuraProperty.Color = (lenght[0]+lenght[1])%2==0 ? Brushes.White : Brushes.Black;
+				figuraProperty.Color = Field.GetColor(item,board);
 				figuraProperty.FiguraNow = item;
 
 				Dispatcher.UIThread.InvokeAsync(() =>
@@ -131,8 +160,7 @@ namespace MegaChess.Dekstop.Converter
 			
 		}
 		private static Border ChangeBorderProperty(Border border , СellProperty property)
-		{
-			border.Background = property.Color;
+		{			
 			border.BorderBrush = property.Color;
 			border.Child = new Image()
 			{			
