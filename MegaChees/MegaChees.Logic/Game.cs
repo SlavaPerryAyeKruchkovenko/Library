@@ -3,6 +3,8 @@ using System.Drawing;
 using System.IO;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace MegaChess.Logic
 {
@@ -56,7 +58,7 @@ namespace MegaChess.Logic
 					var secondFigura = this.drawer.MoveCursor(startX, startY, this.board);
 
 					Point lengh = this.board.CountLengh(firstFigura, secondFigura);
-					if (!firstFigura.HaveUnrealSteep(this.board, lengh))
+					if (this.board.IsWhiteMove == firstFigura.IsMyFigura &&!firstFigura.HaveUnrealSteep(this.board, lengh))
 					{
 						ChangeStartLocation(secondFigura);
 						this.board.MakeStep(firstFigura, secondFigura, false);
@@ -72,26 +74,112 @@ namespace MegaChess.Logic
 				catch (Exception ex)
 				{
 					this.drawer.PrintError(ex.Message);
+
+					if(ex.Message == "Мат")
+					{
+						for (int i = 1; i <= 3; i++)
+						{
+							this.board.TryAddImposibleMove(this.board.IsWhiteMove);
+						}
+					}	
 					if(ex.Message== "Impossible move!")
+					{
 						this.board.TryAddImposibleMove(this.board.IsWhiteMove);
+					}						
 				}
 			SaveGame(this.board);
 			}
 		}
 		private static bool CheckOnCheck(Board board , Figura figure)
 		{
-			foreach (var item in board.GetFiguras())
+			foreach (Figura item in board.GetFiguras().Where(x=> x.IsMyFigura == figure.IsMyFigura))
 			{
-				if(item.IsMyFigura == figure.IsMyFigura)
+				var enemyKing = new King(!item.IsMyFigura.Value, 1);
+				Point lenght = board.CountLengh(item, enemyKing);
+				if (item.IsCorrectMove(board, lenght))
 				{
-					Point lenght = board.CountLengh(item, new King(!item.IsMyFigura.Value, 1));
-					if(item.IsCorrectMove(board,lenght))
+					if (!KingHaveSteep(board, enemyKing) && !HaveMate(board , enemyKing.IsMyFigura))
+					{
+						throw new Exception("Мат");						
+					}
+					else
 					{
 						throw new Exception("Шах");
 					}
 				}
 			}
 			return false;
+		}
+		private static bool HaveMate(Board board , bool? isWhite)
+		{
+			int count = 0;
+			foreach (var figura in board.GetFiguras().Where(x=> x.IsMyFigura == isWhite))
+			{
+				foreach (var enemy in board.GetFiguras().Where(x => x.IsMyFigura != isWhite))
+				{
+					Point lenght = board.CountLengh(figura, enemy);
+					try
+					{
+						if(!figura.HaveUnrealSteep(board,lenght))
+						{
+							count++;
+						}
+					}
+					catch(Exception)
+					{
+
+					}
+					if(count >0)
+					{
+						return true;
+					}					
+				}
+			}
+			return false;
+		}
+		private static bool KingHaveSteep(Board board , King enemyKing)
+		{
+			int count = 0;
+			foreach (var item in KingArrowFigures(enemyKing, board))
+			{
+				Point lenght = board.CountLengh(enemyKing, item);
+				try
+				{
+					if (!enemyKing.HaveUnrealSteep(board, lenght))
+					{
+						count++;
+					}
+				}
+				catch (Exception)
+				{
+
+				}
+				if (count > 0)
+				{
+					return true;
+				}
+			}						
+			return !(count == 0);
+		}
+		private static IEnumerable<Figura> KingArrowFigures(King enemyKing ,Board board)
+		{
+			var kingCoordinate = board.FoundFigureCoordinate(enemyKing);
+			for (int i = -1; i <= 1; i++)
+			{
+				for (int j = -1; j <= 1; j++)
+				{
+					if (j == 0 && i == 0)
+					{
+						continue;
+					}						
+					char y = (char)(kingCoordinate[0] + i);
+					char x = (char)(kingCoordinate[1] + j);
+					if (Figura.IsCorrectCoordinate(y, x) && Figura.SingleColorsFigures(board.GetFigure(y, x),enemyKing))
+					{
+						yield return board.GetFigure(y, x);
+					}						
+				}
+			}
 		}
 		private void ChangeStartLocation(Figura figura)
 		{

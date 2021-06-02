@@ -23,12 +23,11 @@ namespace MegaChess.Dekstop.ViewModels
 			this.BlackDiedBorders = CreateDiedFigures(board, false);
 
 			this.figura = new Subject<Figura>();			
-			this.figura.OnNext(new Empty(null,34));
 
 			board = null;
 			ObservableCollection<Border>[] bordersArray =
 			{
-				GameBorders,BlackDiedBorders,WhiteDiedBorders
+				GameBorders,WhiteDiedBorders,BlackDiedBorders
 			};
 			this.game = new DekstopGameLogic(new Drawer(bordersArray , this.figura));
 			//this.SelectFigura = ReactiveCommand.Create(new Action<Figura>((x) =>
@@ -42,8 +41,8 @@ namespace MegaChess.Dekstop.ViewModels
 
 		private readonly DekstopGameLogic game;
 		private ObservableCollection<Border> GameBorders { get; }
-		private ObservableCollection<Border> BlackDiedBorders { get; }
-		private ObservableCollection<Border> WhiteDiedBorders { get; }
+		public ObservableCollection<Border> BlackDiedBorders { get; }
+		public ObservableCollection<Border> WhiteDiedBorders { get; }
 		private ObservableCollection<Border> CreateBorders(Board board)
 		{		
 			var borders = new ObservableCollection<Border>();
@@ -64,8 +63,10 @@ namespace MegaChess.Dekstop.ViewModels
 			{
 				var border = new Border
 				{
-					Background = Field.GetNoReferenceColor(isWhite)
-				};
+					BorderBrush = Field.GetNoReferenceColor(!isWhite),
+					Background = Field.GetNoReferenceColor(isWhite),
+					BorderThickness = new Thickness(5)
+			};
 				borders.Add(border);
 			}
 			return borders;

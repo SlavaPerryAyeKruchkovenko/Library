@@ -19,6 +19,8 @@ namespace MegaChess.Dekstop.Views
 			this.FindControl<UserControl>("WordPanel2").FindControl<ItemsControl>("Words").Items = gameWindow.CreatePanel('A', 'H');
 			this.FindControl<UserControl>("NumsPanel").FindControl<ItemsControl>("Nums").Items = gameWindow.CreatePanel('1', '8');
 			this.FindControl<UserControl>("NumsPanel2").FindControl<ItemsControl>("Nums").Items = gameWindow.CreatePanel('1', '8');
+			this.FindControl<UserControl>("WhiteFiguras").FindControl<ItemsControl>("DiedFiguras").Items = gameWindow.WhiteDiedBorders;
+			this.FindControl<UserControl>("BlackFiguras").FindControl<ItemsControl>("DiedFiguras").Items = gameWindow.BlackDiedBorders;
 		}
 
 		private void InitializeComponent()

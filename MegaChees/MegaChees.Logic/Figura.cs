@@ -23,11 +23,7 @@ namespace MegaChess.Logic
 		public abstract bool IsCorrectMove(Board board, Point lenght);
 		public bool HaveUnrealSteep(Board board, Point coordinate)
 		{
-			if (board.IsWhiteMove != this.IsMyFigura) 
-			{
-				throw new Exception("Не ваш ход");
-			}
-			else if(!this.IsCorrectMove(board, coordinate))
+			if(!this.IsCorrectMove(board, coordinate))
 			{
 				throw ThrowUnrealStep();
 			}
@@ -52,7 +48,7 @@ namespace MegaChess.Logic
 			}		
 			return false;
 		}
-		protected static bool SingleColorsFigures(Figura figura1, Figura figura2)
+		public static bool SingleColorsFigures(Figura figura1, Figura figura2)
 		{
 			return figura1.IsMyFigura == figura2.IsMyFigura;
 		}
@@ -60,7 +56,7 @@ namespace MegaChess.Logic
 		{
 				return Empty.IsEmpty(board, point, location);
 		}
-		protected static bool IsCorrectCoordinate(char a, char b) => a <= '8' && a >= '1' && b <= 'H' && b >= 'A';
+		public static bool IsCorrectCoordinate(char a, char b) => a <= '8' && a >= '1' && b <= 'H' && b >= 'A';
 		public override string ToString() => this.ShorName.ToString();
 		protected Exception ThrowUnrealStep() => new Exception("Невозможный ход");
 	}

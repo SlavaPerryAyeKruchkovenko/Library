@@ -12,9 +12,9 @@ namespace MegaChess.Dekstop.Models
 		{			
 			var lenght = board.FoundFigureCoordinate(figura);				
 
-			return (lenght[0] + lenght[1]) % 2 == 0 ? firstColor : secondColor;
+			return (lenght[0] + lenght[1]) % 2 == 0 ? secondColor : firstColor;
 		}
-		public static IBrush GetNoReferenceColor(bool isWhite) => isWhite ? secondColor : firstColor;
+		public static IBrush GetNoReferenceColor(bool isWhite) => isWhite ? firstColor : secondColor;
 		public static IBrush GetBorderBrushesColor() => thirthColor;
 	}
 }

@@ -14,24 +14,34 @@ using ReactiveUI;
 using System.Reactive.Subjects;
 using System;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace MegaChess.Dekstop.Converter
 {
 	class Drawer : BaseModel, IDrawer
 	{
 		public Drawer(ObservableCollection<Border>[] _borders , IObservable<Figura> _figura)
-		{		
-			this.borders = _borders[0];
+		{
+			if (_borders.Length != 3)
+				throw new Exception("В параметре нужно передать 3 коллекции: Игровое поле, белые мертвые фигуры , черные мертвые фигуры");
+
+			this.gameBorders = _borders[0];
+			this.diedWhiteBorders = _borders[1];
+			this.diedBlackBorders = _borders[2];
 
 			_figura.Subscribe<Figura>(ChangeFigura);		
 		}
-		private readonly ObservableCollection<Border> borders;
+		private readonly ObservableCollection<Border> gameBorders;
+		private readonly ObservableCollection<Border> diedWhiteBorders;
+		private readonly ObservableCollection<Border> diedBlackBorders;
 		private Figura figura1;
 		private Board board;
 		private bool isFirstMove = true;
 		public void Clear()
 		{
-			this.borders.Clear();
+			this.gameBorders.Clear();
+			this.diedWhiteBorders.Clear();
+			this.diedBlackBorders.Clear();
 		}
 		private void ChangeFigura(Figura figura)
 		{
@@ -81,7 +91,7 @@ namespace MegaChess.Dekstop.Converter
 			var figura = this.figura1;
 			while(this.figura1 == figura)
 			{
-				
+				// тут будет таймер
 			}
 			if(this.isFirstMove)
 			{
@@ -89,7 +99,7 @@ namespace MegaChess.Dekstop.Converter
 				{
 					return MoveCursor(x, y, board);
 				}				
-				CircleCorectCell(this.figura1, this.borders, this.board);
+				CircleCorectCell(this.figura1, this.gameBorders, this.board);
 			}
 			this.isFirstMove = !this.isFirstMove;
 			return this.figura1;
@@ -115,24 +125,43 @@ namespace MegaChess.Dekstop.Converter
 		public void PrintBoard(Board board)
 		{
 			this.board = board;
-			PrintGameBoard(board);
+			PrintGameBoard(board, this.gameBorders);// print game figuras;
+			PrintGameFiguras(board.GetDiedFiguras(true), this.diedWhiteBorders); // print died white figuras
+			PrintGameFiguras(board.GetDiedFiguras(false), this.diedBlackBorders); // print died black figuras			
 		}
-		private void PrintGameBoard(Board board)
-		{			
+		private static void PrintGameBoard(Board board, ObservableCollection<Border> borders)
+		{
 			int count = 0;
 			foreach (var item in board.GetFiguras())
 			{
 				var figuraProperty = new СellProperty
 				{
 					Image = SelectImageRef(item),
-					Color = Field.GetColor(item, board),
+					Color = Field.GetColor(item , board),
 					FiguraNow = item
 				};
-
 				Dispatcher.UIThread.InvokeAsync(() =>
 				{
-					if (count < 64)
-						this.borders[count] = ChangeBorderProperty(this.borders[count], figuraProperty);
+					if (count < borders.Count)
+						borders[count] = ChangeBorderProperty(borders[count], figuraProperty , true);
+				}).Wait();
+
+				count++;
+			}
+		}
+		private static void PrintGameFiguras(IEnumerable<Figura> figuras , ObservableCollection<Border> borders)
+		{
+			int count = 0;
+			foreach (var item in figuras)
+			{
+				var figuraProperty = new СellProperty
+				{
+					Image = item == null ?  "" : SelectImageRef(item)
+				};
+				Dispatcher.UIThread.InvokeAsync(() =>
+				{
+					if (count < borders.Count)
+						borders[count] = ChangeBorderProperty(borders[count], figuraProperty , false);
 				}).Wait();
 
 				count++;
@@ -168,15 +197,19 @@ namespace MegaChess.Dekstop.Converter
 			}
 			return null;
 		}
-		private static Border ChangeBorderProperty(Border border , СellProperty property)
+		private static Border ChangeBorderProperty(Border border , СellProperty property , bool needChange)
 		{			
-			border.BorderBrush = property.Color;
+			if(needChange)
+			{
+				border.BorderBrush = property.Color;
+				border.DataContext = property.FiguraNow;
+			}			
 			border.Child = new Image()
 			{			
 				Stretch = Stretch.Fill,
 				Source = (Bitmap)new ImageConverter().Convert(property.Image, null, null, null)
 			};
-			border.DataContext = property.FiguraNow;
+			
 			return border;
 		}
 		public void PrintError(string ex)

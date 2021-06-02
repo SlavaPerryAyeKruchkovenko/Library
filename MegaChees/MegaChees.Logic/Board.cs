@@ -50,7 +50,7 @@ namespace MegaChess.Logic
 			this.DeadWhitekFigures = deadFigures;
 		}
 		public void ChangeSideMode() => this.IsWhiteMove = !this.IsWhiteMove;
-		public Figura GetFigure(char a, char b) => this.ChessBoard[a][b];
+		public Figura GetFigure(char y, char x) => this.ChessBoard[y][x];
 		protected internal void TryAddImposibleMove(bool isWhite)
 		{
 			_ = isWhite ? this.WhiteImposibleMove++ : this.BlackImposibleMove++;

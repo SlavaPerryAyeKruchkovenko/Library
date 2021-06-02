@@ -17,16 +17,21 @@
     <vm:GameWindowViewModel/>
   </Design.DataContext>
     <Grid ColumnDefinitions="*,3*,*" ShowGridLines="True">
-    
+      <DockPanel>
+        <Grid RowDefinitions="*,28*,*">
+          <views:DeadFiguresBoard Grid.Row="1" Classes="maxSize"
+                                  x:Name="WhiteFiguras"/>
+        </Grid>
+      </DockPanel>    
     <DockPanel Grid.Column="1">    
         <Grid RowDefinitions="*,28*,*" Grid.Column="1">
           <Grid ColumnDefinitions="*,28*,*">
             <views:WordPanel x:Name="WordPanel" Classes="maxSize" Grid.Column="1"/>
           </Grid>         
           <Grid ColumnDefinitions="*,28*,*" Grid.Row="1">
-            <views:NumsPanel x:Name="NumsPanel"/>
+            <views:NumsPanel x:Name="NumsPanel" Classes="maxSize"/>
             <views:GameBoard x:Name="ChessBoard" Grid.Column="1" Classes="maxSize"/>
-            <views:NumsPanel x:Name="NumsPanel2" Grid.Column="2"/>
+            <views:NumsPanel x:Name="NumsPanel2" Grid.Column="2" Classes="maxSize"/>
           </Grid>
           <Grid ColumnDefinitions="*,28*,*" Grid.Row="2">
             <views:WordPanel x:Name="WordPanel2" Classes="maxSize" Grid.Column="1"/>
@@ -34,7 +39,10 @@
         </Grid>     
     </DockPanel>
     <DockPanel Grid.Column="2">
-
+        <Grid RowDefinitions="*,28*,*">
+          <views:DeadFiguresBoard Grid.Row="1" Classes="maxSize"
+                                  x:Name="BlackFiguras"/>
+        </Grid>
     </DockPanel>
   </Grid>
 </Window>

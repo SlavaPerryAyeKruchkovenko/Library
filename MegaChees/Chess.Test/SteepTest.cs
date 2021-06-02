@@ -45,9 +45,9 @@ namespace MegaChess.Test
 		{
 			Board board = new Board();
 			var figura1 = board.GetFigure('2', 'H');
-			board.TryReplaceFigure(figura1, new Empty(null,1));
+			board.MakeStep(figura1, new Empty(null,1),false);
 			var figura2 = board.GetFigure('1', 'G');
-			board.TryReplaceFigure(figura2, new Empty(null, 2));
+			board.MakeStep(figura2, new Empty(null, 2) ,false);
 			Assert.True(board.GetFigure(a, b).IsCorrectMove(board, new Point(dX, dY)));
 		}
 		[Theory]
@@ -57,9 +57,9 @@ namespace MegaChess.Test
 		{
 			Board board = new Board();
 			var figura1 = board.GetFigure('2', 'G');
-			board.TryReplaceFigure(figura1, new Empty(null, 1));
+			board.MakeStep(figura1, new Empty(null, 1),false);
 			var figura2 = board.GetFigure('2', 'E');
-			board.TryReplaceFigure(figura2, new Empty(null, 2));
+			board.MakeStep(figura2, new Empty(null, 2),false);
 			Assert.True(board.GetFigure(a, b).IsCorrectMove(board, new Point(dX, dY)));
 		}
 		[Theory]
@@ -68,15 +68,15 @@ namespace MegaChess.Test
 		{
 			Board board = new Board();
 			var figura1 = board.GetFigure('2', 'E');
-			board.TryReplaceFigure(figura1, new Empty(null, 1));
+			board.MakeStep(figura1, new Empty(null, 1),false);
 			var figura2 = board.GetFigure('2', 'F');
-			board.TryReplaceFigure(figura2, new Empty(null, 2));
+			board.MakeStep(figura2, new Empty(null, 2),false);
 			var figura3 = board.GetFigure('2', 'D');
-			board.TryReplaceFigure(figura3, new Empty(null, 3));
+			board.MakeStep(figura3, new Empty(null, 3),false);
 			var figura4 = board.GetFigure('1', 'F');
-			board.TryReplaceFigure(figura4, new Empty(null, 4));
+			board.MakeStep(figura4, new Empty(null, 4),false);
 			var figura5 = board.GetFigure('1', 'D');
-			board.TryReplaceFigure(figura5, new Empty(null, 5));
+			board.MakeStep(figura5, new Empty(null, 5), false);
 			Assert.True(board.GetFigure(a, b).IsCorrectMove(board, new Point(dX, dY)));
 		}
 		public static IEnumerable<object[]> KingData()
