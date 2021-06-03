@@ -177,7 +177,7 @@ namespace MegaChess.Logic
 					}						
 					char y = (char)(kingCoordinate[0] + i);
 					char x = (char)(kingCoordinate[1] + j);
-					if (Figura.IsCorrectCoordinate(y, x) && Figura.SingleColorsFigures(board.GetFigure(y, x),enemyKing))
+					if (Figura.IsCorrectCoordinate(y, x) && !Figura.SingleColorsFigures(board.GetFigure(y, x),enemyKing))
 					{
 						yield return board.GetFigure(y, x);
 					}						

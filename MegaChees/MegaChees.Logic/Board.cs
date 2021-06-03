@@ -10,9 +10,9 @@ namespace MegaChess.Logic
 		[JsonProperty]
 		private Dictionary<char, Dictionary<char, Figura>> ChessBoard { get; }
 		[JsonProperty]
-		private Dictionary<char, Dictionary<char, Figura>> DeadBlackFigures { get; }
+		private Stack<Figura> DeadBlackFigures { get; }
 		[JsonProperty]
-		private Dictionary<char, Dictionary<char, Figura>> DeadWhiteFigures { get; }
+		private Stack<Figura> DeadWhiteFigures { get; }
 		[JsonProperty]
 		public bool IsWhiteMove { get; private set; } = true;
 		[JsonProperty]
@@ -35,28 +35,8 @@ namespace MegaChess.Logic
 				{ '2', new Dictionary<char, Figura> { { 'A', new Pawn(true,1) }, { 'B', new Pawn(true,2) }, { 'C', new Pawn(true,3) }, { 'D',new Pawn(true,4) }, { 'E', new Pawn(true,5) }, { 'F', new Pawn(true,6) }, { 'G', new Pawn(true,7) }, { 'H',new Pawn(true,8) } } },
 				{ '1', new Dictionary<char, Figura> { { 'A', new Rook(true,1)  }, { 'B', new Knight(true,1) }, { 'C', new Bishop(true,1)}, { 'D', new Queen(true,1) }, { 'E', new King(true,1) }, { 'F', new Bishop(true,2) }, { 'G', new Knight(true,2) }, { 'H', new Rook(true,2)} } }
 			};
-			this.DeadBlackFigures = new Dictionary<char, Dictionary<char, Figura>>()
-			{
-				{ '1',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '2',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '3',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '4',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '5',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '6',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '7',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '8',new Dictionary<char, Figura> { { '1', null }, { '2', null } } }
-			};
-			this.DeadWhiteFigures = new Dictionary<char, Dictionary<char, Figura>>()
-			{
-				{ '1',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '2',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '3',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '4',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '5',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '6',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '7',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
-				{ '8',new Dictionary<char, Figura> { { '1', null }, { '2', null } } }
-			};
+			this.DeadBlackFigures = new Stack<Figura>();
+			this.DeadWhiteFigures = new Stack<Figura>();
 		}
 		public void ChangeSideMode() => this.IsWhiteMove = !this.IsWhiteMove;
 		public Figura GetFigure(char y, char x) => this.ChessBoard[y][x];
@@ -114,7 +94,11 @@ namespace MegaChess.Logic
 				this.ChessBoard[coordinate1[0]][coordinate1[1]] = died;
 				this.ChessBoard[coordinate2[0]][coordinate2[1]] = killer;			
 				this.CountEmptyFigure--;
-				DeleteDiedFigure(died);
+
+				if (died.IsMyFigura.Value)
+					this.DeadWhiteFigures.Pop();
+				else
+					this.DeadBlackFigures.Pop();
 			}
 			catch (Exception)
 			{
@@ -125,48 +109,12 @@ namespace MegaChess.Logic
 		{
 			if(died.IsMyFigura.Value)
 			{
-				AddFigure(this.DeadBlackFigures, died);
+				this.DeadWhiteFigures.Push(died);				
 			}
 			else
 			{
-				AddFigure(this.DeadWhiteFigures, died);
+				this.DeadBlackFigures.Push(died);
 			}
-		}
-		private void DeleteDiedFigure(Figura died)// удаляем срубленную фигуру
-		{
-			Dictionary<char, Dictionary<char, Figura>> board;
-			if (died.IsMyFigura.Value)
-				board = this.DeadWhiteFigures;
-			else
-				board = this.DeadBlackFigures;
-
-			for (char i = '1'; i <= '8'; i++)
-			{
-				for (char j = '1'; j <= '2'; j++)
-				{
-					if (board[i][j] != null && board[i][j].Equals(died)) 
-					{
-						board[i][j] = null;
-						return;
-					}
-				}
-			}
-			throw new Exception("Нельзя востановить данную фигуру");
-		}
-		private static void AddFigure(Dictionary<char, Dictionary<char, Figura>> board , Figura figura)// добовляет фигуру в словарь
-		{
-			for (char i = '1'; i <= '8'; i++)
-			{
-				for (char j = '1'; j <= '2'; j++)
-				{
-					if (board[i][j] == null)
-					{
-						board[i][j] = figura;
-						return;
-					}
-				}
-			}
-			throw new Exception("Вы не можите срубить больше");
 		}
 		public Point CountLengh(Figura figura1, Figura figura2)// считает растояние между фигурами
 		{
@@ -186,22 +134,16 @@ namespace MegaChess.Logic
 				}
 			}
 		}
-		public IEnumerable<Figura> GetDiedFiguras(bool isWhite)//возращает доску
+		public IEnumerable<Figura> GetDiedFiguras(bool isWhite)//возращает мертвые фигуры
 		{
-			for (char i = '1'; i <= '8'; i++)
-			{
-				for (char j = '1'; j <= '2'; j++)
-				{
-					if(isWhite)
-					{
-						yield return this.DeadWhiteFigures[i][j];
-					}						
-					else
-					{
-						yield return this.DeadBlackFigures[i][j];
-					}					
-				}
-			}
+			var stack = new Stack<Figura>();
+			if (isWhite)
+				stack = this.DeadWhiteFigures;
+			else
+				stack = this.DeadBlackFigures;
+
+			foreach (var item in stack)
+				yield return item;											
 		}
 		public char[] FoundFigureCoordinate(Figura figura)
 		{

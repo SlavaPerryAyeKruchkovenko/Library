@@ -20,8 +20,8 @@ namespace MegaChess.Dekstop.ViewModels
 		{
 			var board = new Board();
 			this.GameBorders = CreateBorders(board);
-			this.WhiteDiedBorders = CreateDiedFigures(board, true);
-			this.BlackDiedBorders = CreateDiedFigures(board, false);
+			this.WhiteDiedBorders = CreateDiedFigures(true);
+			this.BlackDiedBorders = CreateDiedFigures(false);
 
 			this.figura = new Subject<Figura>();
 			this.isWhiteMove = new Subject<bool>();
@@ -66,17 +66,17 @@ namespace MegaChess.Dekstop.ViewModels
 			}		
 			return borders;
 		}
-		private ObservableCollection<Border> CreateDiedFigures(Board board, bool isWhite)
+		private ObservableCollection<Border> CreateDiedFigures(bool isWhite)
 		{
 			var borders = new ObservableCollection<Border>();
-			foreach (var item in board.GetDiedFiguras(isWhite))
+			for (int i = 1; i <= 16; i++)
 			{
 				var border = new Border
 				{
 					Background = Field.GetNoReferenceColor(isWhite)
 				};
 				borders.Add(border);
-			}
+			}						
 			return borders;
 		}
 		private void SelectFigura(object sender, RoutedEventArgs e)
