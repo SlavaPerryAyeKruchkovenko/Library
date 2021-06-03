@@ -14,7 +14,7 @@ namespace MegaChess.Dekstop.Models
 		public void StartGame()
 		{
 			Game game = new Game(this.drawer,0,0);
-			Task t = new Task(()=>game.ChessLogic(true));
+			Task t = new Task(()=>game.ChessLogic(GameField.GetSettings()[0] , GameField.GetSettings()[1]));
 			t.Start();
 		}
 	}

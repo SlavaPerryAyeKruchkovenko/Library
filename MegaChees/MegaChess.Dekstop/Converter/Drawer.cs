@@ -15,6 +15,8 @@ using System.Reactive.Subjects;
 using System;
 using System.Threading;
 using System.Collections.Generic;
+using MegaChess.Dekstop.Views;
+using System.Linq;
 
 namespace MegaChess.Dekstop.Converter
 {
@@ -118,7 +120,7 @@ namespace MegaChess.Dekstop.Converter
 					{
 						if (!figura.HaveUnrealSteep(board, lenght))
 						{
-							item.BorderBrush = Field.GetBorderBrushesColor();
+							item.BorderBrush = GameField.GetBorderBrushesColor();
 						}
 					}
 					catch (Exception) { }
@@ -140,7 +142,7 @@ namespace MegaChess.Dekstop.Converter
 				var figuraProperty = new СellProperty
 				{
 					Image = SelectImageRef(item),
-					Color = Field.GetColor(item , board),
+					Color = GameField.GetColor(item , board),
 					FiguraNow = item
 				};
 				Dispatcher.UIThread.InvokeAsync(() =>
@@ -229,6 +231,59 @@ namespace MegaChess.Dekstop.Converter
 				});
 				errorWindow.Show();
 			});			
+		}
+
+		public void ChangePawn(Pawn pawn, Board board)
+		{
+			var subject = new Subject<Figura>();
+			subject.Subscribe(ChangeFigura);
+			short[] counts = CountNums(board);
+
+			Dispatcher.UIThread.InvokeAsync(() =>
+			{
+				var windowPanel = new FigurasPanel(board.IsWhiteMove, counts, subject);
+				windowPanel.Topmost = true;
+				windowPanel.Show();				
+			}).Wait();
+			var figura = this.figura1;
+			while (this.figura1 == figura)
+			{
+				// здесь тоже будет таймер
+			}
+			board.ReplaceFigura(pawn, this.figura1);
+		}
+		private static short[] CountNums(Board board)
+		{
+			short[] counts = new short[4];
+			counts[0] = CountNewFiuguraNum(board, new Queen(board.IsWhiteMove, 2));
+			counts[1] = CountNewFiuguraNum(board, new Rook(board.IsWhiteMove, 2));
+			counts[2] = CountNewFiuguraNum(board, new Bishop(board.IsWhiteMove, 2));
+			counts[3] = CountNewFiuguraNum(board, new Knight(board.IsWhiteMove, 2));
+			return counts;
+		}
+		private static short CountNewFiuguraNum(Board board , Figura figura)
+		{
+			foreach (var item in board.GetFiguras().Where(x => x.IsMyFigura == figura.IsMyFigura))
+			{
+				if(item.Equals(figura))
+				{
+					return CountNewFiuguraNum(board, SpotFiguraType(figura));
+				}
+			}
+			return figura.Number;
+		}
+		private static Figura SpotFiguraType(Figura figura)
+		{
+			if (figura is Queen)
+				return new Queen(figura.IsMyFigura, (short)(figura.Number + 1));
+			else if (figura is Knight)
+				return new Knight(figura.IsMyFigura, (short)(figura.Number + 1));
+			else if (figura is Bishop)
+				return new Bishop(figura.IsMyFigura, (short)(figura.Number + 1));
+			else if (figura is Rook)
+				return new Rook(figura.IsMyFigura, (short)(figura.Number + 1));
+			else 
+				throw new Exception("Не правельный тип фигуры");
 		}
 	}
 }

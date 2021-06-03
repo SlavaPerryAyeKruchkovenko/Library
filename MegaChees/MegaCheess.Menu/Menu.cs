@@ -83,13 +83,13 @@ namespace MegaCheess.Menu
 			if (MenuDataBase.NewGameSpaceColor == MenuDataBase.HighlightColor)
 			{
 				printer.Clear();
-				chess.ChessLogic(true);
+				chess.ChessLogic(false,true);
 				return true;
 			}
 			if (MenuDataBase.ContinueSpaceColor == MenuDataBase.HighlightColor)
 			{
 				printer.Clear();
-				chess.ChessLogic(false);
+				chess.ChessLogic(false,false);
 				return true;
 			}
 			if (MenuDataBase.ScoreSpaceColor == MenuDataBase.HighlightColor)

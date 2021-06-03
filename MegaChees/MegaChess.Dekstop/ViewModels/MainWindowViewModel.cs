@@ -1,4 +1,5 @@
 
+using MegaChess.Dekstop.Models;
 using MegaChess.Dekstop.Views;
 
 namespace MegaChess.Dekstop.ViewModels
@@ -15,6 +16,7 @@ namespace MegaChess.Dekstop.ViewModels
 		}
 		private static void OpenGameWindow(bool vsCompute , bool isLoadGame)
 		{
+			GameField.SetSettings(vsCompute, isLoadGame);
 			var game = new GameWindow();
 			game.Show();
 		}

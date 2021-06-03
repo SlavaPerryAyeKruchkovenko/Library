@@ -27,11 +27,11 @@ namespace MegaChess.Dekstop.Views
 		}
 		private void NewGame(object sender, RoutedEventArgs e)
 		{
-			ShowGameWindow(this.vsComputer, false);
+			ShowGameWindow(this.vsComputer, true);
 		}
 		private void LoadGame(object sender, RoutedEventArgs e)
 		{
-			ShowGameWindow(this.vsComputer, true);
+			ShowGameWindow(this.vsComputer, false);
 		}
 		private void PlayVsComputer(object sender, RoutedEventArgs e)
 		{

@@ -20,8 +20,8 @@ namespace MegaChess.Dekstop.ViewModels
 		{
 			var board = new Board();
 			this.GameBorders = CreateBorders(board);
-			this.WhiteDiedBorders = CreateDiedFigures(true);
-			this.BlackDiedBorders = CreateDiedFigures(false);
+			this.WhiteDiedBorders = CreateDiedFigures(false);
+			this.BlackDiedBorders = CreateDiedFigures(true);
 
 			this.figura = new Subject<Figura>();
 			this.isWhiteMove = new Subject<bool>();
@@ -61,7 +61,7 @@ namespace MegaChess.Dekstop.ViewModels
 				var border = new Border();
 				border.Tapped += SelectFigura;
 				border.BorderThickness = new Thickness(5);
-				border.Background = Field.GetColor(item, board);
+				border.Background = GameField.GetColor(item, board);
 				borders.Add(border);
 			}		
 			return borders;
@@ -73,7 +73,7 @@ namespace MegaChess.Dekstop.ViewModels
 			{
 				var border = new Border
 				{
-					Background = Field.GetNoReferenceColor(isWhite)
+					Background = GameField.GetNoReferenceColor(isWhite)
 				};
 				borders.Add(border);
 			}						

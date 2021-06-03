@@ -105,6 +105,14 @@ namespace MegaChess.Logic
 				throw new EntryPointNotFoundException("Фигуру нельзя востановить");
 			}
 		}
+		public void ReplaceFigura(Figura figura1,Figura figura2)
+		{
+			if(figura1 is Pawn)
+			{
+				char[] coordinate = FoundFigureCoordinate(figura1);
+				this.ChessBoard[coordinate[0]][coordinate[1]] = figura2;
+			}		
+		}
 		private void AddDiedFigure(Figura died)// добовялем срубленную фигуру в правлеьный словарь
 		{
 			if(died.IsMyFigura.Value)

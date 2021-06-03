@@ -256,5 +256,10 @@ namespace MegaCheess.Menu
 			Console.WriteLine(ex);
 			Thread.Sleep(300);
 		}
+
+		public void ChangePawn(Pawn pawn, Board board)
+		{
+			
+		}
 	}
 }

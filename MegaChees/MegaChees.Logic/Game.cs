@@ -25,7 +25,7 @@ namespace MegaChess.Logic
 			this.startY = _startY;
 		}
 
-		async public void ChessLogic(bool isNewGame)
+		async public void ChessLogic(bool vsComputer , bool isNewGame)
 		{
 			try
 			{
@@ -62,14 +62,19 @@ namespace MegaChess.Logic
 					{
 						ChangeStartLocation(secondFigura);
 						this.board.MakeStep(firstFigura, secondFigura, false);
-						this.board.ChangeSideMode();
-						CheckOnCheck(this.board, firstFigura);
-
+						
 						if (firstFigura is Pawn pawn)
 						{
 							pawn.isFirstStep = false;
+							if (PawnFinishGameBoard(firstFigura, this.board))
+							{
+								this.drawer.ChangePawn(pawn, this.board);
+							}
 						}
+						this.board.ChangeSideMode();
+						CheckOnCheck(this.board, firstFigura);
 					}
+					SaveGame(this.board);
 				}
 				catch (Exception ex)
 				{
@@ -86,8 +91,19 @@ namespace MegaChess.Logic
 					{
 						this.board.TryAddImposibleMove(this.board.IsWhiteMove);
 					}						
-				}
-			SaveGame(this.board);
+				}		
+			}
+		}
+		private static bool PawnFinishGameBoard(Figura figura , Board board)
+		{
+			var location = board.FoundFigureCoordinate(figura);
+			if (figura.IsMyFigura.Value)
+			{
+				return location[0] == '8';
+			}
+			else
+			{
+				return location[0] == '1';
 			}
 		}
 		private static bool CheckOnCheck(Board board , Figura figure)

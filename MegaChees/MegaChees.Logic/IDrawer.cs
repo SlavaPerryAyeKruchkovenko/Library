@@ -12,5 +12,6 @@ namespace MegaChess.Logic
 		void CursorVisible(bool visible);
 		Point ConvertToLocationFormat(char i, char j);
 		void PrintError(string ex);
+		void ChangePawn(Pawn pawn, Board board);
 	}
 }
