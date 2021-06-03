@@ -115,6 +115,9 @@ namespace MegaChess.Logic
 			int count = 0;
 			foreach (var figura in board.GetFiguras().Where(x=> x.IsMyFigura == isWhite))
 			{
+				if (figura is King)
+					continue;
+
 				foreach (var enemy in board.GetFiguras().Where(x => x.IsMyFigura != isWhite))
 				{
 					Point lenght = board.CountLengh(figura, enemy);

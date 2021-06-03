@@ -3,6 +3,7 @@
         xmlns:vm="using:MegaChess.Dekstop.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:MegaChess.Dekstop.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MegaChess.Dekstop.Views.MainWindow"
         Icon="/Assets/Csol.Ico.png"
@@ -14,11 +15,7 @@
     </Style>    
     <Style Selector="Button.h1">
       <Setter Property="FontSize" Value="24"/>
-    </Style>
-    <Style Selector="Button.CenterContent">
-      <Setter Property="VerticalContentAlignment" Value="Center"/>
-      <Setter Property="HorizontalContentAlignment" Value="Center"/>
-    </Style>
+    </Style>   
     <Style Selector="Button.PanelMerge">
       <Setter Property="Margin" Value="0,30,0,0"/>
       <Setter Property="Width" Value="200"/>
@@ -35,14 +32,20 @@
     </Design.DataContext>   
     <StackPanel>
       <Image Source="avares://MegaChess.Dekstop/Assets/Megachess-logo.png" Classes="Logo"/>
-      <Button Content="Play vs people" Classes="h1 CenterContent PanelMerge"
-              />
-      <Button Content="With Computer" Classes="h1 CenterContent PanelMerge">
+      <Button Content="Play vs people" Classes="h1 CenterContent PanelMerge" Tapped="PlayVsComputer">
         <Button.Flyout>
           <MenuFlyout Placement="Bottom" ShowMode="TransientWithDismissOnPointerMoveAway">
-              <Button Content="NewGame" Classes="ContextBtn CenterContent" Tapped="OpenGame"/>
-              <Button Content="Continue" Classes="ContextBtn CenterContent" Tapped="OpenGame"/>
-          </MenuFlyout>          
+            <Button Content="NewGame" Classes="ContextBtn CenterContent" Tapped="NewGame"/>
+            <Button Content="Continue" Classes="ContextBtn CenterContent" Tapped="LoadGame"/>
+          </MenuFlyout>
+        </Button.Flyout>
+      </Button>
+      <Button Content="With Computer" Classes="h1 CenterContent PanelMerge" Tapped="PlayVsPeople">
+        <Button.Flyout>
+          <MenuFlyout Placement="Bottom" ShowMode="TransientWithDismissOnPointerMoveAway">
+            <Button Content="NewGame" Classes="ContextBtn CenterContent" Tapped="NewGame"/>
+            <Button Content="Continue" Classes="ContextBtn CenterContent" Tapped="LoadGame"/>
+          </MenuFlyout>  
         </Button.Flyout>
       </Button> 
       <Button Content="Settings" Classes="h1 CenterContent PanelMerge"/>

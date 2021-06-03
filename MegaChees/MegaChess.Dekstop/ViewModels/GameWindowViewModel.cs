@@ -10,6 +10,7 @@ using System.Reactive.Subjects;
 using System.Linq;
 using Avalonia.Layout;
 using System.Collections.Generic;
+using System;
 
 namespace MegaChess.Dekstop.ViewModels
 {
@@ -22,14 +23,16 @@ namespace MegaChess.Dekstop.ViewModels
 			this.WhiteDiedBorders = CreateDiedFigures(board, true);
 			this.BlackDiedBorders = CreateDiedFigures(board, false);
 
-			this.figura = new Subject<Figura>();			
+			this.figura = new Subject<Figura>();
+			this.isWhiteMove = new Subject<bool>();
+			this.isWhiteMove.Subscribe<bool>(ChangeSide);
 
 			board = null;
 			ObservableCollection<Border>[] bordersArray =
 			{
 				GameBorders,WhiteDiedBorders,BlackDiedBorders
 			};
-			this.game = new DekstopGameLogic(new Drawer(bordersArray , this.figura));
+			this.game = new DekstopGameLogic(new Drawer(bordersArray , this.figura , this.isWhiteMove));
 			//this.SelectFigura = ReactiveCommand.Create(new Action<Figura>((x) =>
 			//{
 			//	SelectedFigura = x;
@@ -37,12 +40,19 @@ namespace MegaChess.Dekstop.ViewModels
 			this.game.StartGame();
 
 		}
-		private Subject<Figura> figura;
+		private readonly Subject<Figura> figura;
+		private readonly Subject<bool> isWhiteMove;
 
 		private readonly DekstopGameLogic game;
+		private bool isWhite;
 		private ObservableCollection<Border> GameBorders { get; }
 		public ObservableCollection<Border> BlackDiedBorders { get; }
 		public ObservableCollection<Border> WhiteDiedBorders { get; }
+
+		private void ChangeSide(bool isWhite)
+		{
+			this.isWhite = isWhite;
+		}
 		private ObservableCollection<Border> CreateBorders(Board board)
 		{		
 			var borders = new ObservableCollection<Border>();
@@ -63,10 +73,8 @@ namespace MegaChess.Dekstop.ViewModels
 			{
 				var border = new Border
 				{
-					BorderBrush = Field.GetNoReferenceColor(!isWhite),
-					Background = Field.GetNoReferenceColor(isWhite),
-					BorderThickness = new Thickness(5)
-			};
+					Background = Field.GetNoReferenceColor(isWhite)
+				};
 				borders.Add(border);
 			}
 			return borders;
@@ -75,10 +83,11 @@ namespace MegaChess.Dekstop.ViewModels
 		{		
 			var border = sender as Border;
 			var figura = (Figura)border.DataContext;
-			this.figura.OnNext(figura);
-
-			if (figura.IsMyFigura != null)
+			if (figura.IsMyFigura != null && figura.IsMyFigura == this.isWhite) 
+			{
 				border.BorderBrush = Brushes.Yellow;
+			}
+			this.figura.OnNext(figura);			
 		}
 		public ReadOnlyObservableCollection<Label> CreatePanel(char a , char b)
 		{

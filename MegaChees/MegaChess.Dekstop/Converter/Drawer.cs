@@ -20,11 +20,12 @@ namespace MegaChess.Dekstop.Converter
 {
 	class Drawer : BaseModel, IDrawer
 	{
-		public Drawer(ObservableCollection<Border>[] _borders , IObservable<Figura> _figura)
+		public Drawer(ObservableCollection<Border>[] _borders , IObservable<Figura> _figura , IObserver<bool> isWhiteMove)
 		{
 			if (_borders.Length != 3)
 				throw new Exception("В параметре нужно передать 3 коллекции: Игровое поле, белые мертвые фигуры , черные мертвые фигуры");
 
+			this.whiteOrBlackObserver = isWhiteMove;
 			this.gameBorders = _borders[0];
 			this.diedWhiteBorders = _borders[1];
 			this.diedBlackBorders = _borders[2];
@@ -34,6 +35,7 @@ namespace MegaChess.Dekstop.Converter
 		private readonly ObservableCollection<Border> gameBorders;
 		private readonly ObservableCollection<Border> diedWhiteBorders;
 		private readonly ObservableCollection<Border> diedBlackBorders;
+		private readonly IObserver<bool> whiteOrBlackObserver;
 		private Figura figura1;
 		private Board board;
 		private bool isFirstMove = true;
@@ -87,15 +89,16 @@ namespace MegaChess.Dekstop.Converter
 		}
 
 		public Figura MoveCursor(int x, int y, Board board)
-		{			
+		{
+			this.whiteOrBlackObserver.OnNext(board.IsWhiteMove);
 			var figura = this.figura1;
 			while(this.figura1 == figura)
 			{
 				// тут будет таймер
 			}
 			if(this.isFirstMove)
-			{
-				if (this.figura1 is Empty)
+			{				
+				if (this.figura1 is Empty || this.figura1.IsMyFigura!=board.IsWhiteMove)// если выбирается фигура , не того человека кто ходит происходит скип
 				{
 					return MoveCursor(x, y, board);
 				}				

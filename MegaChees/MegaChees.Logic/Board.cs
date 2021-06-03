@@ -12,7 +12,7 @@ namespace MegaChess.Logic
 		[JsonProperty]
 		private Dictionary<char, Dictionary<char, Figura>> DeadBlackFigures { get; }
 		[JsonProperty]
-		private Dictionary<char, Dictionary<char, Figura>> DeadWhitekFigures { get; }
+		private Dictionary<char, Dictionary<char, Figura>> DeadWhiteFigures { get; }
 		[JsonProperty]
 		public bool IsWhiteMove { get; private set; } = true;
 		[JsonProperty]
@@ -35,7 +35,7 @@ namespace MegaChess.Logic
 				{ '2', new Dictionary<char, Figura> { { 'A', new Pawn(true,1) }, { 'B', new Pawn(true,2) }, { 'C', new Pawn(true,3) }, { 'D',new Pawn(true,4) }, { 'E', new Pawn(true,5) }, { 'F', new Pawn(true,6) }, { 'G', new Pawn(true,7) }, { 'H',new Pawn(true,8) } } },
 				{ '1', new Dictionary<char, Figura> { { 'A', new Rook(true,1)  }, { 'B', new Knight(true,1) }, { 'C', new Bishop(true,1)}, { 'D', new Queen(true,1) }, { 'E', new King(true,1) }, { 'F', new Bishop(true,2) }, { 'G', new Knight(true,2) }, { 'H', new Rook(true,2)} } }
 			};
-			var deadFigures = new Dictionary<char, Dictionary<char, Figura>>()
+			this.DeadBlackFigures = new Dictionary<char, Dictionary<char, Figura>>()
 			{
 				{ '1',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
 				{ '2',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
@@ -46,8 +46,17 @@ namespace MegaChess.Logic
 				{ '7',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
 				{ '8',new Dictionary<char, Figura> { { '1', null }, { '2', null } } }
 			};
-			this.DeadBlackFigures = deadFigures;
-			this.DeadWhitekFigures = deadFigures;
+			this.DeadWhiteFigures = new Dictionary<char, Dictionary<char, Figura>>()
+			{
+				{ '1',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '2',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '3',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '4',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '5',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '6',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '7',new Dictionary<char, Figura> { { '1', null }, { '2', null } } },
+				{ '8',new Dictionary<char, Figura> { { '1', null }, { '2', null } } }
+			};
 		}
 		public void ChangeSideMode() => this.IsWhiteMove = !this.IsWhiteMove;
 		public Figura GetFigure(char y, char x) => this.ChessBoard[y][x];
@@ -116,18 +125,18 @@ namespace MegaChess.Logic
 		{
 			if(died.IsMyFigura.Value)
 			{
-				AddFigure(this.DeadWhitekFigures, died);
+				AddFigure(this.DeadBlackFigures, died);
 			}
 			else
 			{
-				AddFigure(this.DeadWhitekFigures, died);
+				AddFigure(this.DeadWhiteFigures, died);
 			}
 		}
 		private void DeleteDiedFigure(Figura died)// удаляем срубленную фигуру
 		{
 			Dictionary<char, Dictionary<char, Figura>> board;
 			if (died.IsMyFigura.Value)
-				board = this.DeadWhitekFigures;
+				board = this.DeadWhiteFigures;
 			else
 				board = this.DeadBlackFigures;
 
@@ -135,7 +144,7 @@ namespace MegaChess.Logic
 			{
 				for (char j = '1'; j <= '2'; j++)
 				{
-					if (board[i][j].Equals(died))
+					if (board[i][j] != null && board[i][j].Equals(died)) 
 					{
 						board[i][j] = null;
 						return;
@@ -185,7 +194,7 @@ namespace MegaChess.Logic
 				{
 					if(isWhite)
 					{
-						yield return this.DeadWhitekFigures[i][j];
+						yield return this.DeadWhiteFigures[i][j];
 					}						
 					else
 					{
