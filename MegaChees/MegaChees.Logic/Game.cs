@@ -25,18 +25,18 @@ namespace MegaChess.Logic
 			this.startY = _startY;
 		}
 
-		async public void ChessLogic(bool vsComputer , bool isNewGame)
+		public void ChessLogic(bool vsComputer , bool isNewGame)
 		{
 			try
 			{
 				this.drawer.CursorVisible(true);
 				if (isNewGame)
 				{
-					NewGamePlay();
+					NewGamePlay(vsComputer);
 				}
 				else
 				{
-					LoadGamePlay();
+					LoadGamePlay(vsComputer);
 				}
 			}
 			catch (Exception ex)
@@ -45,17 +45,22 @@ namespace MegaChess.Logic
 				this.drawer.Clear();
 			}
 		}
-		private void NewGamePlay()
+		private void NewGamePlay(bool vsComputer)
 		{
+			ChessBot bot = null;
+			if(vsComputer)
+			{
+				bot = new ChessBot(this.board);
+			}
 			while (IsGameFinish(this.board))
 			{
 				try
 				{
 					this.drawer.PrintBoard(this.board);
 
-					var firstFigura = this.drawer.MoveCursor(startX, startY, this.board);
-					ChangeStartLocation(firstFigura);
-					var secondFigura = this.drawer.MoveCursor(startX, startY, this.board);
+					Figura[] figuras = MakeStep(vsComputer, bot);
+					var firstFigura = figuras[0];
+					var secondFigura = figuras[1];
 
 					Point lengh = this.board.CountLengh(firstFigura, secondFigura);
 					if (this.board.IsWhiteMove == firstFigura.IsMyFigura &&!firstFigura.HaveUnrealSteep(this.board, lengh))
@@ -93,6 +98,21 @@ namespace MegaChess.Logic
 					}						
 				}		
 			}
+		}
+		private Figura[] MakeStep(bool vsComputer, ChessBot bot)
+		{
+			Figura firstFigura, secondFigura;
+			if (!vsComputer || this.board.IsWhiteMove)
+			{
+				firstFigura = this.drawer.MoveCursor(this.startX, this.startY, board);
+				ChangeStartLocation(firstFigura);
+				secondFigura = this.drawer.MoveCursor(this.startX, this.startY, board);
+				return new Figura[] { firstFigura, secondFigura };
+			}
+			else
+			{
+				return bot.MakeStep();
+			}			
 		}
 		private static bool PawnFinishGameBoard(Figura figura , Board board)
 		{
@@ -224,7 +244,7 @@ namespace MegaChess.Logic
 			}
 			throw new Exception($"{figureColor} win!!!");
 		}
-		private void LoadGamePlay()
+		private void LoadGamePlay(bool vsComputer)
 		{
 			string path = Environment.CurrentDirectory + "\\save.json";
 			try
@@ -240,7 +260,7 @@ namespace MegaChess.Logic
 			{
 				CreateFile(path);
 			}			
-			NewGamePlay();
+			NewGamePlay(vsComputer);
 		}
 		private static void SaveGame(Board board)
 		{

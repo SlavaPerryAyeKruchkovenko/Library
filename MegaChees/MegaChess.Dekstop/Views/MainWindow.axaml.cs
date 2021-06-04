@@ -35,11 +35,11 @@ namespace MegaChess.Dekstop.Views
 		}
 		private void PlayVsComputer(object sender, RoutedEventArgs e)
 		{
-			this.vsComputer = true;
+			this.vsComputer = false;
 		}
 		private void PlayVsPeople(object sender, RoutedEventArgs e)
 		{
-			this.vsComputer = false;
+			this.vsComputer = true;
 		}
 	}
 }
