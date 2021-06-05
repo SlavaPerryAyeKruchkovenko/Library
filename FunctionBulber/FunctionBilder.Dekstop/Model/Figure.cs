@@ -70,11 +70,26 @@ namespace FunctionBilder.Dekstop.Model
 				Content = content,
 				FontSize = fontSize,
 				VerticalContentAlignment = Avalonia.Layout.VerticalAlignment.Stretch,
-				HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Stretch
+				HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Stretch,
+				Margin = new Thickness(coordinate.X, coordinate.Y)
 			};
-			Canvas.SetLeft(myLabel, coordinate.X);
-			Canvas.SetTop(myLabel, coordinate.Y);
+
 			return myLabel;
+		}
+	}
+	class MyToolTip : MyControler
+	{
+		public override Control Create(Point coordinate, string content, double fontSize)
+		{
+			var myToolTip = new ToolTip
+			{
+				Content = content,
+				FontSize = fontSize,
+				IsVisible = true,
+				BorderThickness = new Thickness(4),
+				Margin = new Thickness(coordinate.X, coordinate.Y)
+			};
+			return myToolTip;
 		}
 	}
 }
