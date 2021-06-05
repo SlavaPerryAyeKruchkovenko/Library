@@ -1,7 +1,9 @@
-﻿using Avalonia;
-using FunctionBilder.Dekstop.View;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.ReactiveUI;
+using System;
 
-namespace FunctionBilder.Dekstop
+namespace MegaChess.Dekstop
 {
 	class Program
 	{
@@ -15,7 +17,7 @@ namespace FunctionBilder.Dekstop
 		public static AppBuilder BuildAvaloniaApp()
 			=> AppBuilder.Configure<App>()
 				.UsePlatformDetect()
-				.LogToTrace();
-
+				.LogToTrace()
+				.UseReactiveUI();
 	}
 }

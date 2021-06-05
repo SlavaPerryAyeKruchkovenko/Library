@@ -1,14 +1,17 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 
 namespace MegaChess.Logic
 {
 	public interface IDrawer
 	{
-		void PrintBoard(Dictionary<char, Dictionary<char, Figura>> board);
+		void PrintBoard(Board board);
 		void Clear();
-		void MoveCursor(int x, int y, Dictionary<char, Dictionary<char, Figura>> board, out int newX, out int newY);
-		char ConvertToTKeyFormat(int x, int y, out char key);
+		Figura MoveCursor(int x, int y, Board board);
+		char[] ConvertToTKeyFormat(int x, int y);
 		void CursorVisible(bool visible);
-		int ConvertToLocationFormat(char i, char j, out int y);
+		Point ConvertToLocationFormat(char i, char j);
+		void PrintError(string ex);
+		void ChangePawn(Pawn pawn, Board board);
 	}
 }

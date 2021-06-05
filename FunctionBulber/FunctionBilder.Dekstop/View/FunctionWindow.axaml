@@ -7,38 +7,35 @@
         Title="Function"
         WindowState="Normal"
         WindowStartupLocation="CenterScreen"
-        Icon="/icons/functionIcon.png">
+        >
   <Grid RowDefinitions="9*,*">
-    <DockPanel  PointerPressed="MousePress" PointerReleased="MouseUnpress">
+    <DockPanel  PointerPressed="MousePress" PointerReleased="MouseUnpress">   
       <Canvas x:Name="BigFunctionCanvas" PropertyChanged="Canvas_SizeChanged"
-              PointerWheelChanged="ZoomGraphick" PointerMoved="FocusCoordinate"
-              DoubleTapped="BackToStart" Background="#D46AD0">
+              PointerWheelChanged="ZoomGraphick" Background="#D46AD0">
       </Canvas>
-    </DockPanel>
-    <Grid ColumnDefinitions="*,*" Background="#E42AFF" Grid.Row="1">
-      <Grid ColumnDefinitions="*,*">
-        <Button Grid.Column="0" Content="Add new function"
-                Click="AddNewGraphic" Classes="BigButton Purple Round"/>
-        <Button Grid.Column="1" Content="Delete function"
-                Classes="BigButton Purple Round" Click="DeleteAnyGraphic"/>
-      </Grid>
-      <Grid ColumnDefinitions="*,4*,*,4*,10*" Grid.Column="1">
-        <CheckBox x:Name="IsNeedEllipse" Click="ClickCheckBoxEllipse" VerticalAlignment="Center"/>
-        <Label Classes="Designation" Grid.Column="1">
-          Points
-        </Label>
-        <CheckBox x:Name="IsNeedLabel" Click="ClickCheckBoxLabel" VerticalAlignment="Center" Grid.Column="2"/>
-        <Label Classes="Designation" Grid.Column="3">
-          Coordinates
-        </Label>
-        <StackPanel Grid.Column="4">
-          <Label x:Name="ScaleLabel" Content="{Binding Slider.Value , StringFormat=Scale: {0} , Mode=OneWay}" Classes="shortcut"/>
-          <Slider x:Name="SliderScale" PointerMoved="SliderZoom"
-                Value="40" Minimum="1" Maximum="100" Foreground="Red"
-                  Margin="0,-10,0,0">
-          </Slider>
-        </StackPanel>
-      </Grid>
-    </Grid>
+    </DockPanel>  
+   <Grid ColumnDefinitions="*,*" Background="#D46AA0" Grid.Row="1">
+     <Button Grid.Column="0" Content="Add new function" Click="AddNewGraphick"
+             Name="addBtn" Background="Gray" Grid.ColumnSpan="1"
+             VerticalAlignment="Stretch"
+             HorizontalAlignment="Stretch"
+             VerticalContentAlignment="Center"
+             HorizontalContentAlignment="Center">       
+     </Button>
+     <Grid ColumnDefinitions="*,8*,*,8*" Grid.Column="1">
+       <CheckBox x:Name="IsNeedEllipse" VerticalAlignment="Center"/>
+       <Label VerticalAlignment="Center" HorizontalContentAlignment="Center"
+          HorizontalAlignment="Left" VerticalContentAlignment="Center"
+          Grid.Column="1">
+         Point Visibile
+       </Label>
+       <CheckBox x:Name="IsNeedLabel" VerticalAlignment="Center" Grid.Column="2"/>
+       <Label VerticalAlignment="Center" HorizontalContentAlignment="Center"
+          HorizontalAlignment="Left" VerticalContentAlignment="Center"
+          Grid.Column="3">
+         Coordinates Visibile
+       </Label>
+     </Grid>      
+   </Grid>  
   </Grid>
 </Window>

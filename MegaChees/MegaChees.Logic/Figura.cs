@@ -1,259 +1,445 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
 
 namespace MegaChess.Logic
 {
-	public abstract class Figura
+	public abstract class Figura: INotifyPropertyChanged
 	{
-		public abstract bool IsMyFigura { get; protected set; }
-		public Figura(bool figura)
+		[JsonProperty]
+		public abstract bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
+		public abstract short Number { get; protected set; }
+		public Figura(bool? figura, short num)
 		{
-			IsMyFigura = figura;
+			this.IsMyFigura = figura;
+			this.Number = num;
 		}
 		public abstract char ShorName { get; }
-		public abstract bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int dX, int dY, char a, char b);
 
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public abstract bool IsCorrectMove(Board board, Point lenght);
+		public bool HaveUnrealSteep(Board board, Point coordinate)
+		{
+			if(!this.IsCorrectMove(board, coordinate))
+			{
+				throw ThrowUnrealStep();
+			}
+			else
+			{
+				char[] coordinates = board.FoundFigureCoordinate(this);
+				Figura figura = board.GetFigure((char)(coordinates[0] + coordinate.Y), (char)(coordinates[1] + coordinate.X));
+				board.MakeStep(this, figura, false);
+				foreach (var item in board.GetFiguras().Where(x=>x.IsMyFigura == !this.IsMyFigura.Value))
+				{
+					Point lenght = board.CountLengh(item, new King(this.IsMyFigura.Value, 1));
+					if (item.IsCorrectMove(board, lenght))
+					{
+						board.MakeStep(this, figura, true);
+						throw new AccessViolationException("Impossible move!");
+					}
+				}
+				board.MakeStep(this, figura, true);					
+			}		
+			return false;
+		}
+		public static bool SingleColorsFigures(Figura figura1, Figura figura2)
+		{
+			return figura1.IsMyFigura == figura2.IsMyFigura;
+		}
+		protected static bool HaventEnemyOnPosition(char[] point, Point location, Board board)
+		{
+				return Empty.IsEmpty(board, point, location);
+		}
+		public static bool IsCorrectCoordinate(char a, char b) => a <= '8' && a >= '1' && b <= 'H' && b >= 'A';
+		public override string ToString() => this.ShorName.ToString();
+		protected Exception ThrowUnrealStep() => new Exception("Невозможный ход");
 	}
 	public class Pawn : Figura
 	{
-		public override bool IsMyFigura { get; protected set; }
-		public Pawn(bool figura) : base(figura)
+		[JsonProperty]
+		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
+		public override short Number { get; protected set; }
+		public Pawn(bool? figura, short num):base(figura,num)
 		{
-			IsMyFigura = figura;
+			this.IsMyFigura = figura;
+			this.Number = num;
 		}
 		public bool isFirstStep = true;
-		public override char ShorName => 'P';
-		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int dX, int dY, char a, char b)
+		public override char ShorName => 'P';		
+
+		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			bool canDoStep = true;
-			if (dX == 0)
+			var pawnCoordinate = board.FoundFigureCoordinate(this);
+			if(Math.Abs(lenght.X) > 1 || Math.Abs(lenght.Y) > 2)
 			{
-				if (isFirstStep && CheckCorrectMoveForDifferent(dY, 2))
+				return false;
+			}
+			if (lenght.X == 0)
+			{
+				if (this.isFirstStep && CheckCorrectMoveForDifferent(lenght.Y, 2))
 				{
-					for (int j = 1; j <= Math.Abs(dY); j++)
+					for (int j = 1; j <= Math.Abs(lenght.Y); j++)
 					{
-						if (HaveEnemyOnPosition(a, b, j, 0, board, false))
+						int step = j * lenght.Y / Math.Abs(lenght.Y);
+						bool canDoStep = HaventEnemyOnPosition(pawnCoordinate, new Point(0, step), board);
+						if (!canDoStep)
 						{
-							canDoStep = false;
-						}
+							return false;
+						}							
 					}
-					if (canDoStep)
-					{
-						isFirstStep = false;
-					}
-					return canDoStep;
+					
+					return true;
 				}
-				else if (CheckCorrectMoveForDifferent(dY, 1))
+				else if (CheckCorrectMoveForDifferent(lenght.Y, 1))
 				{
-					return HaveEnemyOnPosition(a, b, 1, 0, board, true);
+					int step = lenght.Y / Math.Abs(lenght.Y);
+					return HaventEnemyOnPosition(pawnCoordinate, new Point(0, step), board);
 				}
 			}
-			else if (CheckCorrectMoveForDifferent(dY, 1) && Math.Abs(dX) == 1)
-				return CanDestroy(a, b, dX, board);
-
+			else if (CheckCorrectMoveForDifferent(lenght.Y, 1) && Math.Abs(lenght.X) == 1)
+			{
+				//проверка что в конечной точке стоит враг
+				var figura = board.GetFigure((char)(pawnCoordinate[0] + lenght.Y), (char)(pawnCoordinate[1] + lenght.X));
+				return !SingleColorsFigures(this, figura) && !(figura is Empty);
+			}
 			return false;
 		}
 		private bool CheckCorrectMoveForDifferent(int dY, int distance)
 		{
 			if (Math.Abs(dY) <= distance)
-				if (IsMyFigura)
+				if (this.IsMyFigura.Value)
 					return dY > 0;
 				else
 					return dY < 0;
 			else
 				return false;
-		}
-		private bool HaveEnemyOnPosition(char a, char b, int step1, int step2,
-			Dictionary<char, Dictionary<char, Figura>> board, bool equal)
+		}		
+		public override bool Equals(object obj)
 		{
-			if (!equal)
-				if (IsMyFigura)
-					return board[(char)(a + step1)][(char)(b + step2)] != null;
-				else
-					return board[(char)(a - step1)][(char)(b + step2)] != null;
-			else
-				if (IsMyFigura)
-				return board[(char)(a + step1)][(char)(b + step2)] == null;
-			else
-				return board[(char)(a - step1)][(char)(b + step2)] == null;
-		}
-		private bool CanDestroy(char a, char b, int step,
-			Dictionary<char, Dictionary<char, Figura>> board)
-		{
-			if (HaveEnemyOnPosition(a, b, 1, step, board, false))
-				if (IsMyFigura)
-					return board[(char)(a + 1)][(char)(b + step)].IsMyFigura
-						!= board[a][b].IsMyFigura;
-				else
-					return board[(char)(a - 1)][(char)(b + step)].IsMyFigura
-						!= board[a][b].IsMyFigura;
-			else
+			if (!(obj is Pawn))
+			{
 				return false;
+			}
+			var figure = (Pawn)obj;
+			return SingleColorsFigures(this,figure) && figure.Number == this.Number;
 		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(IsMyFigura, ShorName);
+		}	
 	}
 	public class Rook : Figura
 	{
-		public override bool IsMyFigura { get; protected set; }
-		public Rook(bool figura) : base(figura)
+		[JsonProperty]
+		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
+		public override short Number { get; protected set; }
+		public Rook(bool? figura, short num) : base(figura, num)
 		{
-			IsMyFigura = figura;
+			this.IsMyFigura = figura;
+			this.Number = num;
 		}
 		public override char ShorName => 'R';
-		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int dX, int dY, char a, char b)
+		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			if (dX == 0 && dY != 0)
+			var rookCoordinate = board.FoundFigureCoordinate(this);
+			return IsCorrectMove2(board, lenght, rookCoordinate);
+		}
+		internal static bool IsCorrectMove2(Board board, Point lenght, char[] point)
+		{			
+			if((lenght.X == 0 || lenght.Y == 0) && IsCorrectCoordinate(point[0],point[1]))
 			{
-				if (CheckObstacles(dY, board, a, b, true))
-					return CanDoStep(board, a, b, dY, 0);
-			}
-			else if (dX != 0 && dY == 0)
-			{
-				if (CheckObstacles(dX, board, a, b, false))
-					return CanDoStep(board, a, b, 0, dX);
-			}
+				if (lenght.X == 0 && lenght.Y != 0)
+				{
+					if (CheckObstacles(lenght.Y, board, point, true))
+						return CanDoStep(board, point[0], point[1], lenght.Y, 0);
+				}
+				else if (lenght.X != 0 && lenght.Y == 0)
+				{
+					if (CheckObstacles(lenght.X, board, point, false))
+						return CanDoStep(board, point[0], point[1], 0, lenght.X);
+				}
+			}		
 			return false;
 		}
-		private static bool CheckObstacles(int dCoordinate, Dictionary<char, Dictionary<char, Figura>> board, char a, char b, bool moveOnY)
+		private static bool CheckObstacles(int dCoordinate, Board board, char[] point, bool moveOnY)
 		{
 			bool canDoStep = true;
 			for (int i = 1; i < Math.Abs(dCoordinate); i++)
 			{
+				int step = i * dCoordinate / Math.Abs(dCoordinate);
 				if (moveOnY)
 				{
-					if (dCoordinate > 0)
-					{
-						if (board[(char)(a + i)][b] != null)
-							canDoStep = false;
-					}
-					else
-					if (board[(char)(a - i)][b] != null)
-						canDoStep = false;
+					canDoStep = HaventEnemyOnPosition(point, new Point(0, step), board);
 				}
 				else
 				{
-					if (dCoordinate > 0)
-					{
-						if (board[a][(char)(b + i)] != null)
-							canDoStep = false;
-					}
-					else
-					if (board[a][(char)(b - i)] != null)
-						canDoStep = false;
+					canDoStep = HaventEnemyOnPosition(point, new Point(step, 0), board);
 				}
+				if (!canDoStep)
+				{
+					return false;
+				}					
 			}
 			return canDoStep;
 		}
-		private bool CanDoStep(Dictionary<char, Dictionary<char, Figura>> board, char a, char b, int step1, int step2)
+		private static bool CanDoStep(Board board, char a, char b, int step1, int step2)
 		{
-			return board[(char)(a + step1)][(char)(b + step2)] == null
-				|| board[(char)(a + step1)][(char)(b + step2)].IsMyFigura
-				!= board[a][b].IsMyFigura;
+			Figura figura1 = board.GetFigure((char)(a + step1), (char)(b + step2));
+			Figura figura2 = board.GetFigure(a, b);
+			return figura1 is Empty || !SingleColorsFigures(figura1, figura2);
+		}
+		public override bool Equals(object obj)
+		{
+			if (!(obj is Rook))
+			{
+				return false;
+			}
+			var figure = (Rook)obj;
+			return SingleColorsFigures(figure, this) && figure.Number == this.Number;
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(IsMyFigura, ShorName);
 		}
 	}
 	public class Bishop : Figura
 	{
-		public override bool IsMyFigura { get; protected set; }
-		public Bishop(bool figura) : base(figura)
+		[JsonProperty]
+		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
+		public override short Number { get; protected set; }
+		public Bishop(bool? figura, short num) : base(figura, num)
 		{
-			IsMyFigura = figura;
+			this.IsMyFigura = figura;
+			this.Number = num;
 		}
 		public override char ShorName => 'B';
-		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int dX, int dY, char a, char b)
+		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			if (Math.Abs(dX) == Math.Abs(dY))
-				if (CheckObstacles(board, a, b, dX, dY))
-					return board[(char)(a + dY)][(char)(b + dX)] == null || board[(char)(a + dY)][(char)(b + dX)].IsMyFigura != board[a][b].IsMyFigura;
+			var bishopCoordinate = board.FoundFigureCoordinate(this);
+			return IsCorrectMove2(board, lenght, bishopCoordinate);
+		}
+		internal static bool IsCorrectMove2(Board board, Point lenght , char[] point)
+		{
+			if (Math.Abs(lenght.X) == Math.Abs(lenght.Y) && IsCorrectCoordinate(point[0], point[1]))
+				if (CheckObstacles(board, point, lenght.X, lenght.Y))
+					return !SingleColorsFigures(board.GetFigure((char)(point[0] + lenght.Y), (char)(point[1] + lenght.X)), board.GetFigure(point[0], point[1]));
 			return false;
 		}
-		private static bool CheckObstacles(Dictionary<char, Dictionary<char, Figura>> board,
-			char a, char b, int lengthX, int lengthY)
+		private static bool CheckObstacles(Board board, char[] point, int lengthX, int lengthY)
 		{
-			bool canDoStep = true;
 			for (int i = 1; i < Math.Abs(lengthX); i++)
 			{
 				if (lengthX > 0 && lengthY > 0)
-					if (board[(char)(a + i)][(char)(b + i)] != null)
-						canDoStep = default;
-
-					else if (lengthX > 0 && lengthY < 0)
-						if (board[(char)(a - i)][(char)(b + i)] != null)
-							canDoStep = default;
-
-						else if (lengthX < 0 && lengthY > 0)
-							if (board[(char)(a + i)][(char)(b - i)] != null)
-								canDoStep = default;
-
-							else if (lengthX < 0 && lengthY < 0)
-								if (board[(char)(a - i)][(char)(b - i)] != null)
-									canDoStep = default;
+				{
+					if (!Empty.IsEmpty(board, point, new Point(i, i)))
+					{
+						return false;
+					}
+						
+				}					
+				else if (lengthX > 0 && lengthY < 0)
+				{
+					if (!Empty.IsEmpty(board, point, new Point(i, -i)))
+					{
+						return false;
+					}						
+				}
+				else if (lengthX < 0 && lengthY > 0)
+				{
+					if (!Empty.IsEmpty(board, point, new Point(-i, i)))
+					{
+						return false;
+					}
+				}	
+				else if (lengthX < 0 && lengthY < 0)
+				{
+					if (!Empty.IsEmpty(board, point, new Point(-i, -i)))
+					{
+						return false;
+					}
+				}				
 			}
-
-			return canDoStep;
+			return true;
+		}
+		public override bool Equals(object obj)
+		{
+			if (!(obj is Bishop))
+			{
+				return false;
+			}
+			var figure = (Bishop)obj;
+			return SingleColorsFigures(figure , this) && figure.Number == this.Number;
 		}
 
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(IsMyFigura, ShorName);
+		}
 	}
 	public class King : Figura
 	{
-		public override bool IsMyFigura { get; protected set; }
-		public King(bool figura) : base(figura)
+		[JsonProperty]
+		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
+		public override short Number { get; protected set; }
+		public King(bool? figura, short num) : base(figura, num)
 		{
-			IsMyFigura = figura;
+			this.IsMyFigura = figura;
+			this.Number = num;
 		}
 		public override char ShorName => 'K';
-		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int dX, int dY, char a, char b)
+		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			if (Math.Abs(dY) <= 1 && Math.Abs(dX) <= 1)
-				return board[(char)(a + dY)][(char)(b + dX)] == null ||
-					board[(char)(a + dY)][(char)(b + dX)].IsMyFigura !=
-					board[a][b].IsMyFigura;
-
+			if (Math.Abs(lenght.Y) <= 1 && Math.Abs(lenght.X) <= 1)
+			{
+				var kingCoordinate = board.FoundFigureCoordinate(this);
+				char a = (char)(kingCoordinate[0] + lenght.Y);
+				char b = (char)(kingCoordinate[1] + lenght.X);
+				if(IsCorrectCoordinate(a, b))
+				{
+					return !SingleColorsFigures(board.GetFigure(a, b), board.GetFigure(kingCoordinate[0], kingCoordinate[1]));
+				}				
+			}
 			return false;
 		}
+		public override bool Equals(object obj)
+		{
+			if (!(obj is King))
+			{
+				return false;
+			}
+			var figure = (King)obj;
+			return SingleColorsFigures(figure, this) && figure.Number == this.Number;
+		}
 
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(IsMyFigura, ShorName);
+		}
 	}
 	public class Queen : Figura
 	{
-		public override bool IsMyFigura { get; protected set; }
-		public Queen(bool figura) : base(figura)
+		[JsonProperty]
+		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
+		public override short Number { get; protected set; }
+		public Queen(bool? figura, short num) : base(figura, num)
 		{
-			IsMyFigura = figura;
+			this.IsMyFigura = figura;
+			this.Number = num;
 		}
 		public override char ShorName => 'Q';
-		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int dX, int dY, char a, char b)
+		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			if (dX == 0 || dY == 0)
+			if(Math.Abs(lenght.X) == Math.Abs(lenght.Y) || lenght.X==0 || lenght.Y ==0)
 			{
-				Rook queen = new Rook(true);
-				return queen.IsCorrectMove(board, dX, dY, a, b);
-			}
-			else
-			{
-				Bishop queen = new Bishop(true);
-				return queen.IsCorrectMove(board, dX, dY, a, b);
-			}
+				var queenCoordinate = board.FoundFigureCoordinate(this);
+				if (lenght.X == 0 || lenght.Y == 0)
+				{
+					return Rook.IsCorrectMove2(board, lenght, queenCoordinate);
+				}
+				else
+				{
+					return Bishop.IsCorrectMove2(board, lenght, queenCoordinate);
+				}
 
+			}
+			return false;
 		}
-
+		public override bool Equals(object obj)
+		{
+			if (!(obj is Queen))
+			{
+				return false;
+			}
+			var figure = (Queen)obj;
+			return SingleColorsFigures(figure, this) && figure.Number == this.Number;
+		}
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(IsMyFigura, Number);
+		}
 	}
 	public class Knight : Figura
 	{
-		public override bool IsMyFigura { get; protected set; }
-		public Knight(bool figura) : base(figura)
+		[JsonProperty]
+		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
+		public override short Number { get; protected set; }
+		public Knight(bool? figura, short num) : base(figura, num)
 		{
-			IsMyFigura = figura;
+			this.IsMyFigura = figura;
+			this.Number = num;
 		}
 		public override char ShorName => 'H';
-		public override bool IsCorrectMove(Dictionary<char, Dictionary<char, Figura>> board, int dX, int dY, char a, char b)
+		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			int dx = Math.Abs(dX);
-			int dy = Math.Abs(dY);
-			if (dx + dy == 3 && dx * dy == 2)
-				return board[(char)(a + dY)]
-					[(char)(b + dX)] == null ||
-					board[(char)(a + dY)]
-					[(char)(b + dX)].IsMyFigura
-					!= board[a][b].IsMyFigura;
+			var khigthCoordinate = board.FoundFigureCoordinate(this);
+			int dx = Math.Abs(lenght.X);
+			int dy = Math.Abs(lenght.Y);
+			char a = (char)(khigthCoordinate[0] + lenght.Y);
+			char b = (char)(khigthCoordinate[1] + lenght.X);
+			if (dx + dy == 3 && dx * dy == 2 && IsCorrectCoordinate(a, b))
+				return !SingleColorsFigures(board.GetFigure(a, b), board.GetFigure(khigthCoordinate[0], khigthCoordinate[1]));
 			return false;
+		}
+		public override bool Equals(object obj)
+		{
+			if (!(obj is Knight))
+			{
+				return false;
+			}
+			var figure = (Knight)obj;
+			return SingleColorsFigures(figure, this) && figure.Number == this.Number;
+		}
+
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(IsMyFigura, Number);
+		}
+	}
+	public class Empty : Figura
+	{
+		[JsonProperty]
+		public override bool? IsMyFigura { get; protected set; }
+		[JsonProperty]
+		public override short Number { get; protected set; }
+		public Empty(bool? figura, short num) : base(figura, num)
+		{
+			this.IsMyFigura = figura;
+			this.Number = num;
+		}
+		public override char ShorName => ' ';
+
+		public override bool IsCorrectMove(Board board, Point lenght)
+		{
+			return false;
+		}
+		public override bool Equals(object obj)
+		{
+			if (!(obj is Empty))
+			{
+				return false;
+			}
+			var figure = (Empty)obj;
+			return SingleColorsFigures(figure, this) && figure.Number == this.Number;
+		}
+		public static bool IsEmpty(Board board , char[] point , Point gap)
+		{
+			return board.GetFigure((char)(point[0] + gap.Y), (char)(point[1] + gap.X)) is Empty;
+		}
+		public override int GetHashCode()
+		{
+			return HashCode.Combine(IsMyFigura, Number);
 		}
 	}
 }

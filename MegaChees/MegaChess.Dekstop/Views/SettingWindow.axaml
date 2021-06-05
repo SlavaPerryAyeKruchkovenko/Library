@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="MegaChess.Dekstop.Views.SettingWindow"
+        MaxWidth="400" MaxHeight="600" MinWidth="200" MinHeight="600">
+  <Window.Styles>
+    <StyleInclude Source="/Styles/MainWindowStyles.axaml"/>
+  </Window.Styles>
+  <StackPanel >
+    <Image Source="avares://MegaChess.Dekstop/Assets/Megachess-logo.png" Classes="Logo"/>
+    <Label Content="Setting" Classes="h1 Centr ContentCentr Red" Margin="0,30,0,0"/>
+    <ItemsControl x:Name="container">
+      <Button Content="You figuras color" Classes="h1 CenterContent PanelMerge NotBackGround" Click="ChangeColor"
+              x:Name="1BtnColor">
+        <Button.ContextMenu>
+          <ContextMenu SelectionChanged="SelectImages"/>
+        </Button.ContextMenu>
+      </Button>
+      <Button Content="Board Color" Classes="h1 CenterContent PanelMerge NotBackGround" Click="ChangeColor">
+        <Button.ContextMenu>
+          <ContextMenu>
+            <DockPanel>
+              <ContextMenu x:Name="FirstColors" SelectionChanged="SelectColor"/>
+              <ContextMenu x:Name="SecondColors" SelectionChanged="SelectColor"/>
+            </DockPanel>
+          </ContextMenu>          
+        </Button.ContextMenu>
+      </Button>
+      <Button Content="Onther Color" Classes="h1 CenterContent PanelMerge NotBackGround" Click="ChangeColor"
+              x:Name="3BtnColor">
+        <Button.ContextMenu>
+          <ContextMenu SelectionChanged="SelectColor"/>
+        </Button.ContextMenu>
+      </Button>
+      <Button Content="Exit" Classes="h1 CenterContent PanelMerge NotBackGround" Click="CloseWindow"/>
+    </ItemsControl>   
+  </StackPanel>
+</Window>
+

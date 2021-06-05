@@ -1,8 +1,10 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using MegaChess.Dekstop.ViewModels;
+using MegaChess.Dekstop.Views;
 
-namespace FunctionBilder.Dekstop.View
+namespace MegaChess.Dekstop
 {
 	public class App : Application
 	{
@@ -15,7 +17,10 @@ namespace FunctionBilder.Dekstop.View
 		{
 			if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
 			{
-				desktop.MainWindow = new MainWindow();
+				desktop.MainWindow = new MainWindow
+				{
+					DataContext = new MainWindowViewModel(),
+				};
 			}
 
 			base.OnFrameworkInitializationCompleted();

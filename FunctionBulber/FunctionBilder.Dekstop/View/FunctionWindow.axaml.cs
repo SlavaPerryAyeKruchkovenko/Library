@@ -1,215 +1,89 @@
-п»їusing Avalonia;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
-using Avalonia.Threading;
 using FunctionBilder.Dekstop.Model;
 using FunctionBilder.Dekstop.ViewModel;
 using FunctionBulber.Logic;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Threading;
 
 namespace FunctionBilder.Dekstop.View
 {
 	public class FunctionWindow : Window
 	{
-		private IDrawer drawer;
-
-		private Point range;
-
-		private short zoom;
-
-		private Field field;
-
-		private ObservableCollection<Function> functions;
-
-		private Rect size;
-		private CheckBox LabelVisible { get; }
-		private Slider Slider { get; }
-
-		private Point lastCutrsorPosition;
-
-		private bool isPressed = false;
-
-		private Window window;
-
-#pragma warning disable CS8618 // ГЏГ®Г«ГҐ, Г­ГҐ Г¤Г®ГЇГіГ±ГЄГ ГѕГ№ГҐГҐ Г§Г­Г Г·ГҐГ­ГЁГї NULL, Г¤Г®Г«Г¦Г­Г® Г±Г®Г¤ГҐГ°Г¦Г ГІГј Г§Г­Г Г·ГҐГ­ГЁГҐ, Г®ГІГ«ГЁГ·Г­Г®ГҐ Г®ГІ NULL, ГЇГ°ГЁ ГўГ»ГµГ®Г¤ГҐ ГЁГ§ ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г°Г . Г‚Г®Г§Г¬Г®Г¦Г­Г®, Г±ГІГ®ГЁГІ Г®ГЎГєГїГўГЁГІГј ГЇГ®Г«ГҐ ГЄГ ГЄ Г¤Г®ГЇГіГ±ГЄГ ГѕГ№ГҐГҐ Г§Г­Г Г·ГҐГ­ГЁГї NULL.
+		private Canvas canvas { get; }
+		private ObservableCollection<Point> Сoordinates { get; set; }
+		private string function { get; }
+		private IDrawer drawer { get; }
+		private Point range { get; set; }
+		private double zoom { get; set; }
+		private double[] restriction { get; }
+		private Rect size { get; set; }
+#pragma warning disable CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		public FunctionWindow()
-#pragma warning restore CS8618 // ГЏГ®Г«ГҐ, Г­ГҐ Г¤Г®ГЇГіГ±ГЄГ ГѕГ№ГҐГҐ Г§Г­Г Г·ГҐГ­ГЁГї NULL, Г¤Г®Г«Г¦Г­Г® Г±Г®Г¤ГҐГ°Г¦Г ГІГј Г§Г­Г Г·ГҐГ­ГЁГҐ, Г®ГІГ«ГЁГ·Г­Г®ГҐ Г®ГІ NULL, ГЇГ°ГЁ ГўГ»ГµГ®Г¤ГҐ ГЁГ§ ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г°Г . Г‚Г®Г§Г¬Г®Г¦Г­Г®, Г±ГІГ®ГЁГІ Г®ГЎГєГїГўГЁГІГј ГЇГ®Г«ГҐ ГЄГ ГЄ Г¤Г®ГЇГіГ±ГЄГ ГѕГ№ГҐГҐ Г§Г­Г Г·ГҐГ­ГЁГї NULL.
+#pragma warning restore CS8618 // Поле, не допускающее значения NULL, должно содержать значение, отличное от NULL, при выходе из конструктора. Возможно, стоит объявить поле как допускающее значения NULL.
 		{
 			InstalizeWindow(this);
 		}
-#pragma warning disable CS8618 // ГЏГ®Г«ГҐ, Г­ГҐ Г¤Г®ГЇГіГ±ГЄГ ГѕГ№ГҐГҐ Г§Г­Г Г·ГҐГ­ГЁГї NULL, Г¤Г®Г«Г¦Г­Г® Г±Г®Г¤ГҐГ°Г¦Г ГІГј Г§Г­Г Г·ГҐГ­ГЁГҐ, Г®ГІГ«ГЁГ·Г­Г®ГҐ Г®ГІ NULL, ГЇГ°ГЁ ГўГ»ГµГ®Г¤ГҐ ГЁГ§ ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г°Г . Г‚Г®Г§Г¬Г®Г¦Г­Г®, Г±ГІГ®ГЁГІ Г®ГЎГєГїГўГЁГІГј ГЇГ®Г«ГҐ ГЄГ ГЄ Г¤Г®ГЇГіГ±ГЄГ ГѕГ№ГҐГҐ Г§Г­Г Г·ГҐГ­ГЁГї NULL.
-		public FunctionWindow(Function _function)
-#pragma warning restore CS8618 // ГЏГ®Г«ГҐ, Г­ГҐ Г¤Г®ГЇГіГ±ГЄГ ГѕГ№ГҐГҐ Г§Г­Г Г·ГҐГ­ГЁГї NULL, Г¤Г®Г«Г¦Г­Г® Г±Г®Г¤ГҐГ°Г¦Г ГІГј Г§Г­Г Г·ГҐГ­ГЁГҐ, Г®ГІГ«ГЁГ·Г­Г®ГҐ Г®ГІ NULL, ГЇГ°ГЁ ГўГ»ГµГ®Г¤ГҐ ГЁГ§ ГЄГ®Г­Г±ГІГ°ГіГЄГІГ®Г°Г . Г‚Г®Г§Г¬Г®Г¦Г­Г®, Г±ГІГ®ГЁГІ Г®ГЎГєГїГўГЁГІГј ГЇГ®Г«ГҐ ГЄГ ГЄ Г¤Г®ГЇГіГ±ГЄГ ГѕГ№ГҐГҐ Г§Г­Г Г·ГҐГ­ГЁГї NULL.
+		public FunctionWindow(string _function, double[] _restriction)
 		{
 			InstalizeWindow(this);
 
-			this.functions.Add(_function);
-
-			this.LabelVisible = this.FindControl<CheckBox>("IsNeedLabel");
-			this.Slider = this.FindControl<Slider>("SliderScale");
-
-			this.window = new GraphicWindow(this.functions, this.CreateGraphic);
-
-			var label = this.FindControl<Label>("ScaleLabel");
-			label.DataContext = this;
+			this.drawer = new Drawer(new object());
+			this.canvas = this.FindControl<Canvas>("BigFunctionCanvas");
+			this.function = _function;
+			this.restriction = _restriction;
 		}
 		private void InitializeComponent()
 		{
 			AvaloniaXamlLoader.Load(this);
 		}
-		protected override void OnClosing(CancelEventArgs e)
+		public void Canvas_SizeChanged(object sender1, AvaloniaPropertyChangedEventArgs e)
 		{
-			Window window1;
-			if (this.functions.Count > 0)
+			if (this.size != this.Bounds)
 			{
-				window1 = new MainWindow(this.functions[0]);
-			}
-			else
-			{
-				window1 = new MainWindow();
-			}
-			window1.Show();
-			this.OnClosed(e);
-		}
-		private void Canvas_SizeChanged(object sender1, AvaloniaPropertyChangedEventArgs e)
-		{
-			if (this.size != ((Canvas)sender1).Bounds)
-			{
-				this.drawer.Draw(CreateGraphic);
+				this.CreateGraphic();
 			}
 		}
-		private void MousePress(object sender, PointerPressedEventArgs e)
+		public void MousePress(object sender, PointerPressedEventArgs e)
 		{
-			this.isPressed = true;
-			this.range -= e.GetCurrentPoint(this.field.Canvas).Position;
+			this.Сoordinates.Add(e.GetCurrentPoint(this.canvas).Position);
+			this.range -= e.GetCurrentPoint(this.canvas).Position;
 		}
-		private void MouseUnpress(object sender, PointerReleasedEventArgs e)
+		public void MouseUnpress(object sender, PointerReleasedEventArgs e)
 		{
-			if (this.isPressed)
-			{
-				this.range += e.GetCurrentPoint(this.field.Canvas).Position;
-				this.drawer.Draw(CreateGraphic);
-			}
-			this.isPressed = false;
+			this.range += e.GetCurrentPoint(this.canvas).Position;
+			CreateGraphic();
 		}
-		private void AddNewGraphic(object sender, RoutedEventArgs e)
+		public void AddNewGraphick(object sender, RoutedEventArgs e)
 		{
-			if (!this.window.IsVisible)
-			{
-				this.window = new GraphicWindow(this.functions, this.CreateGraphic);
-				this.window.ShowDialog(this);
-				this.window.Topmost = true;
-			}
+			throw new System.Exception("Савелий лох");
 		}
-		private void DeleteAnyGraphic(object sender, RoutedEventArgs e)
+		public void ZoomGraphick(object sender, PointerWheelEventArgs e)
 		{
-			if (!this.window.IsVisible)
+			this.zoom += e.Delta.Y;
+			if (this.zoom > 0)
 			{
-				this.window = new FunctionListWindow(this.functions, this.CreateGraphic);
-				this.window.ShowDialog(this);
-				this.window.Topmost = true;
+				CreateGraphic();
 			}
 		}
-		private void ZoomGraphick(object sender, PointerWheelEventArgs e)
-		{
-			ChangeScale((short)e.Delta.Y);
-			this.drawer.Draw(CreateGraphic);
-			this.Slider.Value = this.zoom;
-		}
-		private void SliderZoom(object sender, PointerEventArgs e)
-		{
-			ChangeScale((short)(this.Slider.Value - this.zoom));
-			this.drawer.Draw(CreateGraphic);
-		}
-		private void BackToStart(object sender, RoutedEventArgs e)
-		{
-			this.range = default;
-			this.drawer.Draw(CreateGraphic);
-			this.isPressed = false;
-		}
-		private void ClickCheckBoxLabel(object sender, RoutedEventArgs e)
-		{
-			this.drawer.Draw(CreateGraphic);
-		}
-		public void ClickCheckBoxEllipse(object sender, RoutedEventArgs e)
-		{
-			for (int i = 0; i < this.functions.Count; i++)
-			{
-				var graphic = new Graphic(this.functions[i].Graphic.GraphicColor(), this.functions[i].Graphic.IsVisibleElipse != true, this.functions[i].Graphic.gap);
-				this.functions[i] = new Function(this.functions[i].FunctionText, graphic);
-			}
-			this.drawer.Draw(CreateGraphic);
-		}
-		private void FocusCoordinate(object sender, PointerEventArgs e)
-		{
-			Point cursor = e.GetCurrentPoint(this.field.Canvas).Position;
-			if (Math.Abs(this.lastCutrsorPosition.X - cursor.X) < 10 && Math.Abs(this.lastCutrsorPosition.Y - cursor.Y) < 10)
-			{
-				ToolTip.SetIsOpen(this.field.Canvas, true);
-				return;
-			}
-			Point pointNow = (cursor - this.range - this.field.LayoutSize / 2) / this.zoom;
-			var myToolTip = new MyToolTip();
-			string content = "";
-
-			foreach (var item in this.functions)
-			{
-				content += item.GetCoordinateInPoint(pointNow);
-			}
-			ToolTip.SetTip(this.field.Canvas, myToolTip.Create(pointNow, content, 16));
-			ToolTip.SetIsOpen(this.field.Canvas, false);
-			this.lastCutrsorPosition = cursor;
-		}
-		private static void InstalizeWindow(FunctionWindow window)
+		static void InstalizeWindow(FunctionWindow window)
 		{
 			window.InitializeComponent();
 #if DEBUG
 			window.AttachDevTools();
 #endif
-			window.functions = new ObservableCollection<Function>();
+			window.Сoordinates = new ObservableCollection<Point>();
+			window.size = window.Bounds;
 			window.range = default;
-			window.size = default;
-			window.drawer = new Drawer(new object());
-			window.field = new Field(window.FindControl<Canvas>("BigFunctionCanvas"), null);
-			window.zoom = window.field.Scale;
+			window.zoom = Field.BeautifulScale;
 		}
-		private void CreateGraphic()
+		void CreateGraphic()
 		{
-			this.size = this.field.Canvas.Bounds;
-			this.field.ClearCanvas();
-
-			var scales = new short[] { this.field.AxisLineScale, this.zoom };
-			this.field = new Field(this.field.Canvas, this.range, scales, this.LabelVisible.IsChecked.Value, null);
-
-			this.field.RenderField();
-			foreach (var item in this.functions)
-			{
-				new Thread(() => item.Render(this.field)).Start();
-			}
-		}
-		private void ChangeScale(short newScale)
-		{
-			var startCenter = this.field.BeginOfCountdown / this.zoom;
-			if (newScale < 0 && this.zoom > 5)
-			{
-				this.zoom -= 5;
-			}
-			else if (newScale > 0 && this.zoom < 100 || newScale < 0 && this.zoom > 1)
-			{
-				this.zoom += newScale;
-			}
-			else
-			{
-				return;
-			}
-			var finishCenter = this.field.BeginOfCountdown / this.zoom;
-			this.range -= (finishCenter - startCenter) * this.zoom;
+			this.size = Bounds;
+			this.canvas.Children.Clear();
+			this.canvas.GraphicRender(this.function, this.restriction, this.range, this.zoom, Field.StandartGraphicColor());
 		}
 	}
 }

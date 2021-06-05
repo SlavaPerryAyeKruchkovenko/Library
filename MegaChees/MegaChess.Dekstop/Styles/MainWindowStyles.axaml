@@ -1,0 +1,45 @@
+﻿<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Style Selector="Image.Logo">
+    <Setter Property="MaxWidth" Value="400"/>
+    <Setter Property="MaxHeight" Value="200"/>
+  </Style>
+  <Style Selector="Button.h1">
+    <Setter Property="FontSize" Value="24"/>
+  </Style>
+  <Style Selector="Button.PanelMerge">
+    <Setter Property="Margin" Value="0,30,0,0"/>   
+    <Setter Property="VerticalAlignment" Value="Center"/>
+    <Setter Property="HorizontalAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="Button.finish">
+    <Setter Property="Width" Value="200"/>
+  </Style>
+  <Style Selector="Button.ContextBtn">
+    <Setter Property="VerticalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+  </Style>
+  <Style Selector="Button.CentrContent">
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="Button.NotBackGround">
+    <Setter Property="Background" Value="Transparent"/>
+  </Style>
+  <Style Selector="Label.Centr">
+    <Setter Property="Background" Value="Transparent"/>
+    <Setter Property="VerticalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+  </Style>
+  <Style Selector="Label.h1">
+    <Setter Property="FontSize" Value="32"/>
+    <Setter Property="FontFamily" Value="Italic"/>
+  </Style>
+  <Style Selector="Label.ContentCentr">
+    <Setter Property="VerticalContentAlignment" Value="Center"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+  </Style>
+  <Style Selector="Label.Red">
+    <Setter Property="Foreground" Value="#d4433e"/>
+  </Style>
+</Styles>

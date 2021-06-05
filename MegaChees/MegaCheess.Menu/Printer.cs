@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,6 +7,8 @@ using System.Threading.Tasks;
 namespace MegaCheess.Menu
 {
 	using MegaChess.Logic;
+	using System.Drawing;
+
 	class Printer : IDrawer
 	{
 		private static int coordinateX = Console.WindowWidth / 2 - 39;
@@ -32,8 +33,9 @@ namespace MegaCheess.Menu
 			EraseNameSpace(MenuDataBase.start_Y_ForExitSpace, 18, 3, 8);
 			Thread.Sleep(delay);
 		}
-		public void PrintBoard(Dictionary<char, Dictionary<char, Figura>> board)
+		public void PrintBoard(Board board)
 		{
+			Console.Clear();
 			int step = 2;
 			PrintOpenBar();
 			for (char i = '8'; i >= '1'; i--)
@@ -46,10 +48,10 @@ namespace MegaCheess.Menu
 					Console.Write(MenuDataBase.stickBar);
 					Console.BackgroundColor = SwitchBoardColor(i, j);
 
-					if (board[i][j] != null)
+					if (!(board.GetFigure(i,j) is Empty))
 					{
-						Console.ForegroundColor = ConvertToFigura(board[i][j]);
-						Console.Write($" {board[i][j].ShorName} ");
+						Console.ForegroundColor = ConvertToFigura(board.GetFigure(i,j));
+						Console.Write($" {board.GetFigure(i, j)} ");
 					}
 					else
 						Console.Write("   ");
@@ -63,43 +65,44 @@ namespace MegaCheess.Menu
 			ReserveColor();
 			PrintCloseBar();
 		}
-		public char ConvertToTKeyFormat(int x,int y,out char key)
+		public char[] ConvertToTKeyFormat(int x,int y)
 		{
-			switch(y)
+			var key1 = y switch
 			{
-				case 1: key = '1'; break;
-				case 2: key = '2'; break;
-				case 3: key = '3'; break;
-				case 4: key = '4'; break;
-				case 5: key = '5'; break;
-				case 6: key = '6'; break;
-				case 7: key = '7'; break;
-				case 8: key = '8'; break;
-				default: key = ' '; break;
-			}
-			switch (x)
+				1 => '1',
+				2 => '2',
+				3 => '3',
+				4 => '4',
+				5 => '5',
+				6 => '6',
+				7 => '7',
+				8 => '8',
+				_ => ' ',
+			};
+			var key2 = x switch
 			{
-				case 1: return 'A';
-				case 2: return 'B';
-				case 3: return 'C';
-				case 4: return 'D';
-				case 5: return 'E';
-				case 6: return 'F';
-				case 7: return 'G';
-				case 8: return 'H';
-				default: return ' ';
-			}
+				1 => 'A',
+				2 => 'B',
+				3 => 'C',
+				4 => 'D',
+				5 => 'E',
+				6 => 'F',
+				7 => 'G',
+				8 => 'H',
+				_ => ' ',
+			};
+			return new char[] { key1, key2 };
 		}
-		public int ConvertToLocationFormat(char i, char j, out int y)
+		public Point ConvertToLocationFormat(char i, char j)
 		{
-			y = (Convert.ToInt32(i.ToString()) - 1) * 2 + 8;
-
-			return (j - 'A') * 4 + 10;
+			int y = 30 - ((Convert.ToInt32(i.ToString()) - 1) * 2 + 8);
+			int x = (j - 'A') * 4 + 10;
+			return new Point(x, y);
 		}
-		public void MoveCursor(int x, int y, Dictionary<char, Dictionary<char, Figura>> board, out int newX, out int newY)
+		public Figura MoveCursor(int x, int y, Board board)
 		{
-			newX = x;
-			newY = y;
+			int newX = x;
+			int newY = y;
 			ConsoleKeyInfo key = new ConsoleKeyInfo();
 			while (key.Key != ConsoleKey.Enter)
 			{
@@ -115,9 +118,13 @@ namespace MegaCheess.Menu
 					newX -= 4;
 				else if (key.Key == ConsoleKey.RightArrow && newX + 4 < 40)
 					newX += 4;
+				else if (key.Key == ConsoleKey.Escape)
+					Environment.Exit(0);
 			}
 			newX = (newX-2)/4 - 1;
 			newY = 8-((newY-8)/2);
+			var location = ConvertToTKeyFormat(newX, newY);
+			return board.GetFigure(location[0], location[1]);
 		}
 		public static void PrintMenu()
 		{
@@ -237,10 +244,22 @@ namespace MegaCheess.Menu
 		}
 		private static ConsoleColor ConvertToFigura(Figura figura)
 		{
-			if (figura.IsMyFigura)
+			if (figura.IsMyFigura == true)
 				return ConsoleColor.Red;
 			else
 				return ConsoleColor.DarkGray;
+		}
+
+		public void PrintError(string ex)
+		{
+			Console.SetCursorPosition(0, 0);
+			Console.WriteLine(ex);
+			Thread.Sleep(300);
+		}
+
+		public void ChangePawn(Pawn pawn, Board board)
+		{
+			
 		}
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace MegaCheess.Menu
 {
-	using MegaChessLogic;
+	using MegaChess.Logic;
 	class Menu
 	{
 		public static void MoveArrow()
@@ -78,18 +78,18 @@ namespace MegaCheess.Menu
 		{
 			Console.Beep(200, 250);
 			Printer printer = new Printer();
-			ChessGameLogic chess = new ChessGameLogic(new Printer(), 18, 20);
+			Game chess = new Game(new Printer(), 18, 20);
 
 			if (MenuDataBase.NewGameSpaceColor == MenuDataBase.HighlightColor)
 			{
 				printer.Clear();
-				chess.ChessLogic(true);
+				chess.ChessLogic(false,true);
 				return true;
 			}
 			if (MenuDataBase.ContinueSpaceColor == MenuDataBase.HighlightColor)
 			{
 				printer.Clear();
-				chess.ChessLogic(false);
+				chess.ChessLogic(false,false);
 				return true;
 			}
 			if (MenuDataBase.ScoreSpaceColor == MenuDataBase.HighlightColor)
