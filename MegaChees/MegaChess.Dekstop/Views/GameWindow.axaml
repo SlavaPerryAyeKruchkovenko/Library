@@ -21,16 +21,15 @@
   </Window.Styles>
     <Grid ColumnDefinitions="*,3*,*" ShowGridLines="True">
       <DockPanel>
-        <Grid RowDefinitions="*,28*,*">
+        <Grid RowDefinitions="2*,26*,2*">
           <Menu>
             <MenuItem Header="Menu" Classes="Center">
-              <Menu>
-                <MenuItem Header="Close">
-                  
-                </MenuItem>
-                <MenuItem Header="Back To Main Page">
-
-                </MenuItem>
+              <Menu Items="Commands">
+                <Menu.ItemTemplate>
+                  <DataTemplate>
+                    <Button Classes=""/>
+                  </DataTemplate>
+                </Menu.ItemTemplate>
               </Menu>
             </MenuItem>
           </Menu>
@@ -55,7 +54,7 @@
         </Grid>     
     </DockPanel>
     <DockPanel Grid.Column="2">
-        <Grid RowDefinitions="*,28*,*">
+        <Grid RowDefinitions="2*,26*,2*">
           <TimePicker x:Name="WhiteTimer" Grid.Row="2"/>
           <views:DeadFiguresBoard Grid.Row="1" Classes="maxSize"
                                   x:Name="BlackFiguras"/>
