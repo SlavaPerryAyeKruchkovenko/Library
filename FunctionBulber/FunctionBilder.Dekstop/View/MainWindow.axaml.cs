@@ -61,7 +61,7 @@ namespace FunctionBilder.Dekstop.View
 		}
 		public void Canvas_SizeChanged(object sender1, AvaloniaPropertyChangedEventArgs e)
 		{
-			if (this.inputBox != null && this.size != ((Canvas)sender1).Bounds)
+			if (this.inputBox != null && this.size != this.Bounds)
 			{
 				this.drawer.Draw(CreateGraphic);
 			}
