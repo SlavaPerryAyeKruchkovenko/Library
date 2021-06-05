@@ -17,6 +17,7 @@ using System.Threading;
 using System.Collections.Generic;
 using MegaChess.Dekstop.Views;
 using System.Linq;
+using Avalonia.Controls.Shapes;
 
 namespace MegaChess.Dekstop.Converter
 {
@@ -89,7 +90,6 @@ namespace MegaChess.Dekstop.Converter
 		{
 			
 		}
-
 		public Figura MoveCursor(int x, int y, Board board)
 		{
 			this.whiteOrBlackObserver.OnNext(board.IsWhiteMove);
@@ -120,7 +120,15 @@ namespace MegaChess.Dekstop.Converter
 					{
 						if (!figura.HaveUnrealSteep(board, lenght))
 						{
-							item.BorderBrush = GameField.GetBorderBrushesColor();
+							if (item.Child is Image)
+								item.BorderBrush = GameField.GetBorderBrushesColor();
+							else
+								item.Child = new Ellipse()
+								{
+									Width = item.Width / 3,
+									Height = item.Height / 3,
+									Fill = GameField.GetBorderBrushesColor()
+								};
 						}
 					}
 					catch (Exception) { }
@@ -208,13 +216,19 @@ namespace MegaChess.Dekstop.Converter
 			{
 				border.BorderBrush = property.Color;
 				border.DataContext = property.FiguraNow;
-			}			
-			border.Child = new Image()
-			{			
-				Stretch = Stretch.Fill,
-				Source = (Bitmap)new ImageConverter().Convert(property.Image, null, null, null)
-			};
-			
+			}		
+			if(property.Image != null)
+			{
+				border.Child = new Image()
+				{
+					Stretch = Stretch.Fill,
+					Source = (Bitmap)new ImageConverter().Convert(property.Image, null, null, null)
+				};
+			}
+			else
+			{
+				border.Child = null;
+			}
 			return border;
 		}
 		public void PrintError(string ex)

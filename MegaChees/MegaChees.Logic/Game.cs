@@ -73,7 +73,14 @@ namespace MegaChess.Logic
 							pawn.isFirstStep = false;
 							if (PawnFinishGameBoard(firstFigura, this.board))
 							{
-								this.drawer.ChangePawn(pawn, this.board);
+								if(!vsComputer || this.board.IsWhiteMove)
+								{
+									this.drawer.ChangePawn(pawn, this.board);
+								}
+								else
+								{
+									bot.ChangePawn(pawn, this.board);
+								}
 							}
 						}
 						this.board.ChangeSideMode();

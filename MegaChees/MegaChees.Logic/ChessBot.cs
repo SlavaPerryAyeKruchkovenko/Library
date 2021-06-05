@@ -58,5 +58,35 @@ namespace MegaChess.Logic
 			var figurasList = new List<Figura>(figuras);
 			return figurasList[number];
 		}
+		public void ChangePawn(Pawn pawn, Board board)
+		{
+			board.ReplaceFigura(pawn, ReturnRandomFigura(board));
+		}
+		private Figura ReturnRandomFigura(Board board)
+		{
+			var figuras = board.GetFiguras().Where(x => x.IsMyFigura == false);
+			var knights = figuras.Where(x => x is Knight);
+			var bishops = figuras.Where(x => x is Bishop);
+			var queens = figuras.Where(x => x is Queen);
+			var rooks = figuras.Where(x => x is Rook);
+			IEnumerable<Figura> correctFiguras = new List<Figura>()
+			{
+				new Queen(false,MaxNumberOfFigura(queens)),
+				new Rook(false,MaxNumberOfFigura(rooks)),
+				new Bishop(false, MaxNumberOfFigura(bishops)),
+				new Knight(false, MaxNumberOfFigura(knights))
+			};
+			return RandomFigura(correctFiguras);
+		}
+		private short MaxNumberOfFigura(IEnumerable<Figura> figuras)
+		{
+			short num = figuras.First().Number;
+			foreach (var item in figuras)
+			{
+				if (item.Number > num)
+					num = item.Number;
+			}
+			return (short)(num+1);
+		}
 	}
 }

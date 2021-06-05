@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 
 namespace MegaChess.Logic
 {
@@ -32,16 +33,13 @@ namespace MegaChess.Logic
 				char[] coordinates = board.FoundFigureCoordinate(this);
 				Figura figura = board.GetFigure((char)(coordinates[0] + coordinate.Y), (char)(coordinates[1] + coordinate.X));
 				board.MakeStep(this, figura, false);
-				foreach (var item in board.GetFiguras())
+				foreach (var item in board.GetFiguras().Where(x=>x.IsMyFigura == !this.IsMyFigura.Value))
 				{
-					if (!SingleColorsFigures(this, item) && !(item is Empty)) 
+					Point lenght = board.CountLengh(item, new King(this.IsMyFigura.Value, 1));
+					if (item.IsCorrectMove(board, lenght))
 					{
-						Point lenght = board.CountLengh(item, new King(this.IsMyFigura.Value, 1));
-						if(item.IsCorrectMove(board, lenght))
-						{							
-							board.MakeStep(this, figura, true);
-							throw new AccessViolationException("Impossible move!");
-						}
+						board.MakeStep(this, figura, true);
+						throw new AccessViolationException("Impossible move!");
 					}
 				}
 				board.MakeStep(this, figura, true);					
@@ -77,6 +75,10 @@ namespace MegaChess.Logic
 		public override bool IsCorrectMove(Board board, Point lenght)
 		{
 			var pawnCoordinate = board.FoundFigureCoordinate(this);
+			if(Math.Abs(lenght.X) > 1 || Math.Abs(lenght.Y) > 2)
+			{
+				return false;
+			}
 			if (lenght.X == 0)
 			{
 				if (this.isFirstStep && CheckCorrectMoveForDifferent(lenght.Y, 2))
@@ -151,7 +153,7 @@ namespace MegaChess.Logic
 		}
 		internal static bool IsCorrectMove2(Board board, Point lenght, char[] point)
 		{			
-			if(IsCorrectCoordinate(point[0],point[1]))
+			if((lenght.X == 0 || lenght.Y == 0) && IsCorrectCoordinate(point[0],point[1]))
 			{
 				if (lenght.X == 0 && lenght.Y != 0)
 				{
@@ -297,12 +299,16 @@ namespace MegaChess.Logic
 		public override char ShorName => 'K';
 		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			var kingCoordinate = board.FoundFigureCoordinate(this);
-			char a = (char)(kingCoordinate[0] + lenght.Y);
-			char b = (char)(kingCoordinate[1] + lenght.X);
-			if (Math.Abs(lenght.Y) <= 1 && Math.Abs(lenght.X) <= 1 && IsCorrectCoordinate(a, b))
-				return !SingleColorsFigures(board.GetFigure(a, b), board.GetFigure(kingCoordinate[0], kingCoordinate[1]));
-
+			if (Math.Abs(lenght.Y) <= 1 && Math.Abs(lenght.X) <= 1)
+			{
+				var kingCoordinate = board.FoundFigureCoordinate(this);
+				char a = (char)(kingCoordinate[0] + lenght.Y);
+				char b = (char)(kingCoordinate[1] + lenght.X);
+				if(IsCorrectCoordinate(a, b))
+				{
+					return !SingleColorsFigures(board.GetFigure(a, b), board.GetFigure(kingCoordinate[0], kingCoordinate[1]));
+				}				
+			}
 			return false;
 		}
 		public override bool Equals(object obj)
@@ -334,16 +340,20 @@ namespace MegaChess.Logic
 		public override char ShorName => 'Q';
 		public override bool IsCorrectMove(Board board, Point lenght)
 		{
-			var queenCoordinate = board.FoundFigureCoordinate(this);
-			if (lenght.X == 0 ||lenght.Y == 0)
+			if(Math.Abs(lenght.X) == Math.Abs(lenght.Y) || lenght.X==0 || lenght.Y ==0)
 			{
-				return Rook.IsCorrectMove2(board, lenght, queenCoordinate);
-			}
-			else
-			{
-				return Bishop.IsCorrectMove2(board, lenght, queenCoordinate);
-			}
+				var queenCoordinate = board.FoundFigureCoordinate(this);
+				if (lenght.X == 0 || lenght.Y == 0)
+				{
+					return Rook.IsCorrectMove2(board, lenght, queenCoordinate);
+				}
+				else
+				{
+					return Bishop.IsCorrectMove2(board, lenght, queenCoordinate);
+				}
 
+			}
+			return false;
 		}
 		public override bool Equals(object obj)
 		{
@@ -354,7 +364,6 @@ namespace MegaChess.Logic
 			var figure = (Queen)obj;
 			return SingleColorsFigures(figure, this) && figure.Number == this.Number;
 		}
-
 		public override int GetHashCode()
 		{
 			return HashCode.Combine(IsMyFigura, Number);
