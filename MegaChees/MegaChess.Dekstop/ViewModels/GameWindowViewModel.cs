@@ -38,7 +38,6 @@ namespace MegaChess.Dekstop.ViewModels
 			//	SelectedFigura = x;
 			//}));
 			this.game.StartGame();
-
 		}
 		private readonly Subject<Figura> figura;
 		private readonly Subject<bool> isWhiteMove;
@@ -48,6 +47,7 @@ namespace MegaChess.Dekstop.ViewModels
 		private ObservableCollection<Border> GameBorders { get; }
 		public ObservableCollection<Border> BlackDiedBorders { get; }
 		public ObservableCollection<Border> WhiteDiedBorders { get; }
+		public ReadOnlyObservableCollection<MenuItem> Commands { get; }
 
 		private void ChangeSide(bool isWhite)
 		{
@@ -108,6 +108,9 @@ namespace MegaChess.Dekstop.ViewModels
 			return new ReadOnlyObservableCollection<Label>(collection);
 		}
 		//public ReactiveCommand<Figura, Unit> SelectFigura { get; }
-		
+		public void CloseGame()
+		{
+			this.game.FinishGame();
+		}
 	}
 }

@@ -24,7 +24,7 @@ namespace MegaChess.Logic
 		private short CountEmptyFigure = 32;
 		public Board()
 		{
-			this.ChessBoard = new Dictionary<char, Dictionary<char, Figura>>()
+			this.ChessBoard = new Dictionary<char, Dictionary<char, Figura>>()// доска фигур
 			{
 				{ '8', new Dictionary<char, Figura> { { 'A', new Rook(false,1)}, { 'B', new Knight(false,1) }, { 'C', new Bishop(false,1) }, { 'D', new Queen(false,1) }, { 'E', new King(false,1) }, { 'F', new Bishop(false,2) }, { 'G', new Knight(false,2) }, { 'H', new Rook(false,2) } } },
 				{ '7', new Dictionary<char, Figura> { { 'A', new Pawn(false,1) }, { 'B',new Pawn(false,2) }, { 'C', new Pawn(false,3) }, { 'D', new Pawn(false,4) }, { 'E', new Pawn(false,5) }, { 'F', new Pawn(false,6) }, { 'G', new Pawn(false,7) }, { 'H', new Pawn(false,8)} } },
@@ -53,7 +53,7 @@ namespace MegaChess.Logic
 			else
 				TryReplaceFigure(firstFigura, secondFigura);
 		}		
-		private void TrySwitchFigure(Figura selectFigure, Figura replaceFigura)
+		private void TrySwitchFigure(Figura selectFigure, Figura replaceFigura)// меняем фигуры местами
 		{
 			try
 			{
@@ -105,7 +105,7 @@ namespace MegaChess.Logic
 				throw new EntryPointNotFoundException("Фигуру нельзя востановить");
 			}
 		}
-		public void ReplaceFigura(Figura figura1,Figura figura2)
+		public void ReplaceFigura(Figura figura1,Figura figura2)// меняем фигуру на новую
 		{
 			if(figura1 is Pawn)
 			{
@@ -153,7 +153,7 @@ namespace MegaChess.Logic
 			foreach (var item in stack)
 				yield return item;											
 		}
-		public char[] FoundFigureCoordinate(Figura figura)
+		public char[] FoundFigureCoordinate(Figura figura)// ищем координаты фигуры
 		{
 			for (char i = '1'; i <= '8'; i++)
 			{

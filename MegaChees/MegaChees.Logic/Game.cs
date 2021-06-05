@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace MegaChess.Logic
 {
@@ -17,6 +18,8 @@ namespace MegaChess.Logic
 		private IDrawer drawer;
 
 		private Board board;
+
+		private CancellationToken token;
 		public Game(IDrawer _drawer, int _startX, int _startY)
 		{
 			this.drawer = _drawer;
@@ -24,6 +27,11 @@ namespace MegaChess.Logic
 			this.startX = _startX;
 			this.startY = _startY;
 		}
+		public void SetToken(ref CancellationToken newToken)
+		{
+			this.token = newToken;
+		}
+		public CancellationToken GetToken() => this.token;
 
 		public void ChessLogic(bool vsComputer , bool isNewGame)
 		{
@@ -45,6 +53,11 @@ namespace MegaChess.Logic
 				this.drawer.Clear();
 			}
 		}
+		private void FinishGame()
+		{
+			SaveGame(this.board);
+			throw new Exception("Игра Окончена");
+		}
 		private void NewGamePlay(bool vsComputer)
 		{
 			ChessBot bot = null;
@@ -54,6 +67,10 @@ namespace MegaChess.Logic
 			}
 			while (IsGameFinish(this.board))
 			{
+				if (this.token != null && this.token.IsCancellationRequested)
+				{
+					FinishGame();
+				}				
 				try
 				{
 					this.drawer.PrintBoard(this.board);

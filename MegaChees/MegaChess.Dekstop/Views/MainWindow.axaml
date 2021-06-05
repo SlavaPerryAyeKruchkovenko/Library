@@ -16,7 +16,7 @@
     </Design.DataContext>   
     <StackPanel>
       <Image Source="avares://MegaChess.Dekstop/Assets/Megachess-logo.png" Classes="Logo"/>
-      <Button Content="Play vs people" Classes="h1 CenterContent PanelMerge" Tapped="PlayVsComputer">
+      <Button Content="Play vs people" Classes="h1 CenterContent PanelMerge finish" Tapped="PlayVsComputer">
         <Button.Flyout>
           <MenuFlyout Placement="Bottom" ShowMode="TransientWithDismissOnPointerMoveAway">
             <Button Content="NewGame" Classes="ContextBtn CenterContent" Tapped="NewGame"/>
@@ -24,7 +24,7 @@
           </MenuFlyout>
         </Button.Flyout>
       </Button>
-      <Button Content="With Computer" Classes="h1 CenterContent PanelMerge" Tapped="PlayVsPeople">
+      <Button Content="With Computer" Classes="h1 CenterContent PanelMerge finish" Tapped="PlayVsPeople">
         <Button.Flyout>
           <MenuFlyout Placement="Bottom" ShowMode="TransientWithDismissOnPointerMoveAway">
             <Button Content="NewGame" Classes="ContextBtn CenterContent" Tapped="NewGame"/>
@@ -32,8 +32,8 @@
           </MenuFlyout>  
         </Button.Flyout>
       </Button> 
-      <Button Content="Settings" Classes="h1 CenterContent PanelMerge"/>
-      <Button Content="Rating" Classes="h1 CenterContent PanelMerge"/>
+      <Button Content="Settings" Classes="h1 CenterContent PanelMerge finish" Click="OpenSetting"/>
+      <Button Content="Rating" Classes="h1 CenterContent PanelMerge finish"/>
       <DockPanel Margin="0,30,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"
                  Width="200">
         <Label Content="Select level" DockPanel.Dock="Left"

@@ -180,33 +180,15 @@ namespace MegaChess.Dekstop.Converter
 				count++;
 			}
 		}
-		private static string SelectImageRef(Figura figura)
+		private static string SelectImageRef(Figura figura)// выбираем нужную фотку
 		{
 			if (figura.IsMyFigura == true)
 			{
-				return figura.ToString().ToUpper() switch
-				{
-					"P" => "White_Pawn.png",
-					"R" => "White_Rook.png",
-					"H" => "White_Knight.png",
-					"B" => "White_Elefant.png",
-					"Q" => "White_Queen.png",
-					"K" => "White_King.png",
-					_ => "",
-				};
+				return GameField.GetMyFiguraImage(figura);
 			}
 			else if (figura.IsMyFigura == false)
 			{
-				return figura.ToString().ToUpper() switch
-				{
-					"P" => "Black_pawn.png",
-					"R" => "Black_Rook.png",
-					"H" => "Black_knight.png",
-					"B" => "Black_elefant.png",
-					"Q" => "Black_Queen.png",
-					"K" => "Black_King.png",
-					_ => "",
-				};
+				return GameField.GetEnemyFiguraImage(figura);
 			}
 			return null;
 		}
@@ -231,7 +213,7 @@ namespace MegaChess.Dekstop.Converter
 			}
 			return border;
 		}
-		public void PrintError(string ex)
+		public void PrintError(string ex)// messangebox при ошибки
 		{
 			Dispatcher.UIThread.InvokeAsync(() =>
 			{
@@ -284,7 +266,7 @@ namespace MegaChess.Dekstop.Converter
 					return CountNewFiuguraNum(board, SpotFiguraType(figura));
 				}
 			}
-			return figura.Number;
+			return figura.Number;			
 		}
 		private static Figura SpotFiguraType(Figura figura)
 		{

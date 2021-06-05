@@ -41,5 +41,10 @@ namespace MegaChess.Dekstop.Views
 		{
 			this.vsComputer = true;
 		}
+		private void OpenSetting(object sender , RoutedEventArgs e)
+		{
+			var window = new SettingWindow();
+			window.Show();
+		}
 	}
 }

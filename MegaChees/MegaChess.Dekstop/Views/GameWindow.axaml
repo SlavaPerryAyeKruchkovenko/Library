@@ -12,27 +12,23 @@
       <Setter Property="HorizontalAlignment" Value="Stretch"/>
       <Setter Property="VerticalAlignment" Value="Stretch"/>
     </Style>
-  </Window.Styles>
-  <Window.Styles>
-    <Style Selector="MenuItem.Center">
-      <Setter Property="HorizontalAlignment" Value="Center"/>
-      <Setter Property="VerticalAlignment" Value="Center"/>
-    </Style>
+    <StyleInclude Source="/Styles/MainWindowStyles.axaml"/>
   </Window.Styles>
     <Grid ColumnDefinitions="*,3*,*" ShowGridLines="True">
       <DockPanel>
         <Grid RowDefinitions="2*,26*,2*">
-          <Menu>
-            <MenuItem Header="Menu" Classes="Center">
-              <Menu Items="Commands">
-                <Menu.ItemTemplate>
-                  <DataTemplate>
-                    <Button Classes=""/>
-                  </DataTemplate>
-                </Menu.ItemTemplate>
-              </Menu>
-            </MenuItem>
-          </Menu>
+              <Button Content="Menu" Classes="ContextBtn CentrContent NotBackGround">
+                <Button.Flyout>
+                  <MenuFlyout ShowMode="TransientWithDismissOnPointerMoveAway">
+                    <Button Classes="CenterContent ContextBtn" Content="Close"
+                            Click="CloseWindow"/>
+                    <Button Classes="CenterContent ContextBtn" Content="Back To Menu"
+                            Click="OpenMenu"/>
+                    <Button Classes="CenterContent ContextBtn" Content="Setting"
+                            Click="OpenSetting"/>
+                  </MenuFlyout>
+                </Button.Flyout>
+              </Button>
           <views:DeadFiguresBoard Grid.Row="1" Classes="maxSize"
                                   x:Name="WhiteFiguras"/>
           <TimePicker x:Name="BlackTimer" Grid.Row="2"/>
