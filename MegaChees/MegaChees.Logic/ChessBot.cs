@@ -30,7 +30,7 @@ namespace MegaChess.Logic
 		{
 			while(true)
 			{
-				var figura = RandomFigura(board.GetFiguras().Where(x => x.IsMyFigura == false));
+				var figura = GenerateRandomFigura(board.GetFiguras().Where(x => x.IsMyFigura == false));
 
 				foreach (var secondItem in board.GetFiguras().Where(x => x.IsMyFigura != false))
 				{
@@ -51,7 +51,7 @@ namespace MegaChess.Logic
 				}
 			}		
 		}
-		private Figura RandomFigura(IEnumerable<Figura> figuras)
+		private Figura GenerateRandomFigura(IEnumerable<Figura> figuras)
 		{
 			var rnd = new Random();
 			int number = rnd.Next(0, figuras.Count()-1);
@@ -60,9 +60,9 @@ namespace MegaChess.Logic
 		}
 		public void ChangePawn(Pawn pawn, Board board)
 		{
-			board.ReplaceFigura(pawn, ReturnRandomFigura(board));
+			board.ReplaceFigura(pawn, GetRandomFigura(board));
 		}
-		private Figura ReturnRandomFigura(Board board)
+		private Figura GetRandomFigura(Board board)
 		{
 			var figuras = board.GetFiguras().Where(x => x.IsMyFigura == false);
 			var knights = figuras.Where(x => x is Knight);
@@ -71,14 +71,14 @@ namespace MegaChess.Logic
 			var rooks = figuras.Where(x => x is Rook);
 			IEnumerable<Figura> correctFiguras = new List<Figura>()
 			{
-				new Queen(false,MaxNumberOfFigura(queens)),
-				new Rook(false,MaxNumberOfFigura(rooks)),
-				new Bishop(false, MaxNumberOfFigura(bishops)),
-				new Knight(false, MaxNumberOfFigura(knights))
+				new Queen(false,CountMaxNumberOfFigura(queens)),
+				new Rook(false,CountMaxNumberOfFigura(rooks)),
+				new Bishop(false, CountMaxNumberOfFigura(bishops)),
+				new Knight(false, CountMaxNumberOfFigura(knights))
 			};
-			return RandomFigura(correctFiguras);
+			return GenerateRandomFigura(correctFiguras);
 		}
-		private short MaxNumberOfFigura(IEnumerable<Figura> figuras)
+		private short CountMaxNumberOfFigura(IEnumerable<Figura> figuras)
 		{
 			short num = figuras.First().Number;
 			foreach (var item in figuras)
