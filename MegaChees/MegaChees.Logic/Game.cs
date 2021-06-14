@@ -20,12 +20,12 @@ namespace MegaChess.Logic
 		private Board board;
 
 		private CancellationToken token;
-		public Game(IDrawer _drawer, int _startX, int _startY)
+		public Game(IDrawer _drawer, Point coordinate)
 		{
 			this.drawer = _drawer;
 			this.board = new Board();
-			this.startX = _startX;
-			this.startY = _startY;
+			this.startX = coordinate.X;
+			this.startY = coordinate.Y;
 		}
 		public void SetToken(ref CancellationToken newToken)
 		{

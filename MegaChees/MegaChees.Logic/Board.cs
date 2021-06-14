@@ -8,11 +8,13 @@ namespace MegaChess.Logic
 	public class Board
 	{
 		[JsonProperty]
-		private Dictionary<char, Dictionary<char, Figura>> ChessBoard { get; }
+		private readonly Dictionary<char, Dictionary<char, Figura>> ChessBoard;
+
 		[JsonProperty]
-		private Stack<Figura> DeadBlackFigures { get; }
+		private readonly Stack<Figura> DeadBlackFigures = new Stack<Figura>();
 		[JsonProperty]
-		private Stack<Figura> DeadWhiteFigures { get; }
+		private readonly Stack<Figura> DeadWhiteFigures = new Stack<Figura>();
+
 		[JsonProperty]
 		public bool IsWhiteMove { get; private set; } = true;
 		[JsonProperty]
@@ -35,8 +37,6 @@ namespace MegaChess.Logic
 				{ '2', new Dictionary<char, Figura> { { 'A', new Pawn(true,1) }, { 'B', new Pawn(true,2) }, { 'C', new Pawn(true,3) }, { 'D',new Pawn(true,4) }, { 'E', new Pawn(true,5) }, { 'F', new Pawn(true,6) }, { 'G', new Pawn(true,7) }, { 'H',new Pawn(true,8) } } },
 				{ '1', new Dictionary<char, Figura> { { 'A', new Rook(true,1)  }, { 'B', new Knight(true,1) }, { 'C', new Bishop(true,1)}, { 'D', new Queen(true,1) }, { 'E', new King(true,1) }, { 'F', new Bishop(true,2) }, { 'G', new Knight(true,2) }, { 'H', new Rook(true,2)} } }
 			};
-			this.DeadBlackFigures = new Stack<Figura>();
-			this.DeadWhiteFigures = new Stack<Figura>();
 		}
 		public void ChangeSideMode() => this.IsWhiteMove = !this.IsWhiteMove;
 		public Figura GetFigure(char y, char x) => this.ChessBoard[y][x];

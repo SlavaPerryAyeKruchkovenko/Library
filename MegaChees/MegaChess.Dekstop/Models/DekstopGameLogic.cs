@@ -1,4 +1,5 @@
 ﻿using MegaChess.Logic;
+using System.Drawing;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace MegaChess.Dekstop.Models
 		}
 		public void StartGame()
 		{
-			Game game = new Game(this.drawer, 0, 0);
+			Game game = new Game(this.drawer, new Point());
 			game.SetToken(ref this.token);
 			this.gameThread = new Task(() => 
 				game.ChessLogic(GameField.GetSettings()[0], GameField.GetSettings()[1]));

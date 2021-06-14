@@ -3,6 +3,8 @@
 namespace MegaCheess.Menu
 {
 	using MegaChess.Logic;
+	using System.Drawing;
+
 	class Menu
 	{
 		public static void MoveArrow()
@@ -78,7 +80,7 @@ namespace MegaCheess.Menu
 		{
 			Console.Beep(200, 250);
 			Printer printer = new Printer();
-			Game chess = new Game(new Printer(), 18, 20);
+			Game chess = new Game(new Printer(),new Point(18, 20));
 
 			if (MenuDataBase.NewGameSpaceColor == MenuDataBase.HighlightColor)
 			{
