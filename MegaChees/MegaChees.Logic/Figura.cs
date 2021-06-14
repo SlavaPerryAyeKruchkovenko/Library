@@ -282,7 +282,7 @@ namespace MegaChess.Logic
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(IsMyFigura, ShorName);
+			return HashCode.Combine(IsMyFigura, ShorName , Number);
 		}
 	}
 	public class King : Figura
@@ -323,7 +323,7 @@ namespace MegaChess.Logic
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(IsMyFigura, ShorName);
+			return HashCode.Combine(IsMyFigura, ShorName, Number);
 		}
 	}
 	public class Queen : Figura
@@ -366,7 +366,7 @@ namespace MegaChess.Logic
 		}
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(IsMyFigura, Number);
+			return HashCode.Combine(IsMyFigura,ShorName, Number);
 		}
 	}
 	public class Knight : Figura
@@ -404,7 +404,7 @@ namespace MegaChess.Logic
 
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(IsMyFigura, Number);
+			return HashCode.Combine(IsMyFigura,ShorName, Number);
 		}
 	}
 	public class Empty : Figura
@@ -439,7 +439,7 @@ namespace MegaChess.Logic
 		}
 		public override int GetHashCode()
 		{
-			return HashCode.Combine(IsMyFigura, Number);
+			return HashCode.Combine(IsMyFigura, ShorName, Number);
 		}
 	}
 }
